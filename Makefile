@@ -6,12 +6,12 @@
 #    By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 17:18:57 by bkandemi          #+#    #+#              #
-#    Updated: 2022/05/24 17:23:04 by bkandemi         ###   ########.fr        #
+#    Updated: 2022/05/25 19:36:29 by bkandemi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = bkandemi.filler
-C_FILES = 
+C_FILES = main.c
 O_FILES = $(C_FILES:.c=.o)
 CC = gcc
 FLAGS = -Wall -Wextra -Werror
