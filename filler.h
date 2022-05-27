@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/05/25 19:28:58 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/05/27 14:26:44 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,12 @@
 
 # define TRUE 1
 # define FALSE 0
+
+typedef struct		s_map
+{
+	unsigned int	row;
+	unsigned int	col;
+	char			**map;
+}					t_map;
 
 # endif
