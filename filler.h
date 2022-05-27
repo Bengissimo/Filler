@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/05/27 14:26:44 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/05/27 15:31:20 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,15 @@
 # define TRUE 1
 # define FALSE 0
 
-typedef struct		s_map
+typedef struct		s_filler
 {
-	unsigned int	row;
-	unsigned int	col;
-	char			**map;
-}					t_map;
+	int	player_nb;
+	int	map_row;
+	int	map_col;
+	int piece_row;
+	int piece_col;
+	char **map;
+	char **piece;
+}					t_filler;
 
 # endif
