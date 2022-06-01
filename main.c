@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/05/27 20:33:43 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/01 15:20:20 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,38 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-void	init_filler(t_filler *filler)
+void	init_filler(t_info *info)
 {
-	filler->piece_row = 0;
-	filler->piece_col = 0;
-	filler->map_row = 0;
-	filler->map_col = 0;
-	filler->player_nb = 0;
+	info->piece_row = 0;
+	info->piece_col = 0;
+	info->map_row = 0;
+	info->map_col = 0;
+	info->player_nb = 0;
+	info->foe_prev.x = -2;
+	info->foe_prev.y = -2;
+	info->my_prev.x = -2;
+	info->my_prev.y = -2;
+	info->foe_curr.x = -1;
+	info->foe_curr.y = -1;
+	info->my_curr.x = -1;
+	info->my_curr.y = -1;
 }
 
-void	get_player_nb(t_filler *filler, char *line, int fd)
+/*void	init_way(t_way *way)
+{
+	way->x = -2;
+	way->y = -2;
+	way->down = FALSE;
+	way->down_left = FALSE;
+	way->down_right = FALSE;
+	way->up = FALSE;
+	way->up_left = FALSE;
+	way->up_right = FALSE;
+	way->left = FALSE;
+	way->right = FALSE;
+}*/
+
+void	get_player_nb(t_info *info, char *line, int fd)
 {
 	char	*player_info;
 	//write(fd, "debug\n", 6);
@@ -31,13 +53,23 @@ void	get_player_nb(t_filler *filler, char *line, int fd)
 	{
 		//write(fd, player_info, ft_strlen(player_info));
 		//write(fd, "\n", 1);
-		filler->player_nb = ft_atoi(player_info + 1);
-		ft_putnbr_fd(filler->player_nb, fd);
+		info->player_nb = ft_atoi(player_info + 1);
+		ft_putnbr_fd(info->player_nb, fd);
 		write(fd, "\n", 1);
+	}
+	if (info->player_nb == 1)
+	{
+		info->me = 'O';
+		info->foe = 'X';
+	}
+	else
+	{
+		info->me = 'X';
+		info->foe = 'O';
 	}
 }
 
-void	get_map_size(t_filler *filler, char *line, int fd)
+void	get_map_size(t_info *info, char *line, int fd)
 {
 	char	*map_size;
 	//write(fd, "debug\n", 6);
@@ -45,87 +77,243 @@ void	get_map_size(t_filler *filler, char *line, int fd)
 	{
 		//write(fd, map_size, ft_strlen(map_size));
 		//write(fd, "\n", 1);
-		filler->map_row = ft_atoi(ft_strchr(line, ' ') + 1);
-		filler->map_col = ft_atoi(ft_strrchr(line, ' ') + 1);
-		ft_putnbr_fd(filler->map_row, fd);
+		info->map_row = ft_atoi(ft_strchr(line, ' ') + 1);
+		info->map_col = ft_atoi(ft_strrchr(line, ' ') + 1);
+		ft_putnbr_fd(info->map_row, fd);
 		write(fd, "\n", 1);
-		ft_putnbr_fd(filler->map_col, fd);
+		ft_putnbr_fd(info->map_col, fd);
 		write(fd, "\n", 1);
 	}
 }
 
-void	parse_map(t_filler *filler, int fd)
+void	parse_map(t_info *info, int fd)
+{
+	int		row;
+	int		col;
+	char	*line;
+	char	*start;
+
+	info->map = (char **)ft_memalloc(info->map_row);
+	row = 0;
+	while (row < info->map_row)
+	{
+		get_next_line(0, &line);
+		start = ft_strchr(line, ' ') + 1;
+		info->map[row] = (char *)ft_memalloc(info->map_col + 1);
+		col = 0;
+		while (col < info->map_col)
+		{
+			//get_last_coor_fwd();
+			if (!info->map[row][col])
+			{
+				if (start[col] == info->foe)
+				{
+					info->foe_curr.x = col;
+					info->foe_curr.y = row;
+				}
+				else if (start[col] == info->me)
+				{
+					info->my_curr.x = col;
+					info->my_curr.y = row;
+				}
+			}
+			//get_last_coor_rev();
+			info->map[row][col] = start[col];
+			col++;
+		}
+		write(fd, info->map[row], ft_strlen(info->map[row]));
+		write(fd, "\n", 1);
+		row++;
+	}
+	write(fd, "foe_curr.x:", 11);
+	ft_putnbr_fd(info->foe_curr.x, fd);
+	write(fd, "\n", 1);
+	write(fd, "foe_curr.y:", 11);
+	ft_putnbr_fd(info->foe_curr.y, fd);
+	write(fd, "\n", 1);
+	write(fd, "my_curr.x:", 10);
+	ft_putnbr_fd(info->my_curr.x, fd);
+	write(fd, "\n", 1);
+	write(fd, "my_curr.y:", 10);
+	ft_putnbr_fd(info->my_curr.y, fd);
+	write(fd, "\n", 1);
+}
+
+void get_piece_size(t_info *info, char *line, int fd)
+{
+	info->piece_row = ft_atoi(ft_strchr(line, ' ') + 1);
+	info->piece_col = ft_atoi(ft_strrchr(line, ' ') + 1);
+	ft_putnbr_fd(info->piece_row, fd);
+	write(fd, "\n", 1);
+	ft_putnbr_fd(info->piece_col, fd);
+	write(fd, "\n", 1);
+}
+
+void parse_piece(t_info *info, int fd)
 {
 	int		i;
 	char	*line;
 
-	filler->map = (char **)malloc(sizeof(char *) * filler->map_row);
-	if (!filler->map)
+	info->piece = (char **)malloc(sizeof(char *) * info->piece_row);
+	if (!info->piece)
 		return ;
 	i = 0;
-	while (i < filler->map_row)
+	while (i < info->piece_row)
 	{
 		get_next_line(0, &line);
-		filler->map[i] = (char *)malloc(sizeof(char) * (filler->map_col + 1));
-		ft_strcpy(filler->map[i], (ft_strchr(line, ' ') + 1));
-		write(fd, filler->map[i], ft_strlen(filler->map[i]));
+		info->piece[i] = (char *)malloc(sizeof(char) * (info->piece_col + 1));
+		ft_strcpy(info->piece[i], line);
+		write(fd, info->piece[i], info->piece_col);
 		write(fd, "\n", 1);
 		i++;
 	}
 }
 
-void get_piece_size(t_filler *filler, char *line, int fd)
+/*void fill_map(t_info *info)
 {
-	filler->piece_row = ft_atoi(ft_strchr(line, ' ') + 1);
-	filler->piece_col = ft_atoi(ft_strrchr(line, ' ') + 1);
-	ft_putnbr_fd(filler->piece_row, fd);
-	write(fd, "\n", 1);
-	ft_putnbr_fd(filler->piece_col, fd);
-	write(fd, "\n", 1);
-}
-
-void parse_piece(t_filler *filler, int fd)
-{
-	int		i;
-	char	*line;
-
-	filler->piece = (char **)malloc(sizeof(char *) * filler->piece_row);
-	if (!filler->piece)
-		return ;
+	int	i;
+	int	row;
+	int	col;
+	
+	info->heatmap = (int **)malloc(sizeof(int *) * info->map_row);
 	i = 0;
-	while (i < filler->piece_row)
+	while (i < info->map_row)
 	{
-		get_next_line(0, &line);
-		filler->piece[i] = (char *)malloc(sizeof(char) * (filler->piece_col + 1));
-		ft_strcpy(filler->piece[i], line);
-		write(fd, filler->piece[i], filler->piece_col);
-		write(fd, "\n", 1);
+		info->heatmap[i] = (int *)malloc(sizeof(int) * info->map_col);
 		i++;
+	}
+	row = 0;
+	while (row < info->map_row)
+	{
+		col = 0;
+		while (col < info->map_col)
+		{
+			if (info->map[row][col] == '.')
+			{
+				info->heatmap[row][col] = 1;
+			}
+			else
+			{
+				info->heatmap[row][col] = info->map[row][col];
+			}
+			col++;
+		}
+		row++;
 	}
 }
 
+void print_heatmap(t_info *info, int fd)
+{
+	for (int i = 0; i < info->map_row; i++)
+	{
+		for (int j = 0; j < info->map_col; j++)
+		{
+			ft_putnbr_fd(info->heatmap[i][j], fd);
+			if (info->heatmap[i][j] != 1)
+				write(fd, " ", 1);
+			else
+				write(fd, "  ", 2);
+			
+		}
+		write(fd, "\n", 1);
+	}
+}*/
+
+/*void	get_player_coord(t_info *info)
+{
+	int	row;
+	int	col;
+	t_coord prev;
+
+	row = 0;
+	while (row < info->map_row)
+	{
+		col = 0;
+		while(col < info->map_col)
+		{
+			if (info->player_nb == 1 && info->map[row][col] == 'X')
+			{
+				if (info->foe_prev.x != info->foe_curr.x)
+					info->foe_curr.x = col;
+				if (info->foe_prev.y != info->foe_curr.y)
+					info->foe_curr.y = row;
+			}
+			if (info->player_nb == 1 && info->map[row][col] == 'O')
+			{
+				info->my_curr.x = col;
+				info->my_curr.y = row;
+			}
+			if (info->player_nb == 2 && info->map[row][col] == 'O')
+			{
+				info->foe_curr.x = col;
+				info->foe_curr.y = row;
+			}
+			if (info->player_nb == 2 && info->map[row][col] == 'X')
+			{
+				info->my_curr.x = col;
+				info->my_curr.y = row;
+			}
+			col++;
+		}
+		row++;
+	}
+	info->foe_prev.x = info->foe_curr.x;
+	info->foe_prev.y = info->foe_curr.y;
+	info->my_prev.x = info->my_curr.x;
+	info->my_prev.y = info->my_curr.y;
+	
+	
+}*/
+void	rev_read(t_info *info, int fd)
+{
+	int row;
+	int col;
+
+	row = info->map_row;
+	while (row >= 0)
+	{
+		col = info->map_col;
+		while (col >= 0)
+		{
+			if (info->player_nb == 1 && info->map[row][col] == 'O')
+			{
+				info->my_curr.x = col;
+				info->my_curr.y = row;
+			}
+			else if (info->player_nb == 1 && info->map[row][col] == 'X')
+			{
+				info->my_curr.x = col;
+				info->my_curr.y = row;
+			}
+			if (map[i])
+		}
+	}
+}
 int main(void)
 {
-	t_filler filler;
+	t_info info;
 	char	*line;
 	int fd;
 	
-	init_filler(&filler);
+	init_filler(&info);
 	fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
 			return (1);
-		if (filler.player_nb == 0)
-			get_player_nb(&filler, line, fd);
-		if (filler.map_row == 0 && filler.map_col == 0)
-			get_map_size(&filler, line, fd);
+		if (info.player_nb == 0)
+			get_player_nb(&info, line, fd);
+		if (info.map_row == 0 && info.map_col == 0)
+			get_map_size(&info, line, fd);
 		if (ft_strstr(line, "0123456789"))
-			parse_map(&filler, fd);
+		{
+			parse_map(&info, fd);
+			rev_read(&info, fd);
+		}
 		if (ft_strstr(line, "Piece"))
 		{
-			get_piece_size(&filler, line, fd);
-			parse_piece(&filler, fd);
+			get_piece_size(&info, line, fd);
+			parse_piece(&info, fd);
 		}
 		write(1, "12 14\n", 6);
 	}
