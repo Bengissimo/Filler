@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/05/30 13:36:15 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/04 22:26:59 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct	s_info
 	int			map_col;
 	int			piece_row;
 	int			piece_col;
-	char		**map;
+	int			**map;
 	char		**piece;
 	t_coord		foe_curr;
 	t_coord		my_curr;

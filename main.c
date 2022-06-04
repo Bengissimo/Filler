@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/01 15:20:20 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/04 23:02:37 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,57 +86,37 @@ void	get_map_size(t_info *info, char *line, int fd)
 	}
 }
 
-void	parse_map(t_info *info, int fd)
+void	parse_map(t_info *info)
 {
 	int		row;
 	int		col;
 	char	*line;
 	char	*start;
 
-	info->map = (char **)ft_memalloc(info->map_row);
+	info->map = (int **)malloc(sizeof(int *) * info->map_row);
 	row = 0;
 	while (row < info->map_row)
 	{
 		get_next_line(0, &line);
 		start = ft_strchr(line, ' ') + 1;
-		info->map[row] = (char *)ft_memalloc(info->map_col + 1);
+		info->map[row] = (int *)malloc(sizeof(int) * info->map_col);
 		col = 0;
 		while (col < info->map_col)
 		{
-			//get_last_coor_fwd();
-			if (!info->map[row][col])
+			if (start[col] == info->foe)
 			{
-				if (start[col] == info->foe)
-				{
-					info->foe_curr.x = col;
-					info->foe_curr.y = row;
-				}
-				else if (start[col] == info->me)
-				{
-					info->my_curr.x = col;
-					info->my_curr.y = row;
-				}
+				info->map[row][col] = -2;
 			}
-			//get_last_coor_rev();
-			info->map[row][col] = start[col];
+			else if (start[col] == info->me)
+			{
+				info->map[row][col] = -1;
+			}
+			else
+				info->map[row][col] = 0;
 			col++;
 		}
-		write(fd, info->map[row], ft_strlen(info->map[row]));
-		write(fd, "\n", 1);
 		row++;
 	}
-	write(fd, "foe_curr.x:", 11);
-	ft_putnbr_fd(info->foe_curr.x, fd);
-	write(fd, "\n", 1);
-	write(fd, "foe_curr.y:", 11);
-	ft_putnbr_fd(info->foe_curr.y, fd);
-	write(fd, "\n", 1);
-	write(fd, "my_curr.x:", 10);
-	ft_putnbr_fd(info->my_curr.x, fd);
-	write(fd, "\n", 1);
-	write(fd, "my_curr.y:", 10);
-	ft_putnbr_fd(info->my_curr.y, fd);
-	write(fd, "\n", 1);
 }
 
 void get_piece_size(t_info *info, char *line, int fd)
@@ -169,126 +149,22 @@ void parse_piece(t_info *info, int fd)
 	}
 }
 
-/*void fill_map(t_info *info)
-{
-	int	i;
-	int	row;
-	int	col;
-	
-	info->heatmap = (int **)malloc(sizeof(int *) * info->map_row);
-	i = 0;
-	while (i < info->map_row)
-	{
-		info->heatmap[i] = (int *)malloc(sizeof(int) * info->map_col);
-		i++;
-	}
-	row = 0;
-	while (row < info->map_row)
-	{
-		col = 0;
-		while (col < info->map_col)
-		{
-			if (info->map[row][col] == '.')
-			{
-				info->heatmap[row][col] = 1;
-			}
-			else
-			{
-				info->heatmap[row][col] = info->map[row][col];
-			}
-			col++;
-		}
-		row++;
-	}
-}
-
-void print_heatmap(t_info *info, int fd)
+void print_map(t_info *info, int fd)
 {
 	for (int i = 0; i < info->map_row; i++)
 	{
 		for (int j = 0; j < info->map_col; j++)
 		{
-			ft_putnbr_fd(info->heatmap[i][j], fd);
-			if (info->heatmap[i][j] != 1)
-				write(fd, " ", 1);
-			else
+			ft_putnbr_fd(info->map[i][j], fd);
+			if (info->map[i][j] == 0)
 				write(fd, "  ", 2);
-			
+			else
+				write(fd, " ", 1);
 		}
 		write(fd, "\n", 1);
 	}
-}*/
-
-/*void	get_player_coord(t_info *info)
-{
-	int	row;
-	int	col;
-	t_coord prev;
-
-	row = 0;
-	while (row < info->map_row)
-	{
-		col = 0;
-		while(col < info->map_col)
-		{
-			if (info->player_nb == 1 && info->map[row][col] == 'X')
-			{
-				if (info->foe_prev.x != info->foe_curr.x)
-					info->foe_curr.x = col;
-				if (info->foe_prev.y != info->foe_curr.y)
-					info->foe_curr.y = row;
-			}
-			if (info->player_nb == 1 && info->map[row][col] == 'O')
-			{
-				info->my_curr.x = col;
-				info->my_curr.y = row;
-			}
-			if (info->player_nb == 2 && info->map[row][col] == 'O')
-			{
-				info->foe_curr.x = col;
-				info->foe_curr.y = row;
-			}
-			if (info->player_nb == 2 && info->map[row][col] == 'X')
-			{
-				info->my_curr.x = col;
-				info->my_curr.y = row;
-			}
-			col++;
-		}
-		row++;
-	}
-	info->foe_prev.x = info->foe_curr.x;
-	info->foe_prev.y = info->foe_curr.y;
-	info->my_prev.x = info->my_curr.x;
-	info->my_prev.y = info->my_curr.y;
-	
-	
-}*/
-void	rev_read(t_info *info, int fd)
-{
-	int row;
-	int col;
-
-	row = info->map_row;
-	while (row >= 0)
-	{
-		col = info->map_col;
-		while (col >= 0)
-		{
-			if (info->player_nb == 1 && info->map[row][col] == 'O')
-			{
-				info->my_curr.x = col;
-				info->my_curr.y = row;
-			}
-			else if (info->player_nb == 1 && info->map[row][col] == 'X')
-			{
-				info->my_curr.x = col;
-				info->my_curr.y = row;
-			}
-			if (map[i])
-		}
-	}
 }
+
 int main(void)
 {
 	t_info info;
@@ -307,15 +183,15 @@ int main(void)
 			get_map_size(&info, line, fd);
 		if (ft_strstr(line, "0123456789"))
 		{
-			parse_map(&info, fd);
-			rev_read(&info, fd);
+			parse_map(&info);
+			print_map(&info, fd);
 		}
 		if (ft_strstr(line, "Piece"))
 		{
 			get_piece_size(&info, line, fd);
 			parse_piece(&info, fd);
 		}
-		write(1, "12 14\n", 6);
+		write(1, "5 6\n", 6);
 	}
 	return (0);
 }
