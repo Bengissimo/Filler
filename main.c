@@ -6,13 +6,20 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/04 23:02:37 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/06 11:07:30 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 #include <fcntl.h>
 #include <stdio.h>
+
+int		ft_abs(int nb)
+{
+	if (nb < 0)
+		nb = -nb;
+	return (nb);
+}
 
 void	init_filler(t_info *info)
 {
@@ -104,18 +111,59 @@ void	parse_map(t_info *info)
 		while (col < info->map_col)
 		{
 			if (start[col] == info->foe)
-			{
 				info->map[row][col] = -2;
-			}
 			else if (start[col] == info->me)
-			{
 				info->map[row][col] = -1;
-			}
 			else
 				info->map[row][col] = 0;
 			col++;
 		}
 		row++;
+	}
+}
+
+int	min_distance(t_info *info, t_coord coord)
+{
+	int	row;
+	int col;
+	int dist;
+	int min_dist;
+
+	min_dist = info->map_col + info->map_row;
+	row = 0;
+	while (row < info->map_row)
+	{
+		col = 0;
+		while (col < info->map_col)
+		{
+			if (info->map[row][col] == -2)
+			{
+				dist = ft_abs(coord.x - col) + ft_abs(coord.y - row);
+				if (dist < min_dist)
+					min_dist = dist;
+			}
+			col++;
+		}
+		row++;
+	}
+	return (min_dist);
+}
+
+void calculate_relative_dist(t_info *info)
+{
+	t_coord	coord;
+
+	coord.y = 0;
+	while (coord.y < info->map_row)
+	{
+		coord.x = 0;
+		while (coord.x < info->map_col)
+		{
+			if (info->map[coord.y][coord.x] == 0)
+				info->map[coord.y][coord.x] = min_distance(info, coord);
+			coord.x++;
+		}
+		coord.y++;
 	}
 }
 
@@ -157,9 +205,9 @@ void print_map(t_info *info, int fd)
 		{
 			ft_putnbr_fd(info->map[i][j], fd);
 			if (info->map[i][j] == 0)
-				write(fd, "  ", 2);
+				write(fd, "   ", 3);
 			else
-				write(fd, " ", 1);
+				write(fd, "  ", 2);
 		}
 		write(fd, "\n", 1);
 	}
@@ -184,6 +232,9 @@ int main(void)
 		if (ft_strstr(line, "0123456789"))
 		{
 			parse_map(&info);
+			print_map(&info, fd);
+			calculate_relative_dist(&info);
+			write(fd, "\n\n", 2);
 			print_map(&info, fd);
 		}
 		if (ft_strstr(line, "Piece"))
