@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/06 11:07:30 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/06 14:47:25 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,7 @@ void	init_filler(t_info *info)
 	info->map_row = 0;
 	info->map_col = 0;
 	info->player_nb = 0;
-	info->foe_prev.x = -2;
-	info->foe_prev.y = -2;
-	info->my_prev.x = -2;
-	info->my_prev.y = -2;
-	info->foe_curr.x = -1;
-	info->foe_curr.y = -1;
-	info->my_curr.x = -1;
-	info->my_curr.y = -1;
 }
-
-/*void	init_way(t_way *way)
-{
-	way->x = -2;
-	way->y = -2;
-	way->down = FALSE;
-	way->down_left = FALSE;
-	way->down_right = FALSE;
-	way->up = FALSE;
-	way->up_left = FALSE;
-	way->up_right = FALSE;
-	way->left = FALSE;
-	way->right = FALSE;
-}*/
 
 void	get_player_nb(t_info *info, char *line, int fd)
 {
@@ -197,6 +175,7 @@ void parse_piece(t_info *info, int fd)
 	}
 }
 
+
 void print_map(t_info *info, int fd)
 {
 	for (int i = 0; i < info->map_row; i++)
@@ -204,7 +183,7 @@ void print_map(t_info *info, int fd)
 		for (int j = 0; j < info->map_col; j++)
 		{
 			ft_putnbr_fd(info->map[i][j], fd);
-			if (info->map[i][j] == 0)
+			if (info->map[i][j] >= 0 && info->map[i][j] <= 9)
 				write(fd, "   ", 3);
 			else
 				write(fd, "  ", 2);
