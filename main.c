@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/08 16:17:10 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/08 19:10:20 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,12 +195,13 @@ void print_map(t_info *info, int fd)
 int main(void)
 {
 	t_info info;
-	t_distance list;
+	t_distance *list;
 	char	*line;
 	int fd;
 	
+	list = NULL;
 	init_filler(&info);
-	fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
+	fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -216,10 +217,10 @@ int main(void)
 			calculate_relative_dist(&info);
 			write(fd, "\n\n", 2);
 			print_map(&info, fd);
-			parse_distance_list(&info, &list, fd);
-			//print_dist_list(&list, fd);
-			//sort_distance_list(&list);
-			//print_dist_list(&list, fd);
+			list = parse_distance_list(&info);
+			print_dist_list(list, fd);
+			sort_distance_list(list);
+			print_dist_list(list, fd);
 		}
 		if (ft_strstr(line, "Piece"))
 		{

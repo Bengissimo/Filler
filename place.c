@@ -6,21 +6,21 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/08 16:20:16 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/08 19:06:18 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 #include <stdio.h> //DELETE
 
-void	parse_distance_list(t_info *info, t_distance *list, int fd)
+t_distance *parse_distance_list(t_info *info)
 {
 	int	row;
 	int	col;
 	int	i;
+	t_distance *list;
 
 	list = (t_distance *)malloc(sizeof(*list) * info->map_row * info->map_col);
-	list->size = info->map_row * info->map_col;
 	row = 0;
 	i = 0;
 	while (row < info->map_row)
@@ -36,7 +36,8 @@ void	parse_distance_list(t_info *info, t_distance *list, int fd)
 		}
 		row++;
 	}
-	i = 0;
+	return (list);
+	/*i = 0;
 	while (i < 100)
 	{
 		write(fd, "x: ", 3);
@@ -50,24 +51,7 @@ void	parse_distance_list(t_info *info, t_distance *list, int fd)
 		write(fd, "\n", 1);
 		write(fd, "\n", 1);
 		i++;
-	}
-	sort_distance_list(list);
-	write(fd, "sorted\n", 7);
-	i = 0;
-	while (i < 100)
-	{
-		write(fd, "x: ", 3);
-		ft_putnbr_fd(list[i].coord.x, fd);
-		write(fd, "\n", 1);
-		write(fd, "y: ", 3);
-		ft_putnbr_fd(list[i].coord.y, fd);
-		write(fd, "\n", 1);
-		write(fd, "dist: ", 6);
-		ft_putnbr_fd(list[i].dist, fd);
-		write(fd, "\n", 1);
-		write(fd, "\n", 1);
-		i++;
-	}
+	}*/
 }
 
 void	sort_distance_list(t_distance *list)
@@ -77,10 +61,10 @@ void	sort_distance_list(t_distance *list)
 	t_distance temp;
 	
 	i = 0;
-	while (i < list->size - 1)
+	while (i < 100 - 1)
 	{
 		j = 0;
-		while (j < list->size - i - 1)
+		while (j < 100 - i - 1)
 		{
 			if (list[j].dist > list[j + 1].dist)
 			{
