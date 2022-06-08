@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/06 14:52:53 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/08 16:13:01 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ typedef struct	s_coord
 typedef	struct		s_distance
 {
 	t_coord			coord;
-	unsigned int	dist;
+	int				dist;
+	int				size;
 }					t_distance;
 
 typedef struct	s_info
@@ -44,5 +45,10 @@ typedef struct	s_info
 	int			**map;
 	char		**piece;
 }				t_info;
+
+void	parse_distance_list(t_info *info, t_distance *list, int fd);
+void	sort_distance_list(t_distance *list);
+void	print_dist_list(t_distance *list, int fd);
+
 
 # endif

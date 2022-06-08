@@ -6,13 +6,13 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/07 11:15:59 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/08 16:17:10 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 #include <fcntl.h>
-#include <stdio.h>
+#include <stdio.h> //DELETE LATER
 
 int		ft_abs(int nb)
 {
@@ -195,6 +195,7 @@ void print_map(t_info *info, int fd)
 int main(void)
 {
 	t_info info;
+	t_distance list;
 	char	*line;
 	int fd;
 	
@@ -215,12 +216,17 @@ int main(void)
 			calculate_relative_dist(&info);
 			write(fd, "\n\n", 2);
 			print_map(&info, fd);
+			parse_distance_list(&info, &list, fd);
+			//print_dist_list(&list, fd);
+			//sort_distance_list(&list);
+			//print_dist_list(&list, fd);
 		}
 		if (ft_strstr(line, "Piece"))
 		{
 			get_piece_size(&info, line, fd);
 			parse_piece(&info, fd);
 		}
+		
 		write(1, "5 6\n", 6);
 	}
 	return (0);
