@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/09 10:11:01 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/09 11:40:16 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,55 @@ void print_dist_list(t_distance *list, int fd)
 		ft_putnbr_fd(list[i].dist, fd);
 		write(fd, "\n", 1);
 		write(fd, "\n", 1);
+		i++;
+	}
+}
+
+static int	is_placeable(t_info *info, t_coord coord)
+{
+	int row;
+	int col;
+	int found;
+
+	found = FALSE;
+	if (info->map[coord.y][coord.x] == -2)
+		return (0);
+	row = 0;
+	while (row < info->piece_row)
+	{
+		col = 0;
+		while (col < info->piece_col)
+		{
+			if (info->map[coord.y][coord.x] == -1 && info->piece[row][col] == '*' && !found)
+				found = TRUE;
+			else if (found)
+			{
+				return (FALSE);
+			}
+			coord.x++;
+			col++;
+		}
+		coord.y++;
+		row++;
+	}	
+	return (found);
+}
+
+void	put_piece(t_info *info, t_distance *list)
+{
+	unsigned int	i;
+	if (!list)
+		return;
+	i = 0;
+	while (i < list[i].size)
+	{
+		if (is_placeable(info, list[i].coord))
+		{
+			ft_putnbr(list[i].coord.y);
+			write(1, " ", 1);
+			ft_putnbr(list[i].coord.x);
+			write(1, "\n", 1);
+		}
 		i++;
 	}
 }

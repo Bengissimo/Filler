@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/09 09:57:45 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/09 11:39:48 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,10 +218,10 @@ int main(void)
 			write(fd, "\n\n", 2);
 			print_map(&info, fd);
 			list = parse_distance_list(&info);
-			print_dist_list(list, fd);
+			//print_dist_list(list, fd);
 			sort_distance_list(list);
-			write(fd, "sorted: \n", 9);
-			print_dist_list(list, fd);
+			//write(fd, "sorted: \n", 9);
+			//print_dist_list(list, fd);
 		}
 		if (ft_strstr(line, "Piece"))
 		{
@@ -229,7 +229,7 @@ int main(void)
 			parse_piece(&info, fd);
 		}
 		
-		write(1, "5 6\n", 6);
+		put_piece(&info, list);
 	}
 	return (0);
 }
