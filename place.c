@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/09 11:40:16 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/09 12:27:47 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,11 @@ void	sort_distance_list(t_distance *list)
 	}	
 }
 
-/*void	free_distance_list()
+void	free_distance_list(t_distance *list)
 {
-	
-}*/
+	free(list);
+	list = NULL;
+}
 
 void print_dist_list(t_distance *list, int fd)
 {
