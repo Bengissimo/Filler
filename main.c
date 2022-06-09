@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/09 21:42:30 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/09 22:17:28 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	init_filler(t_info *info)
 	info->player_nb = 0;
 }
 
-void	get_player_nb(t_info *info, char *line, int fd)
+void	get_player_nb(t_info *info, char *line)
 {
 	char	*player_info;
 	//write(fd, "debug\n", 6);
@@ -39,8 +39,8 @@ void	get_player_nb(t_info *info, char *line, int fd)
 		//write(fd, player_info, ft_strlen(player_info));
 		//write(fd, "\n", 1);
 		info->player_nb = ft_atoi(player_info + 1);
-		ft_putnbr_fd(info->player_nb, fd);
-		write(fd, "\n", 1);
+		//ft_putnbr_fd(info->player_nb, fd);
+		//write(fd, "\n", 1);
 	}
 	if (info->player_nb == 1)
 	{
@@ -54,7 +54,7 @@ void	get_player_nb(t_info *info, char *line, int fd)
 	}
 }
 
-void	get_map_size(t_info *info, char *line, int fd)
+void	get_map_size(t_info *info, char *line)
 {
 	char	*map_size;
 	//write(fd, "debug\n", 6);
@@ -64,10 +64,10 @@ void	get_map_size(t_info *info, char *line, int fd)
 		//write(fd, "\n", 1);
 		info->map_row = ft_atoi(ft_strchr(line, ' ') + 1);
 		info->map_col = ft_atoi(ft_strrchr(line, ' ') + 1);
-		ft_putnbr_fd(info->map_row, fd);
-		write(fd, "\n", 1);
-		ft_putnbr_fd(info->map_col, fd);
-		write(fd, "\n", 1);
+		//ft_putnbr_fd(info->map_row, fd);
+		//write(fd, "\n", 1);
+		//ft_putnbr_fd(info->map_col, fd);
+		//write(fd, "\n", 1);
 	}
 }
 
@@ -147,17 +147,17 @@ void calculate_relative_dist(t_info *info)
 	}
 }
 
-void get_piece_size(t_info *info, char *line, int fd)
+void get_piece_size(t_info *info, char *line)
 {
 	info->piece_row = ft_atoi(ft_strchr(line, ' ') + 1);
 	info->piece_col = ft_atoi(ft_strrchr(line, ' ') + 1);
-	ft_putnbr_fd(info->piece_row, fd);
+	/*ft_putnbr_fd(info->piece_row, fd);
 	write(fd, "\n", 1);
 	ft_putnbr_fd(info->piece_col, fd);
-	write(fd, "\n", 1);
+	write(fd, "\n", 1);*/
 }
 
-void parse_piece(t_info *info, int fd)
+void parse_piece(t_info *info)
 {
 	int		i;
 	char	*line;
@@ -215,25 +215,25 @@ int main(void)
 	t_info info;
 	t_distance *list;
 	char	*line;
-	int fd;
+	//int fd;
 	
 	list = NULL;
 	init_filler(&info);
-	fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
+	//fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
 			return (1);
 		if (info.player_nb == 0)
-			get_player_nb(&info, line, fd);
+			get_player_nb(&info, line);
 		if (info.map_row == 0 && info.map_col == 0)
-			get_map_size(&info, line, fd);
+			get_map_size(&info, line);
 		if (ft_strstr(line, "0123456789"))
 		{
 			parse_map(&info);
 			//print_map(&info, fd);
 			calculate_relative_dist(&info);
-			write(fd, "\n\n", 2);
+			//write(fd, "\n\n", 2);
 			//print_dist_map(&info, fd);
 			list = parse_distance_list(&info);
 			//print_dist_list(list, fd);
@@ -243,9 +243,9 @@ int main(void)
 		}
 		if (ft_strstr(line, "Piece"))
 		{
-			get_piece_size(&info, line, fd);
-			parse_piece(&info, fd);
-			if (put_piece(&info, list, fd) == FALSE)
+			get_piece_size(&info, line);
+			parse_piece(&info);
+			if (put_piece(&info, list) == FALSE)
 				return (1);
 		}
 	}
