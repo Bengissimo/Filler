@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/08 19:05:52 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/09 14:36:32 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,28 @@ typedef struct	s_coord
 typedef	struct		s_distance
 {
 	t_coord			coord;
-	int				dist;
+	unsigned int	dist;
+	unsigned int	size;
 }					t_distance;
 
-typedef struct	s_info
+typedef struct		s_info
 {
-	int			player_nb;
-	char		me;
-	char		foe;
-	int			map_row;
-	int			map_col;
-	int			piece_row;
-	int			piece_col;
-	int			**map;
-	char		**piece;
-}				t_info;
+	int		player_nb;
+	char	me;
+	char	foe;
+	int		map_row;
+	int		map_col;
+	int		piece_row;
+	int		piece_col;
+	int		**map;
+	char	**piece;
+}					t_info;
 
 t_distance	*parse_distance_list(t_info *info);
 void	sort_distance_list(t_distance *list);
 void	print_dist_list(t_distance *list, int fd);
+void	put_piece(t_info *info, t_distance *list, int fd);
+void	free_distance_list(t_distance *list);
 
 
 # endif

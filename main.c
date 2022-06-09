@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/08 19:10:20 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/09 14:37:55 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <stdio.h> //DELETE LATER
 
-int		ft_abs(int nb)
+unsigned int	ft_abs(int nb)
 {
 	if (nb < 0)
 		nb = -nb;
@@ -102,10 +102,10 @@ void	parse_map(t_info *info)
 
 int	min_distance(t_info *info, t_coord coord)
 {
-	int	row;
-	int col;
-	int dist;
-	int min_dist;
+	int				row;
+	int				col;
+	unsigned int	dist;
+	unsigned int	min_dist;
 
 	min_dist = info->map_col + info->map_row;
 	row = 0;
@@ -201,7 +201,7 @@ int main(void)
 	
 	list = NULL;
 	init_filler(&info);
-	fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
+	fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -218,17 +218,18 @@ int main(void)
 			write(fd, "\n\n", 2);
 			print_map(&info, fd);
 			list = parse_distance_list(&info);
-			print_dist_list(list, fd);
+			//print_dist_list(list, fd);
 			sort_distance_list(list);
-			print_dist_list(list, fd);
+			//write(fd, "sorted: \n", 9);
+			//print_dist_list(list, fd);
 		}
 		if (ft_strstr(line, "Piece"))
 		{
 			get_piece_size(&info, line, fd);
 			parse_piece(&info, fd);
+			put_piece(&info, list, fd);
 		}
-		
-		write(1, "5 6\n", 6);
+		free_distance_list(list);
 	}
 	return (0);
 }
