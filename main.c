@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/09 14:37:55 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/09 21:42:30 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,14 +131,16 @@ void calculate_relative_dist(t_info *info)
 {
 	t_coord	coord;
 
+	info->distance_map = (int **)malloc(sizeof(int *) * info->map_row);
 	coord.y = 0;
 	while (coord.y < info->map_row)
 	{
 		coord.x = 0;
+		info->distance_map[coord.y] = (int *)malloc(sizeof(int) * info->map_col);
 		while (coord.x < info->map_col)
 		{
-			if (info->map[coord.y][coord.x] == 0)
-				info->map[coord.y][coord.x] = min_distance(info, coord);
+			if (info->map[coord.y][coord.x] == 0 || info->map[coord.y][coord.x] == -1)
+				info->distance_map[coord.y][coord.x] = min_distance(info, coord);
 			coord.x++;
 		}
 		coord.y++;
@@ -169,8 +171,8 @@ void parse_piece(t_info *info, int fd)
 		get_next_line(0, &line);
 		info->piece[i] = (char *)malloc(sizeof(char) * (info->piece_col + 1));
 		ft_strcpy(info->piece[i], line);
-		write(fd, info->piece[i], info->piece_col);
-		write(fd, "\n", 1);
+		//write(fd, info->piece[i], info->piece_col);
+		//write(fd, "\n", 1);
 		i++;
 	}
 }
@@ -192,6 +194,22 @@ void print_map(t_info *info, int fd)
 	}
 }
 
+void print_dist_map(t_info *info, int fd)
+{
+	for (int i = 0; i < info->map_row; i++)
+	{
+		for (int j = 0; j < info->map_col; j++)
+		{
+			ft_putnbr_fd(info->distance_map[i][j], fd);
+			if (info->distance_map[i][j] >= 0 && info->distance_map[i][j] <= 9)
+				write(fd, "   ", 3);
+			else
+				write(fd, "  ", 2);
+		}
+		write(fd, "\n", 1);
+	}
+}
+
 int main(void)
 {
 	t_info info;
@@ -201,7 +219,7 @@ int main(void)
 	
 	list = NULL;
 	init_filler(&info);
-	fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
+	fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -213,10 +231,10 @@ int main(void)
 		if (ft_strstr(line, "0123456789"))
 		{
 			parse_map(&info);
-			print_map(&info, fd);
+			//print_map(&info, fd);
 			calculate_relative_dist(&info);
 			write(fd, "\n\n", 2);
-			print_map(&info, fd);
+			//print_dist_map(&info, fd);
 			list = parse_distance_list(&info);
 			//print_dist_list(list, fd);
 			sort_distance_list(list);
@@ -227,9 +245,10 @@ int main(void)
 		{
 			get_piece_size(&info, line, fd);
 			parse_piece(&info, fd);
-			put_piece(&info, list, fd);
+			if (put_piece(&info, list, fd) == FALSE)
+				return (1);
 		}
-		free_distance_list(list);
 	}
+	free_distance_list(list);
 	return (0);
 }
