@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/09 12:28:25 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/09 14:37:55 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,9 +227,8 @@ int main(void)
 		{
 			get_piece_size(&info, line, fd);
 			parse_piece(&info, fd);
+			put_piece(&info, list, fd);
 		}
-		
-		put_piece(&info, list);
 		free_distance_list(list);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/09 12:27:47 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/09 14:41:19 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,20 +130,21 @@ static int	is_placeable(t_info *info, t_coord coord)
 	int found;
 
 	found = FALSE;
-	if (info->map[coord.y][coord.x] == -2)
-		return (0);
+	if (coord.y + info->piece_row > info->map_row || coord.x + info->piece_col > info->map_col)
+		return (FALSE);
 	row = 0;
 	while (row < info->piece_row)
 	{
 		col = 0;
 		while (col < info->piece_col)
 		{
-			if (info->map[coord.y][coord.x] == -1 && info->piece[row][col] == '*' && !found)
+			
+			if (info->map[coord.y][coord.x] == -2 && info->piece[row][col] == '*')
+				return (FALSE);
+			else if (info->map[coord.y][coord.x] == -1 && info->piece[row][col] == '*' && !found)
 				found = TRUE;
 			else if (found)
-			{
 				return (FALSE);
-			}
 			coord.x++;
 			col++;
 		}
@@ -153,20 +154,27 @@ static int	is_placeable(t_info *info, t_coord coord)
 	return (found);
 }
 
-void	put_piece(t_info *info, t_distance *list)
+void	put_piece(t_info *info, t_distance *list, int fd)
 {
 	unsigned int	i;
+
+	write(fd, "test\n", 5);
 	if (!list)
 		return;
 	i = 0;
 	while (i < list[i].size)
 	{
+		ft_putnbr_fd(list[i].coord.y, fd);
+		write(fd, " ", 1);
+		ft_putnbr_fd(list[i].coord.x, fd);
+		write(fd, "\n", 1);
 		if (is_placeable(info, list[i].coord))
 		{
-			ft_putnbr(list[i].coord.y);
-			write(1, " ", 1);
-			ft_putnbr(list[i].coord.x);
-			write(1, "\n", 1);
+			write(fd, "test3\n", 6);
+			ft_putnbr_fd(list[i].coord.y, fd);
+			write(fd, " ", 1);
+			ft_putnbr_fd(list[i].coord.x, fd);
+			write(fd, "\n", 1);
 		}
 		i++;
 	}
