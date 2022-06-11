@@ -6,20 +6,18 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/09 22:19:50 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/11 22:51:54 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 #include <stdio.h> //DELETE
 
-static unsigned int	find_list_size(t_info *info)
+void	find_playable_pos(t_info *info)
 {
 	int	row;
 	int	col;
-	unsigned int	size;
 
-	size = 0;
 	row = 0;
 	while (row < info->map_row)
 	{
@@ -27,12 +25,11 @@ static unsigned int	find_list_size(t_info *info)
 		while (col < info->map_col)
 		{
 			if (info->map[row][col] != -2)
-				size++;
+				info->playable_pos++;
 			col++;
 		}
 		row++;
 	}
-	return (size);
 }
 
 t_distance *parse_distance_list(t_info *info)
@@ -40,17 +37,9 @@ t_distance *parse_distance_list(t_info *info)
 	int				row;
 	int				col;
 	unsigned int	i;
-	unsigned int	size;
 	t_distance		*list;
 
-	size = find_list_size(info);
-	list = (t_distance *)malloc(sizeof(*list) * size);
-	i = 0;
-	while (i < size)
-	{
-		list[i].size = size;
-		i++;
-	}
+	list = (t_distance *)malloc(sizeof(*list) * info->map_col * info->map_row);
 	row = 0;
 	i = 0;
 	while (row < info->map_row)
@@ -69,20 +58,21 @@ t_distance *parse_distance_list(t_info *info)
 		}
 		row++;
 	}
+	
 	return (list);
 }
 
-void	sort_distance_list(t_distance *list)
+void	sort_distance_list(t_distance *list, unsigned int size)
 {
 	unsigned int	i;
 	unsigned int	j;
 	t_distance		temp;
 	
 	i = 0;
-	while (i < list[i].size - 1)
+	while (i < size - 1)
 	{
 		j = 0;
-		while (j < list[i].size - i - 1)
+		while (j < size - i - 1)
 		{
 			if (list[j].dist > list[j + 1].dist)
 			{
@@ -96,18 +86,21 @@ void	sort_distance_list(t_distance *list)
 	}	
 }
 
-void	free_distance_list(t_distance *list)
+void	free_dist_list(t_distance **list)
 {
-	free(list);
-	list = NULL;
+	if (*list && list)
+	{
+		free(*list);
+		list = NULL;
+	}
 }
 
-void print_dist_list(t_distance *list, int fd)
+void print_dist_list(t_distance *list, unsigned int size, int fd)
 {
 	unsigned int i;
 
 	i = 0;
-	while (i < list[i].size)
+	while (i < size)
 	{
 		write(fd, "x: ", 3);
 		ft_putnbr_fd(list[i].coord.x, fd);
@@ -176,7 +169,7 @@ int	put_piece(t_info *info, t_distance *list)
 	if (!list)
 		return (FALSE);
 	i = 0;
-	while (i < list[i].size)
+	while (i < info->playable_pos)
 	{
 		/*ft_putnbr_fd(list[i].coord.y, fd);
 		write(fd, " ", 1);

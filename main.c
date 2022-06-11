@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/09 22:17:28 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/11 23:00:52 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ void	init_filler(t_info *info)
 	info->map_row = 0;
 	info->map_col = 0;
 	info->player_nb = 0;
+	info->playable_pos = 0;
+	info->distance_map = NULL;
+	info->map = NULL;
+	info->piece = NULL;
 }
 
 void	get_player_nb(t_info *info, char *line)
@@ -71,6 +75,8 @@ void	get_map_size(t_info *info, char *line)
 	}
 }
 
+//create a map malloc function, mapin her elemanini nulla. 
+
 void	parse_map(t_info *info)
 {
 	int		row;
@@ -78,13 +84,14 @@ void	parse_map(t_info *info)
 	char	*line;
 	char	*start;
 
-	info->map = (int **)malloc(sizeof(int *) * info->map_row);
+	if (!info->map) //bu onemli bir kontrol, artik sadece bir kere malloc yapacagim!
+		info->map = (int **)malloc(sizeof(int *) * info->map_row);
 	row = 0;
 	while (row < info->map_row)
 	{
 		get_next_line(0, &line);
 		start = ft_strchr(line, ' ') + 1;
-		info->map[row] = (int *)malloc(sizeof(int) * info->map_col);
+		info->map[row] = (int *)malloc(sizeof(int) * info->map_col); //bu gidecek 
 		col = 0;
 		while (col < info->map_col)
 		{
@@ -127,7 +134,7 @@ int	min_distance(t_info *info, t_coord coord)
 	return (min_dist);
 }
 
-void calculate_relative_dist(t_info *info)
+void calculate_relative_dist(t_info *info) //nulldan farkli ise islem yapmasina gerek kalmasin
 {
 	t_coord	coord;
 
@@ -210,6 +217,19 @@ void print_dist_map(t_info *info, int fd)
 	}
 }
 
+void	free_distance_map(int **map, int index)
+{
+	int i;
+	
+	i = 0;
+	while (i < index)
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
+}
+
 int main(void)
 {
 	t_info info;
@@ -236,8 +256,10 @@ int main(void)
 			//write(fd, "\n\n", 2);
 			//print_dist_map(&info, fd);
 			list = parse_distance_list(&info);
+			free_distance_map(info.distance_map, info.map_row);
 			//print_dist_list(list, fd);
-			sort_distance_list(list);
+			find_playable_pos(&info);
+			sort_distance_list(list, info.playable_pos);
 			//write(fd, "sorted: \n", 9);
 			//print_dist_list(list, fd);
 		}
@@ -246,9 +268,9 @@ int main(void)
 			get_piece_size(&info, line);
 			parse_piece(&info);
 			if (put_piece(&info, list) == FALSE)
-				return (1);
+				break ;
 		}
 	}
-	free_distance_list(list);
+	free_dist_list(&list);
 	return (0);
 }
