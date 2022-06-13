@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/11 23:00:52 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/13 12:03:27 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,27 @@ void	get_map_size(t_info *info, char *line)
 	}
 }
 
-//create a map malloc function, mapin her elemanini nulla. 
+int	**malloc_map(t_info *info)
+{
+	int	i;
+	int	j;
+	int **map;
+
+	map = (int **)malloc(sizeof(int *) * info->map_row);
+	i = 0;
+	while (i < info->map_row)
+	{
+		map[i] = (int *)malloc(sizeof(int) * info->map_col);
+		j = 0;
+		while (j < info->map_col)
+		{
+			map[i][j] = 0;
+			j++;
+		}
+		i++;
+	}
+	return (map);
+}
 
 void	parse_map(t_info *info)
 {
@@ -84,30 +104,27 @@ void	parse_map(t_info *info)
 	char	*line;
 	char	*start;
 
-	if (!info->map) //bu onemli bir kontrol, artik sadece bir kere malloc yapacagim!
-		info->map = (int **)malloc(sizeof(int *) * info->map_row);
+	if (!info->map)
+		info->map = malloc_map(info);
 	row = 0;
 	while (row < info->map_row)
 	{
 		get_next_line(0, &line);
 		start = ft_strchr(line, ' ') + 1;
-		info->map[row] = (int *)malloc(sizeof(int) * info->map_col); //bu gidecek 
 		col = 0;
 		while (col < info->map_col)
 		{
-			if (start[col] == info->foe)
+			if (start[col] == info->foe && info->map[row][col] != -2)
 				info->map[row][col] = -2;
-			else if (start[col] == info->me)
+			else if (start[col] == info->me && info->map[row][col] != -1)
 				info->map[row][col] = -1;
-			else
-				info->map[row][col] = 0;
 			col++;
 		}
 		row++;
 	}
 }
 
-int	min_distance(t_info *info, t_coord coord)
+int	calc_rel_distance(t_info *info, t_coord coord)
 {
 	int				row;
 	int				col;
@@ -134,20 +151,20 @@ int	min_distance(t_info *info, t_coord coord)
 	return (min_dist);
 }
 
-void calculate_relative_dist(t_info *info) //nulldan farkli ise islem yapmasina gerek kalmasin
+void get_distance_map(t_info *info)
 {
 	t_coord	coord;
 
-	info->distance_map = (int **)malloc(sizeof(int *) * info->map_row);
+	if (!info->distance_map)
+		info->distance_map = malloc_map(info);
 	coord.y = 0;
 	while (coord.y < info->map_row)
 	{
 		coord.x = 0;
-		info->distance_map[coord.y] = (int *)malloc(sizeof(int) * info->map_col);
 		while (coord.x < info->map_col)
 		{
 			if (info->map[coord.y][coord.x] == 0 || info->map[coord.y][coord.x] == -1)
-				info->distance_map[coord.y][coord.x] = min_distance(info, coord);
+				info->distance_map[coord.y][coord.x] = calc_rel_distance(info, coord);
 			coord.x++;
 		}
 		coord.y++;
@@ -239,7 +256,7 @@ int main(void)
 	
 	list = NULL;
 	init_filler(&info);
-	//fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
+	//fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -252,13 +269,15 @@ int main(void)
 		{
 			parse_map(&info);
 			//print_map(&info, fd);
-			calculate_relative_dist(&info);
+			get_distance_map(&info);
 			//write(fd, "\n\n", 2);
 			//print_dist_map(&info, fd);
-			list = parse_distance_list(&info);
-			free_distance_map(info.distance_map, info.map_row);
-			//print_dist_list(list, fd);
+			if (!list)
+				list = init_dist_list(&info);
+			parse_distance_list(&info, list);
+			//write(fd, "debug\n", 6);
 			find_playable_pos(&info);
+			//print_dist_list(list, info.playable_pos, fd);
 			sort_distance_list(list, info.playable_pos);
 			//write(fd, "sorted: \n", 9);
 			//print_dist_list(list, fd);
@@ -267,8 +286,8 @@ int main(void)
 		{
 			get_piece_size(&info, line);
 			parse_piece(&info);
-			if (put_piece(&info, list) == FALSE)
-				break ;
+			//write(fd, "debug\n", 6);
+			put_piece(&info, list);
 		}
 	}
 	free_dist_list(&list);

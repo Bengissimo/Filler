@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/11 22:52:13 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/13 11:48:13 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ typedef struct		s_info
 	unsigned int		playable_pos;
 }					t_info;
 
-t_distance	*parse_distance_list(t_info *info);
+void parse_distance_list(t_info *info, t_distance *list);
+t_distance	*init_dist_list(t_info *info);
+
 void	sort_distance_list(t_distance *list, unsigned int size);
 void print_dist_list(t_distance *list, unsigned int size, int fd);
-int	put_piece(t_info *info, t_distance *list);
+void	put_piece(t_info *info, t_distance *list);
 void	free_dist_list(t_distance **list);
 unsigned int	find_list_size(t_info *info);
 void	find_playable_pos(t_info *info);
