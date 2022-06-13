@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/09 22:17:28 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/13 19:47:16 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,30 @@ int	min_distance(t_info *info, t_coord coord)
 	return (min_dist);
 }
 
+int	check_if_nearby_free(t_info *info, t_coord coord)
+{
+	int i;
+	int j;
+
+	i = -1;
+	while (i < 2)
+	{
+		j = -1;
+		while (j < 2)
+		{
+			if (coord.x + j > 0 && coord.x + j < info->map_col &&
+			coord.y + i > 0 && coord.y + i < info->map_row)
+			{
+				if (info->map[coord.y + i][coord.x + j] == 0)
+					return (TRUE);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (FALSE);
+}
+
 void calculate_relative_dist(t_info *info)
 {
 	t_coord	coord;
@@ -139,8 +163,13 @@ void calculate_relative_dist(t_info *info)
 		info->distance_map[coord.y] = (int *)malloc(sizeof(int) * info->map_col);
 		while (coord.x < info->map_col)
 		{
-			if (info->map[coord.y][coord.x] == 0 || info->map[coord.y][coord.x] == -1)
+			if (info->map[coord.y][coord.x] == 0)
 				info->distance_map[coord.y][coord.x] = min_distance(info, coord);
+			else if (info->map[coord.y][coord.x] == -1)
+			{
+				if (check_if_nearby_free(info, coord))
+					info->distance_map[coord.y][coord.x] = 1;
+			}
 			coord.x++;
 		}
 		coord.y++;
@@ -215,11 +244,11 @@ int main(void)
 	t_info info;
 	t_distance *list;
 	char	*line;
-	//int fd;
+	int fd;
 	
 	list = NULL;
 	init_filler(&info);
-	//fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
+	fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -231,10 +260,11 @@ int main(void)
 		if (ft_strstr(line, "0123456789"))
 		{
 			parse_map(&info);
-			//print_map(&info, fd);
+			print_map(&info, fd);
 			calculate_relative_dist(&info);
-			//write(fd, "\n\n", 2);
-			//print_dist_map(&info, fd);
+			write(fd, "\n\n", 2);
+			print_dist_map(&info, fd);
+			write(fd, "-----\n", 6);
 			list = parse_distance_list(&info);
 			//print_dist_list(list, fd);
 			sort_distance_list(list);
