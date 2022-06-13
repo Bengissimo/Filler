@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/13 12:03:27 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/13 16:47:18 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@ unsigned int	ft_abs(int nb)
 		nb = -nb;
 	return (nb);
 }
+
+/*unsigned int	get_max(unsigned int nb1, unsigned int nb2)
+{
+	if (nb1 > nb2)
+		return (nb1);
+	return (nb2);
+}*/
 
 void	init_filler(t_info *info)
 {
@@ -82,10 +89,14 @@ int	**malloc_map(t_info *info)
 	int **map;
 
 	map = (int **)malloc(sizeof(int *) * info->map_row);
+	if (!map)
+		return (NULL);
 	i = 0;
 	while (i < info->map_row)
 	{
 		map[i] = (int *)malloc(sizeof(int) * info->map_col);
+		if (!map[i])
+			return (NULL);
 		j = 0;
 		while (j < info->map_col)
 		{
@@ -99,28 +110,28 @@ int	**malloc_map(t_info *info)
 
 void	parse_map(t_info *info)
 {
-	int		row;
-	int		col;
+	int		i;
+	int		j;
 	char	*line;
 	char	*start;
 
 	if (!info->map)
 		info->map = malloc_map(info);
-	row = 0;
-	while (row < info->map_row)
+	i = 0;
+	while (i < info->map_row)
 	{
 		get_next_line(0, &line);
 		start = ft_strchr(line, ' ') + 1;
-		col = 0;
-		while (col < info->map_col)
+		j = 0;
+		while (j < info->map_col)
 		{
-			if (start[col] == info->foe && info->map[row][col] != -2)
-				info->map[row][col] = -2;
-			else if (start[col] == info->me && info->map[row][col] != -1)
-				info->map[row][col] = -1;
-			col++;
+			if (start[j] == info->foe && info->map[i][j] != -2)
+				info->map[i][j] = -2;
+			else if (start[j] == info->me && info->map[i][j] != -1)
+				info->map[i][j] = -1;
+			j++;
 		}
-		row++;
+		i++;
 	}
 }
 
@@ -163,7 +174,9 @@ void get_distance_map(t_info *info)
 		coord.x = 0;
 		while (coord.x < info->map_col)
 		{
-			if (info->map[coord.y][coord.x] == 0 || info->map[coord.y][coord.x] == -1)
+			if (info->map[coord.y][coord.x] == -2)
+				info->distance_map[coord.y][coord.x] = 0;
+			else if (info->map[coord.y][coord.x] == 0 || info->map[coord.y][coord.x] == -1 )
 				info->distance_map[coord.y][coord.x] = calc_rel_distance(info, coord);
 			coord.x++;
 		}
@@ -249,14 +262,14 @@ void	free_distance_map(int **map, int index)
 
 int main(void)
 {
-	t_info info;
-	t_distance *list;
-	char	*line;
-	//int fd;
+	t_info		info;
+	t_distance	*list;
+	char		*line;
+	int fd;
 	
 	list = NULL;
 	init_filler(&info);
-	//fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
+	fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -268,10 +281,11 @@ int main(void)
 		if (ft_strstr(line, "0123456789"))
 		{
 			parse_map(&info);
-			//print_map(&info, fd);
+			print_map(&info, fd);
 			get_distance_map(&info);
-			//write(fd, "\n\n", 2);
-			//print_dist_map(&info, fd);
+			write(fd, "\n", 1);
+			print_dist_map(&info, fd);
+			write(fd, "\n\n", 2);
 			if (!list)
 				list = init_dist_list(&info);
 			parse_distance_list(&info, list);

@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/13 11:47:58 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/13 17:01:12 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ void	find_playable_pos(t_info *info)
 
 t_distance	*init_dist_list(t_info *info)
 {
-	int	i;
+	int			i;
 	t_distance	*list;
 
-	
 	list = (t_distance *)malloc(sizeof(*list) * info->map_col * info->map_row);
+	if (!list)
+		return (NULL);
 	i = 0;
 	while (i < info->map_col * info->map_row)
 	{
@@ -140,18 +141,6 @@ static int	is_placeable(t_info *info, t_coord coord)
 	//write(fd, "debug1\n", 7);
 	if (coord.y + info->piece_row > info->map_row || coord.x + info->piece_col > info->map_col)
 		return (FALSE);
-	/*ft_putnbr_fd(info->piece_row, fd);
-	write(fd, " ", 1);
-	ft_putnbr_fd(info->piece_col, fd);
-	write(fd, "\n", 1);
-	ft_putnbr_fd(info->map_row, fd);
-	write(fd, " ", 1);
-	ft_putnbr_fd(info->map_col, fd);
-	write(fd, "\n", 1);
-	ft_putnbr_fd(coord.y, fd);
-	write(fd, " ", 1);
-	ft_putnbr_fd(coord.x, fd);
-	write(fd, "\n", 1);*/
 	row = 0;
 	while (row < info->piece_row)
 	{
@@ -160,8 +149,12 @@ static int	is_placeable(t_info *info, t_coord coord)
 		while (col < info->piece_col)
 		{
 			//write(fd, "debug2\n", 7);
-			if (info->map[coord.y + row][coord.x + col] == -2 && info->piece[row][col] == '*')
+			if (info->map[coord.y + row][coord.x + col] == -2)
 				return (FALSE);
+			/*
+			buraya bir if kosulu daha gelse. mesela -1 ya 0 olan pozisyonun cevresinde bosluk var mi diye kontrol eden
+
+			*/
 			else if (info->map[coord.y + row][coord.x + col] == -1 && info->piece[row][col] == '*')
 			{
 				if (found)
