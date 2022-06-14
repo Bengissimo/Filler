@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/09 22:19:50 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/14 16:58:30 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,13 +168,13 @@ static int	is_placeable(t_info *info, t_coord coord)
 	return (found);
 }
 
-int	put_piece(t_info *info, t_distance *list)
+void	put_piece(t_info *info, t_distance *list)
 {
 	unsigned int	i;
 
 	//write(fd, "test\n", 5);
 	if (!list)
-		return (FALSE);
+		return ;
 	i = 0;
 	while (i < list[i].size)
 	{
@@ -189,9 +189,9 @@ int	put_piece(t_info *info, t_distance *list)
 			write(1, " ", 1);
 			ft_putnbr(list[i].coord.x);
 			write(1, "\n", 1);
-			return (TRUE);
+			return ;
 		}
 		i++;
 	}
-	return (FALSE);
+	write(1, "0 0\n", 4);
 }
