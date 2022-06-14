@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/13 19:47:16 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/13 20:03:31 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,11 +244,11 @@ int main(void)
 	t_info info;
 	t_distance *list;
 	char	*line;
-	int fd;
+	//int fd;
 	
 	list = NULL;
 	init_filler(&info);
-	fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
+	//fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -260,11 +260,11 @@ int main(void)
 		if (ft_strstr(line, "0123456789"))
 		{
 			parse_map(&info);
-			print_map(&info, fd);
+			//print_map(&info, fd);
 			calculate_relative_dist(&info);
-			write(fd, "\n\n", 2);
-			print_dist_map(&info, fd);
-			write(fd, "-----\n", 6);
+			//write(fd, "\n\n", 2);
+			//print_dist_map(&info, fd);
+			//write(fd, "-----\n", 6);
 			list = parse_distance_list(&info);
 			//print_dist_list(list, fd);
 			sort_distance_list(list);
