@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/13 20:03:31 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/14 16:34:13 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void calculate_relative_dist(t_info *info)
 			else if (info->map[coord.y][coord.x] == -1)
 			{
 				if (check_if_nearby_free(info, coord))
-					info->distance_map[coord.y][coord.x] = 1;
+					info->distance_map[coord.y][coord.x] = min_distance(info, coord);
 			}
 			coord.x++;
 		}
