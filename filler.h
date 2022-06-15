@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 15:41:08 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 22:21:48 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ typedef struct		s_info
 
 typedef struct		s_maps
 {
-	t_coord			coord;
 	int				pos;
 	unsigned int	dist;
+	int				skip;
 }					t_maps;
 
 t_distance *parse_distance_list(t_info *info, t_maps **maps);

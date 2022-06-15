@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 16:33:57 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 22:20:42 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ int main(void)
 	list = NULL;
 	maps = NULL;
 	init_filler(&info);
-	fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
+	fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -263,8 +263,8 @@ int main(void)
 				}
 			
 			parse_map(&info, maps, fd);
-			//print_map(&info, maps, fd);
-			//write(fd, "\n", 1);
+			print_map(&info, maps, fd);
+			write(fd, "\n", 1);
 			//write(fd, "dist before: ", 13);
 			//ft_putnbr_fd(maps[8][2].dist, fd);
 			//write(fd, "\n", 1);
@@ -277,8 +277,8 @@ int main(void)
 			
 			//calculate_relative_dist(&info);
 			//write(fd, "\n\n", 2);
-			//print_dist_map(&info, maps, fd);
-			//write(fd, "-----\n", 6);
+			print_dist_map(&info, maps, fd);
+			write(fd, "-----\n", 6);
 			list = parse_distance_list(&info, maps);
 			//write(fd, "dist before: ", 13);
 			//print_dist_list(list, fd);

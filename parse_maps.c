@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:08:28 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 16:32:09 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 22:22:14 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,9 @@ t_maps	**init_maps(t_maps **maps, int row_size, int col_size, int fd)
 		j = 0;
 		while (j < col_size)
 		{
-			maps[i][j].coord.x = j;
-			maps[i][j].coord.y = i;
 			maps[i][j].pos = 0;
 			maps[i][j].dist = 0;
+			maps[i][j].skip = FALSE;
 			j++;
 		}
 		i++;
