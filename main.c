@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/13 16:47:18 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 09:56:48 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,6 @@ unsigned int	ft_abs(int nb)
 	return (nb);
 }
 
-/*unsigned int	get_max(unsigned int nb1, unsigned int nb2)
-{
-	if (nb1 > nb2)
-		return (nb1);
-	return (nb2);
-}*/
-
 void	init_filler(t_info *info)
 {
 	info->piece_row = 0;
@@ -35,10 +28,6 @@ void	init_filler(t_info *info)
 	info->map_row = 0;
 	info->map_col = 0;
 	info->player_nb = 0;
-	info->playable_pos = 0;
-	info->distance_map = NULL;
-	info->map = NULL;
-	info->piece = NULL;
 }
 
 void	get_player_nb(t_info *info, char *line)
@@ -82,60 +71,36 @@ void	get_map_size(t_info *info, char *line)
 	}
 }
 
-int	**malloc_map(t_info *info)
-{
-	int	i;
-	int	j;
-	int **map;
-
-	map = (int **)malloc(sizeof(int *) * info->map_row);
-	if (!map)
-		return (NULL);
-	i = 0;
-	while (i < info->map_row)
-	{
-		map[i] = (int *)malloc(sizeof(int) * info->map_col);
-		if (!map[i])
-			return (NULL);
-		j = 0;
-		while (j < info->map_col)
-		{
-			map[i][j] = 0;
-			j++;
-		}
-		i++;
-	}
-	return (map);
-}
-
 void	parse_map(t_info *info)
 {
-	int		i;
-	int		j;
+	int		row;
+	int		col;
 	char	*line;
 	char	*start;
 
-	if (!info->map)
-		info->map = malloc_map(info);
-	i = 0;
-	while (i < info->map_row)
+	info->map = (int **)malloc(sizeof(int *) * info->map_row);
+	row = 0;
+	while (row < info->map_row)
 	{
 		get_next_line(0, &line);
 		start = ft_strchr(line, ' ') + 1;
-		j = 0;
-		while (j < info->map_col)
+		info->map[row] = (int *)malloc(sizeof(int) * info->map_col);
+		col = 0;
+		while (col < info->map_col)
 		{
-			if (start[j] == info->foe && info->map[i][j] != -2)
-				info->map[i][j] = -2;
-			else if (start[j] == info->me && info->map[i][j] != -1)
-				info->map[i][j] = -1;
-			j++;
+			if (start[col] == info->foe)
+				info->map[row][col] = -2;
+			else if (start[col] == info->me)
+				info->map[row][col] = -1;
+			else
+				info->map[row][col] = 0;
+			col++;
 		}
-		i++;
+		row++;
 	}
 }
 
-int	calc_rel_distance(t_info *info, t_coord coord)
+int	min_distance(t_info *info, t_coord coord)
 {
 	int				row;
 	int				col;
@@ -162,22 +127,49 @@ int	calc_rel_distance(t_info *info, t_coord coord)
 	return (min_dist);
 }
 
-void get_distance_map(t_info *info)
+int	check_if_nearby_free(t_info *info, t_coord coord)
+{
+	int i;
+	int j;
+
+	i = -1;
+	while (i < 2)
+	{
+		j = -1;
+		while (j < 2)
+		{
+			if (coord.x + j > 0 && coord.x + j < info->map_col &&
+			coord.y + i > 0 && coord.y + i < info->map_row)
+			{
+				if (info->map[coord.y + i][coord.x + j] == 0)
+					return (TRUE);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (FALSE);
+}
+
+void calculate_relative_dist(t_info *info)
 {
 	t_coord	coord;
 
-	if (!info->distance_map)
-		info->distance_map = malloc_map(info);
+	info->distance_map = (int **)malloc(sizeof(int *) * info->map_row);
 	coord.y = 0;
 	while (coord.y < info->map_row)
 	{
 		coord.x = 0;
+		info->distance_map[coord.y] = (int *)malloc(sizeof(int) * info->map_col);
 		while (coord.x < info->map_col)
 		{
-			if (info->map[coord.y][coord.x] == -2)
-				info->distance_map[coord.y][coord.x] = 0;
-			else if (info->map[coord.y][coord.x] == 0 || info->map[coord.y][coord.x] == -1 )
-				info->distance_map[coord.y][coord.x] = calc_rel_distance(info, coord);
+			if (info->map[coord.y][coord.x] == 0)
+				info->distance_map[coord.y][coord.x] = min_distance(info, coord);
+			else if (info->map[coord.y][coord.x] == -1)
+			{
+				if (check_if_nearby_free(info, coord))
+					info->distance_map[coord.y][coord.x] = min_distance(info, coord);
+			}
 			coord.x++;
 		}
 		coord.y++;
@@ -247,29 +239,16 @@ void print_dist_map(t_info *info, int fd)
 	}
 }
 
-void	free_distance_map(int **map, int index)
-{
-	int i;
-	
-	i = 0;
-	while (i < index)
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
-}
-
 int main(void)
 {
-	t_info		info;
-	t_distance	*list;
-	char		*line;
-	int fd;
+	t_info info;
+	t_distance *list;
+	char	*line;
+	//int fd;
 	
 	list = NULL;
 	init_filler(&info);
-	fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
+	//fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -281,18 +260,14 @@ int main(void)
 		if (ft_strstr(line, "0123456789"))
 		{
 			parse_map(&info);
-			print_map(&info, fd);
-			get_distance_map(&info);
-			write(fd, "\n", 1);
-			print_dist_map(&info, fd);
-			write(fd, "\n\n", 2);
-			if (!list)
-				list = init_dist_list(&info);
-			parse_distance_list(&info, list);
-			//write(fd, "debug\n", 6);
-			find_playable_pos(&info);
-			//print_dist_list(list, info.playable_pos, fd);
-			sort_distance_list(list, info.playable_pos);
+			//print_map(&info, fd);
+			calculate_relative_dist(&info);
+			//write(fd, "\n\n", 2);
+			//print_dist_map(&info, fd);
+			//write(fd, "-----\n", 6);
+			list = parse_distance_list(&info);
+			//print_dist_list(list, fd);
+			sort_distance_list(list);
 			//write(fd, "sorted: \n", 9);
 			//print_dist_list(list, fd);
 		}
@@ -300,10 +275,9 @@ int main(void)
 		{
 			get_piece_size(&info, line);
 			parse_piece(&info);
-			//write(fd, "debug\n", 6);
 			put_piece(&info, list);
 		}
 	}
-	free_dist_list(&list);
+	free_distance_list(list);
 	return (0);
 }

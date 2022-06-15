@@ -6,18 +6,20 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/13 17:01:12 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 09:58:02 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 #include <stdio.h> //DELETE
 
-void	find_playable_pos(t_info *info)
+static unsigned int	find_list_size(t_info *info)
 {
 	int	row;
 	int	col;
+	unsigned int	size;
 
+	size = 0;
 	row = 0;
 	while (row < info->map_row)
 	{
@@ -25,38 +27,30 @@ void	find_playable_pos(t_info *info)
 		while (col < info->map_col)
 		{
 			if (info->map[row][col] != -2)
-				info->playable_pos++;
+				size++;
 			col++;
 		}
 		row++;
 	}
+	return (size);
 }
 
-t_distance	*init_dist_list(t_info *info)
-{
-	int			i;
-	t_distance	*list;
-
-	list = (t_distance *)malloc(sizeof(*list) * info->map_col * info->map_row);
-	if (!list)
-		return (NULL);
-	i = 0;
-	while (i < info->map_col * info->map_row)
-	{
-		list[i].coord.x = 0;
-		list[i].coord.y = 0;
-		list[i].dist = info->map_col + info->map_row; //max dist olaack sekilde ayarliyorum ki sort ederken fazladan islem olmasin
-		i++;
-	}
-	return (list);
-}
-
-void parse_distance_list(t_info *info, t_distance *list)
+t_distance *parse_distance_list(t_info *info)
 {
 	int				row;
 	int				col;
 	unsigned int	i;
-	//write(fd, "parse debug\n", 12);
+	unsigned int	size;
+	t_distance		*list;
+
+	size = find_list_size(info);
+	list = (t_distance *)malloc(sizeof(*list) * size);
+	i = 0;
+	while (i < size)
+	{
+		list[i].size = size;
+		i++;
+	}
 	row = 0;
 	i = 0;
 	while (row < info->map_row)
@@ -75,19 +69,20 @@ void parse_distance_list(t_info *info, t_distance *list)
 		}
 		row++;
 	}
+	return (list);
 }
 
-void	sort_distance_list(t_distance *list, unsigned int size)
+void	sort_distance_list(t_distance *list)
 {
 	unsigned int	i;
 	unsigned int	j;
 	t_distance		temp;
 	
 	i = 0;
-	while (i < size - 1)
+	while (i < list[i].size - 1)
 	{
 		j = 0;
-		while (j < size - i - 1)
+		while (j < list[i].size - i - 1)
 		{
 			if (list[j].dist > list[j + 1].dist)
 			{
@@ -101,21 +96,18 @@ void	sort_distance_list(t_distance *list, unsigned int size)
 	}	
 }
 
-void	free_dist_list(t_distance **list)
+void	free_distance_list(t_distance *list)
 {
-	if (*list && list)
-	{
-		free(*list);
-		list = NULL;
-	}
+	free(list);
+	list = NULL;
 }
 
-void print_dist_list(t_distance *list, unsigned int size, int fd)
+void print_dist_list(t_distance *list, int fd)
 {
 	unsigned int i;
 
 	i = 0;
-	while (i < size)
+	while (i < list[i].size)
 	{
 		write(fd, "x: ", 3);
 		ft_putnbr_fd(list[i].coord.x, fd);
@@ -141,6 +133,18 @@ static int	is_placeable(t_info *info, t_coord coord)
 	//write(fd, "debug1\n", 7);
 	if (coord.y + info->piece_row > info->map_row || coord.x + info->piece_col > info->map_col)
 		return (FALSE);
+	/*ft_putnbr_fd(info->piece_row, fd);
+	write(fd, " ", 1);
+	ft_putnbr_fd(info->piece_col, fd);
+	write(fd, "\n", 1);
+	ft_putnbr_fd(info->map_row, fd);
+	write(fd, " ", 1);
+	ft_putnbr_fd(info->map_col, fd);
+	write(fd, "\n", 1);
+	ft_putnbr_fd(coord.y, fd);
+	write(fd, " ", 1);
+	ft_putnbr_fd(coord.x, fd);
+	write(fd, "\n", 1);*/
 	row = 0;
 	while (row < info->piece_row)
 	{
@@ -149,12 +153,8 @@ static int	is_placeable(t_info *info, t_coord coord)
 		while (col < info->piece_col)
 		{
 			//write(fd, "debug2\n", 7);
-			if (info->map[coord.y + row][coord.x + col] == -2)
+			if (info->map[coord.y + row][coord.x + col] == -2 && info->piece[row][col] == '*')
 				return (FALSE);
-			/*
-			buraya bir if kosulu daha gelse. mesela -1 ya 0 olan pozisyonun cevresinde bosluk var mi diye kontrol eden
-
-			*/
 			else if (info->map[coord.y + row][coord.x + col] == -1 && info->piece[row][col] == '*')
 			{
 				if (found)
@@ -176,7 +176,7 @@ void	put_piece(t_info *info, t_distance *list)
 	if (!list)
 		return ;
 	i = 0;
-	while (i < info->playable_pos)
+	while (i < list[i].size)
 	{
 		/*ft_putnbr_fd(list[i].coord.y, fd);
 		write(fd, " ", 1);
@@ -195,3 +195,4 @@ void	put_piece(t_info *info, t_distance *list)
 	}
 	write(1, "0 0\n", 4);
 }
+
