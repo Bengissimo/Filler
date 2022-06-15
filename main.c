@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 22:20:42 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 22:29:27 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,7 @@ void print_dist_map(t_info *info, t_maps **maps, int fd)
 	{
 		for (int j = 0; j < info->map_col; j++)
 		{
-			ft_putnbr_fd(maps[i][j].dist, fd);
+			ft_putnbr_fd(maps[i][j].skip, fd);
 			if (maps[i][j].dist >= 0 && maps[i][j].dist <= 9)
 				write(fd, "   ", 3);
 			else
@@ -271,6 +271,7 @@ int main(void)
 			//write(fd, "pos: ", 5);
 			//ft_putnbr_fd(maps[8][2].pos, fd);
 			//write(fd, "\n", 1);
+			set_skip(maps, &info);
 			set_dist(&info, maps);
 			//write(fd, "dist before: ", 13);
 			//parse_map(&info);

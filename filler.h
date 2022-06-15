@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 22:21:48 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 22:29:18 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ int	min_distance(t_info *info, t_maps **maps, t_coord coord);
 int	check_if_nearby_free(t_info *info, t_maps **maps, t_coord coord);
 void set_dist(t_info *info, t_maps **maps);
 void	put_piece(t_info *info, t_distance *list, t_maps **maps);
+
+void	set_skip(t_maps **maps, t_info *info);
+
 
 
 

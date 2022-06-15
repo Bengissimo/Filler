@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:08:28 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 22:22:14 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 22:29:56 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,24 @@ int	check_if_nearby_free(t_info *info, t_maps **maps, t_coord coord)
 		i++;
 	}
 	return (FALSE);
+}
+
+void	set_skip(t_maps **maps, t_info *info)
+{
+	t_coord coord;
+
+	coord.y = 0;
+	while(coord.y < info->map_row)
+	{
+		coord.x = 0;
+		while (coord.x < info->map_col)
+		{
+			if (!check_if_nearby_free(info, maps, coord))
+				maps[coord.y][coord.x].skip = TRUE;
+			coord.x++;
+		}
+		coord.y++;
+	}	
 }
 
 void set_dist(t_info *info, t_maps **maps)
