@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 10:04:09 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 16:01:57 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,7 @@
 #include <fcntl.h>
 #include <stdio.h> //DELETE LATER
 
-unsigned int	ft_abs(int nb)
-{
-	if (nb < 0)
-		nb = -nb;
-	return (nb);
-}
+
 
 void	init_filler(t_info *info)
 {
@@ -71,7 +66,7 @@ void	get_map_size(t_info *info, char *line)
 	}
 }
 
-void	parse_map(t_info *info)
+/*void	parse_map(t_info *info)
 {
 	int		row;
 	int		col;
@@ -174,7 +169,7 @@ void calculate_relative_dist(t_info *info)
 		}
 		coord.y++;
 	}
-}
+}*/
 
 void get_piece_size(t_info *info, char *line)
 {
@@ -207,14 +202,14 @@ void parse_piece(t_info *info)
 }
 
 
-void print_map(t_info *info, int fd)
+void print_map(t_info *info, t_maps **maps, int fd)
 {
 	for (int i = 0; i < info->map_row; i++)
 	{
 		for (int j = 0; j < info->map_col; j++)
 		{
-			ft_putnbr_fd(info->map[i][j], fd);
-			if (info->map[i][j] >= 0 && info->map[i][j] <= 9)
+			ft_putnbr_fd(maps[i][j].pos, fd);
+			if (maps[i][j].pos >= 0 && maps[i][j].pos <= 9)
 				write(fd, "   ", 3);
 			else
 				write(fd, "  ", 2);
@@ -223,14 +218,14 @@ void print_map(t_info *info, int fd)
 	}
 }
 
-void print_dist_map(t_info *info, int fd)
+void print_dist_map(t_info *info, t_maps **maps, int fd)
 {
 	for (int i = 0; i < info->map_row; i++)
 	{
 		for (int j = 0; j < info->map_col; j++)
 		{
-			ft_putnbr_fd(info->distance_map[i][j], fd);
-			if (info->distance_map[i][j] >= 0 && info->distance_map[i][j] <= 9)
+			ft_putnbr_fd(maps[i][j].dist, fd);
+			if (maps[i][j].dist >= 0 && maps[i][j].dist <= 9)
 				write(fd, "   ", 3);
 			else
 				write(fd, "  ", 2);
@@ -243,12 +238,14 @@ int main(void)
 {
 	t_info info;
 	t_distance *list;
+	t_maps **maps;
 	char	*line;
-	//int fd;
+	int fd;
 	
 	list = NULL;
+	maps = NULL;
 	init_filler(&info);
-	//fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
+	fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -259,15 +256,33 @@ int main(void)
 			get_map_size(&info, line);
 		if (ft_strstr(line, "0123456789"))
 		{
-			parse_map(&info);
-			//print_map(&info, fd);
-			calculate_relative_dist(&info);
+			if (maps == NULL && info.map_row > 0 && info.map_col > 0){
+				maps = init_maps(maps, info.map_row, info.map_col, fd);
+				print_map(&info, maps, fd);
+				write(fd, "-----\n", 6);}
+			
+			parse_map(&info, maps, fd);
+			print_map(&info, maps, fd);
+			write(fd, "\n", 1);
+			//write(fd, "dist before: ", 13);
+			//ft_putnbr_fd(maps[8][2].dist, fd);
+			//write(fd, "\n", 1);
+			//write(fd, "pos: ", 5);
+			//ft_putnbr_fd(maps[8][2].pos, fd);
+			//write(fd, "\n", 1);
+			set_dist(&info, maps);
+			//write(fd, "dist before: ", 13);
+			//parse_map(&info);
+			
+			//calculate_relative_dist(&info);
 			//write(fd, "\n\n", 2);
-			//print_dist_map(&info, fd);
-			//write(fd, "-----\n", 6);
-			list = parse_distance_list(&info);
+			print_dist_map(&info, maps, fd);
+			write(fd, "-----\n", 6);
+			list = parse_distance_list(&info, maps);
+			//write(fd, "dist before: ", 13);
 			//print_dist_list(list, fd);
 			sort_distance_list(list);
+			//write(fd, "dist before: ", 13);
 			//write(fd, "sorted: \n", 9);
 			//print_dist_list(list, fd);
 		}
@@ -275,7 +290,7 @@ int main(void)
 		{
 			get_piece_size(&info, line);
 			parse_piece(&info);
-			put_piece(&info, list);
+			put_piece(&info, list ,maps);
 		}
 	}
 	free_distance_list(list);

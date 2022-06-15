@@ -6,14 +6,14 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 10:04:13 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 14:23:53 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 #include <stdio.h> //DELETE
 
-static unsigned int	find_list_size(t_info *info)
+static unsigned int	find_list_size(t_info *info, t_maps **maps)
 {
 	int	row;
 	int	col;
@@ -26,7 +26,7 @@ static unsigned int	find_list_size(t_info *info)
 		col = 0;
 		while (col < info->map_col)
 		{
-			if (info->map[row][col] != -2)
+			if (maps[row][col].pos != -2)
 				size++;
 			col++;
 		}
@@ -35,7 +35,7 @@ static unsigned int	find_list_size(t_info *info)
 	return (size);
 }
 
-t_distance *parse_distance_list(t_info *info)
+t_distance *parse_distance_list(t_info *info, t_maps **maps)
 {
 	int				row;
 	int				col;
@@ -43,7 +43,7 @@ t_distance *parse_distance_list(t_info *info)
 	unsigned int	size;
 	t_distance		*list;
 
-	size = find_list_size(info);
+	size = find_list_size(info, maps);
 	list = (t_distance *)malloc(sizeof(*list) * size);
 	i = 0;
 	while (i < size)
@@ -58,9 +58,9 @@ t_distance *parse_distance_list(t_info *info)
 		col = 0;
 		while (col < info->map_col)
 		{
-			if (info->distance_map[row][col] > 0)
+			if (maps[row][col].dist > 0)
 			{
-				list[i].dist = info->distance_map[row][col];
+				list[i].dist = maps[row][col].dist;
 				list[i].coord.x = col;
 				list[i].coord.y = row;
 				i++;
@@ -123,7 +123,7 @@ void print_dist_list(t_distance *list, int fd)
 	}
 }
 
-static int	is_placeable(t_info *info, t_coord coord)
+static int	is_placeable(t_info *info, t_coord coord, t_maps **maps)
 {
 	int row;
 	int col;
@@ -153,9 +153,9 @@ static int	is_placeable(t_info *info, t_coord coord)
 		while (col < info->piece_col)
 		{
 			//write(fd, "debug2\n", 7);
-			if (info->map[coord.y + row][coord.x + col] == -2 && info->piece[row][col] == '*')
+			if (maps[coord.y + row][coord.x + col].pos == -2 && info->piece[row][col] == '*')
 				return (FALSE);
-			else if (info->map[coord.y + row][coord.x + col] == -1 && info->piece[row][col] == '*')
+			else if (maps[coord.y + row][coord.x + col].pos == -1 && info->piece[row][col] == '*')
 			{
 				if (found)
 					return (FALSE);
@@ -168,7 +168,7 @@ static int	is_placeable(t_info *info, t_coord coord)
 	return (found);
 }
 
-void	put_piece(t_info *info, t_distance *list)
+void	put_piece(t_info *info, t_distance *list, t_maps **maps)
 {
 	unsigned int	i;
 
@@ -182,7 +182,7 @@ void	put_piece(t_info *info, t_distance *list)
 		write(fd, " ", 1);
 		ft_putnbr_fd(list[i].coord.x, fd);
 		write(fd, "\n", 1);*/
-		if (is_placeable(info, list[i].coord))
+		if (is_placeable(info, list[i].coord, maps))
 		{
 			//write(fd, "test3\n", 6);
 			ft_putnbr(list[i].coord.y);
