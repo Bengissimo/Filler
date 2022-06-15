@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:08:28 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 22:29:56 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 22:53:21 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,14 +157,13 @@ void set_dist(t_info *info, t_maps **maps)
 		coord.x = 0;
 		while (coord.x < info->map_col)
 		{
-			if (maps[coord.y][coord.x].pos == 0)
-				maps[coord.y][coord.x].dist = min_distance(info, maps, coord);
-			else if (maps[coord.y][coord.x].pos == -1)
+			
+			if (maps[coord.y][coord.x].skip == FALSE)
 			{
-				if (check_if_nearby_free(info, maps, coord))
+				if (maps[coord.y][coord.x].pos == 0 || maps[coord.y][coord.x].pos == -1)
 					maps[coord.y][coord.x].dist = min_distance(info, maps, coord);
 			}
-			else
+			else if (maps[coord.y][coord.x].skip == TRUE || maps[coord.y][coord.x].pos == -2)
 				maps[coord.y][coord.x].dist = 0;
 			coord.x++;
 		}
