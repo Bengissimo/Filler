@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:08:28 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 16:11:30 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 20:24:34 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ void	parse_map(t_info *info, t_maps **maps, int fd)
 
 	fd = 0;
 	row = 0;
+	write(fd, "tes3\n", 5);
 	while (row < info->map_row)
 	{
-		
 		get_next_line(0, &line);
 		start = ft_strchr(line, ' ') + 1;
 		col = 0;
@@ -75,6 +75,7 @@ void	parse_map(t_info *info, t_maps **maps, int fd)
 		}
 		row++;
 	}
+	
 	//return (TRUE);
 }
 
@@ -139,7 +140,7 @@ void	set_skip(t_maps **maps, t_info *info)
 		coord.x = 0;
 		while (coord.x < info->map_col)
 		{
-			if (!check_if_nearby_free(info, maps, coord) || maps[coord.y][coord.x].pos == -2)
+			if (maps[coord.y][coord.x].skip == FALSE && (maps[coord.y][coord.x].pos == -2 || !check_if_nearby_free(info, maps, coord)))
 				maps[coord.y][coord.x].skip = TRUE;
 			coord.x++;
 		}
@@ -158,7 +159,7 @@ void set_dist(t_info *info, t_maps **maps)
 		while (coord.x < info->map_col)
 		{
 			
-			if (maps[coord.y][coord.x].skip == TRUE && maps[coord.y][coord.x].dist != 0)
+			if (maps[coord.y][coord.x].skip == TRUE)
 				maps[coord.y][coord.x].dist = 0;
 			else
 				maps[coord.y][coord.x].dist = min_distance(info, maps, coord);
