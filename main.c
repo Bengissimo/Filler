@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 22:56:01 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:18:57 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,6 +234,22 @@ void print_dist_map(t_info *info, t_maps **maps, int fd)
 	}
 }
 
+void print_skip_map(t_info *info, t_maps **maps, int fd)
+{
+	for (int i = 0; i < info->map_row; i++)
+	{
+		for (int j = 0; j < info->map_col; j++)
+		{
+			ft_putnbr_fd(maps[i][j].skip, fd);
+			if (maps[i][j].dist >= 0 && maps[i][j].dist <= 9)
+				write(fd, "   ", 3);
+			else
+				write(fd, "  ", 2);
+		}
+		write(fd, "\n", 1);
+	}
+}
+
 int main(void)
 {
 	t_info info;
@@ -245,7 +261,7 @@ int main(void)
 	list = NULL;
 	maps = NULL;
 	init_filler(&info);
-	fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
+	fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -263,8 +279,9 @@ int main(void)
 				}
 			
 			parse_map(&info, maps, fd);
-			//print_map(&info, maps, fd);
-			//write(fd, "\n", 1);
+			print_map(&info, maps, fd);
+			write(fd, "\n", 1);
+			
 			//write(fd, "dist before: ", 13);
 			//ft_putnbr_fd(maps[8][2].dist, fd);
 			//write(fd, "\n", 1);
@@ -272,14 +289,16 @@ int main(void)
 			//ft_putnbr_fd(maps[8][2].pos, fd);
 			//write(fd, "\n", 1);
 			set_skip(maps, &info);
+			print_skip_map(&info, maps, fd);
+			write(fd, "\n", 1);
 			set_dist(&info, maps);
 			//write(fd, "dist before: ", 13);
 			//parse_map(&info);
 			
 			//calculate_relative_dist(&info);
 			//write(fd, "\n\n", 2);
-			//print_dist_map(&info, maps, fd);
-			//write(fd, "-----\n", 6);
+			print_dist_map(&info, maps, fd);
+			write(fd, "-----\n", 6);
 			list = parse_distance_list(&info, maps);
 			//write(fd, "dist before: ", 13);
 			//print_dist_list(list, fd);

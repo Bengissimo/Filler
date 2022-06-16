@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:08:28 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 23:15:00 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:15:58 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	set_skip(t_maps **maps, t_info *info)
 		coord.x = 0;
 		while (coord.x < info->map_col)
 		{
-			if (!check_if_nearby_free(info, maps, coord) && maps[coord.y][coord.x].pos == -2)
+			if (!check_if_nearby_free(info, maps, coord) || maps[coord.y][coord.x].pos == -2)
 				maps[coord.y][coord.x].skip = TRUE;
 			coord.x++;
 		}
@@ -158,13 +158,10 @@ void set_dist(t_info *info, t_maps **maps)
 		while (coord.x < info->map_col)
 		{
 			
-			if (maps[coord.y][coord.x].skip == FALSE)
-			{
-				if (maps[coord.y][coord.x].pos == 0 || maps[coord.y][coord.x].pos == -1)
-					maps[coord.y][coord.x].dist = min_distance(info, maps, coord);
-			}
-			else if (maps[coord.y][coord.x].skip == TRUE || maps[coord.y][coord.x].pos == -2)
+			if (maps[coord.y][coord.x].skip == TRUE)
 				maps[coord.y][coord.x].dist = 0;
+			else
+				maps[coord.y][coord.x].dist = min_distance(info, maps, coord);
 			coord.x++;
 		}
 		coord.y++;
