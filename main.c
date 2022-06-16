@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 14:50:18 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 16:22:22 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,12 +272,8 @@ int main(void)
 			get_map_size(&info, line);
 		if (ft_strstr(line, "0123456789"))
 		{
-			if (maps == NULL && info.map_row > 0 && info.map_col > 0){
+			if (maps == NULL && info.map_row > 0 && info.map_col > 0)
 				maps = init_maps(maps, info.map_row, info.map_col, fd);
-				//print_map(&info, maps, fd);
-				//write(fd, "-----\n", 6);
-				}
-			
 			parse_map(&info, maps, fd);
 			print_map(&info, maps, fd);
 			write(fd, "\n", 1);
@@ -295,13 +291,13 @@ int main(void)
 			
 			//calculate_relative_dist(&info);
 			//write(fd, "\n\n", 2);
-			print_dist_map(&info, maps, fd);
-			write(fd, "-----\n", 6);
+			//print_dist_map(&info, maps, fd);
+			//write(fd, "-----\n", 6);
 			if (!list)
-				list = init_list(list, &info, maps);
+				list = init_list(list, &info, maps, fd);
 			parse_distance_list(list, &info, maps);
-			print_dist_list(list, fd, &info, maps);
-			write(fd, "-----\n", 6);
+			//print_dist_list(list, fd, &info, maps);
+			//write(fd, "-----\n", 6);
 			//write(fd, "dist before: ", 13);
 			//print_dist_list(list, fd);
 			sort_distance_list(list, &info, maps);

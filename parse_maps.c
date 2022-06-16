@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:08:28 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 14:15:58 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 16:11:30 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void set_dist(t_info *info, t_maps **maps)
 		while (coord.x < info->map_col)
 		{
 			
-			if (maps[coord.y][coord.x].skip == TRUE)
+			if (maps[coord.y][coord.x].skip == TRUE && maps[coord.y][coord.x].dist != 0)
 				maps[coord.y][coord.x].dist = 0;
 			else
 				maps[coord.y][coord.x].dist = min_distance(info, maps, coord);

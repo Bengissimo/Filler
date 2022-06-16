@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 14:49:28 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 16:21:57 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	put_piece(t_info *info, t_distance *list, t_maps **maps);
 
 void	set_skip(t_maps **maps, t_info *info);
 
-t_distance	*init_list(t_distance *list, t_info *info, t_maps **maps);
+t_distance	*init_list(t_distance *list, t_info *info, t_maps **maps, int fd);
 
 
 

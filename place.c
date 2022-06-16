@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 14:53:34 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 16:21:49 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ static unsigned int	find_list_size(t_info *info, t_maps **maps)
 	return (size);
 }
 
-t_distance	*init_list(t_distance *list, t_info *info, t_maps **maps)
+t_distance	*init_list(t_distance *list, t_info *info, t_maps **maps, int fd)
 {
 	unsigned int	size;
 	unsigned int	i;
 
 	size = find_list_size(info, maps);
+	ft_putnbr_fd(size, fd);
+	write(fd, "\n", 1);
 	list = (t_distance *)malloc(sizeof(*list) * size);
 	if (!list)
 		return (NULL);
@@ -142,21 +144,8 @@ static int	is_placeable(t_info *info, t_coord coord, t_maps **maps)
 	int found;
 
 	found = FALSE;
-	//write(fd, "debug1\n", 7);
 	if (coord.y + info->piece_row > info->map_row || coord.x + info->piece_col > info->map_col)
 		return (FALSE);
-	/*ft_putnbr_fd(info->piece_row, fd);
-	write(fd, " ", 1);
-	ft_putnbr_fd(info->piece_col, fd);
-	write(fd, "\n", 1);
-	ft_putnbr_fd(info->map_row, fd);
-	write(fd, " ", 1);
-	ft_putnbr_fd(info->map_col, fd);
-	write(fd, "\n", 1);
-	ft_putnbr_fd(coord.y, fd);
-	write(fd, " ", 1);
-	ft_putnbr_fd(coord.x, fd);
-	write(fd, "\n", 1);*/
 	row = 0;
 	while (row < info->piece_row)
 	{
@@ -164,10 +153,7 @@ static int	is_placeable(t_info *info, t_coord coord, t_maps **maps)
 		
 		while (col < info->piece_col)
 		{
-			//write(fd, "debug2\n", 7);
-			if (maps[row][col].skip == TRUE)
-				return (FALSE);
-			else if (maps[coord.y + row][coord.x + col].pos == -1 && info->piece[row][col] == '*')
+			if (maps[coord.y + row][coord.x + col].skip == FALSE && maps[coord.y + row][coord.x + col].pos == -1 && info->piece[row][col] == '*')
 			{
 				if (found)
 					return (FALSE);
