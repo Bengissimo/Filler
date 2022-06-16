@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 14:18:57 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:44:08 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,8 +289,6 @@ int main(void)
 			//ft_putnbr_fd(maps[8][2].pos, fd);
 			//write(fd, "\n", 1);
 			set_skip(maps, &info);
-			print_skip_map(&info, maps, fd);
-			write(fd, "\n", 1);
 			set_dist(&info, maps);
 			//write(fd, "dist before: ", 13);
 			//parse_map(&info);
@@ -299,10 +297,12 @@ int main(void)
 			//write(fd, "\n\n", 2);
 			print_dist_map(&info, maps, fd);
 			write(fd, "-----\n", 6);
+			if (!list)
+				list = init_list(list, &info, maps);
 			list = parse_distance_list(&info, maps);
 			//write(fd, "dist before: ", 13);
 			//print_dist_list(list, fd);
-			sort_distance_list(list);
+			sort_distance_list(list, &info, maps);
 			//write(fd, "dist before: ", 13);
 			//write(fd, "sorted: \n", 9);
 			//print_dist_list(list, fd);

@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 22:29:18 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:38:03 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef	struct		s_distance
 {
 	t_coord			coord;
 	unsigned int	dist;
-	unsigned int	size;
 }					t_distance;
 
 typedef struct		s_info
@@ -53,8 +52,8 @@ typedef struct		s_maps
 }					t_maps;
 
 t_distance *parse_distance_list(t_info *info, t_maps **maps);
-void	sort_distance_list(t_distance *list);
-void	print_dist_list(t_distance *list, int fd);
+void	sort_distance_list(t_distance *list, t_info *info, t_maps **maps);
+void print_dist_list(t_distance *list, int fd, t_info *info, t_maps **maps); //del
 //void	put_piece(t_info *info, t_distance *list);
 void	free_distance_list(t_distance *list);
 
@@ -67,6 +66,7 @@ void	put_piece(t_info *info, t_distance *list, t_maps **maps);
 
 void	set_skip(t_maps **maps, t_info *info);
 
+t_distance	*init_list(t_distance *list, t_info *info, t_maps **maps);
 
 
 

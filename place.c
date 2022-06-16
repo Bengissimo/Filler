@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 23:10:41 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:40:14 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,25 @@ static unsigned int	find_list_size(t_info *info, t_maps **maps)
 	return (size);
 }
 
+t_distance	*init_list(t_distance *list, t_info *info, t_maps **maps)
+{
+	unsigned int	size;
+	unsigned int	i;
+
+	size = find_list_size(info, maps);
+	list = (t_distance *)malloc(sizeof(*list) * size);
+	if (!list)
+		return (NULL);
+	i = 0;
+	while (i < size)
+	{
+		list[i].dist = info->map_col + info->map_row; //this should be the max value, to make sorting easier
+		i++;
+	}
+	return (list);
+}
+
+
 t_distance *parse_distance_list(t_info *info, t_maps **maps)
 {
 	int				row;
@@ -48,7 +67,7 @@ t_distance *parse_distance_list(t_info *info, t_maps **maps)
 	i = 0;
 	while (i < size)
 	{
-		list[i].size = size;
+		list[i].dist = size;
 		i++;
 	}
 	row = 0;
@@ -72,17 +91,19 @@ t_distance *parse_distance_list(t_info *info, t_maps **maps)
 	return (list);
 }
 
-void	sort_distance_list(t_distance *list)
+void	sort_distance_list(t_distance *list, t_info *info, t_maps **maps)
 {
 	unsigned int	i;
 	unsigned int	j;
 	t_distance		temp;
+	unsigned int	size;
 	
 	i = 0;
-	while (i < list[i].size - 1)
+	size = find_list_size(info, maps);
+	while (i < size - 1)
 	{
 		j = 0;
-		while (j < list[i].size - i - 1)
+		while (j < size - i - 1)
 		{
 			if (list[j].dist > list[j + 1].dist)
 			{
@@ -102,22 +123,23 @@ void	free_distance_list(t_distance *list)
 	list = NULL;
 }
 
-void print_dist_list(t_distance *list, int fd)
+void print_dist_list(t_distance *list, int fd, t_info *info, t_maps **maps)
 {
 	unsigned int i;
+	unsigned int	size;
+	size = find_list_size(info, maps);
 
 	i = 0;
-	while (i < list[i].size)
+	while (i < size)
 	{
 		write(fd, "x: ", 3);
 		ft_putnbr_fd(list[i].coord.x, fd);
-		write(fd, "\n", 1);
+		write(fd, " ", 1);
 		write(fd, "y: ", 3);
 		ft_putnbr_fd(list[i].coord.y, fd);
-		write(fd, "\n", 1);
+		write(fd, " ", 1);
 		write(fd, "dist: ", 6);
 		ft_putnbr_fd(list[i].dist, fd);
-		write(fd, "\n", 1);
 		write(fd, "\n", 1);
 		i++;
 	}
@@ -173,12 +195,15 @@ static int	is_placeable(t_info *info, t_coord coord, t_maps **maps)
 void	put_piece(t_info *info, t_distance *list, t_maps **maps)
 {
 	unsigned int	i;
+	unsigned int	size;
+
+	size = find_list_size(info, maps);
 
 	//write(fd, "test\n", 5);
 	if (!list)
 		return ;
 	i = 0;
-	while (i < list[i].size)
+	while (i < size)
 	{
 		/*ft_putnbr_fd(list[i].coord.y, fd);
 		write(fd, " ", 1);
