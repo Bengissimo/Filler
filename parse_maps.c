@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:08:28 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 22:53:21 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 23:15:00 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	set_skip(t_maps **maps, t_info *info)
 		coord.x = 0;
 		while (coord.x < info->map_col)
 		{
-			if (!check_if_nearby_free(info, maps, coord))
+			if (!check_if_nearby_free(info, maps, coord) && maps[coord.y][coord.x].pos == -2)
 				maps[coord.y][coord.x].skip = TRUE;
 			coord.x++;
 		}

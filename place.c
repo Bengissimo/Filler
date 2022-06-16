@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 14:23:53 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/15 23:10:41 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static unsigned int	find_list_size(t_info *info, t_maps **maps)
 		col = 0;
 		while (col < info->map_col)
 		{
-			if (maps[row][col].pos != -2)
+			if (maps[row][col].dist > 0)
 				size++;
 			col++;
 		}
@@ -153,7 +153,9 @@ static int	is_placeable(t_info *info, t_coord coord, t_maps **maps)
 		while (col < info->piece_col)
 		{
 			//write(fd, "debug2\n", 7);
-			if (maps[coord.y + row][coord.x + col].pos == -2 && info->piece[row][col] == '*')
+			if (maps[row][col].skip == TRUE)
+				return (FALSE);
+			else if (maps[coord.y + row][coord.x + col].pos == -2 && info->piece[row][col] == '*')
 				return (FALSE);
 			else if (maps[coord.y + row][coord.x + col].pos == -1 && info->piece[row][col] == '*')
 			{
