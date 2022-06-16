@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 20:53:42 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 22:00:29 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct		s_maps
 	int				skip;
 }					t_maps;
 
-void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps, int fd);
+void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps);
 void	sort_distance_list(t_distance *list, t_info *info, t_maps **maps);
 void print_dist_list(t_distance *list, int fd, t_info *info, t_maps **maps); //del
 //void	put_piece(t_info *info, t_distance *list);
@@ -62,11 +62,11 @@ void	parse_map(t_info *info, t_maps **maps, int fd);
 int	min_distance(t_info *info, t_maps **maps, t_coord coord);
 int	check_if_nearby_free(t_info *info, t_maps **maps, t_coord coord);
 void set_dist(t_info *info, t_maps **maps);
-void	put_piece(t_info *info, t_distance *list, t_maps **maps, int fd);
+void	put_piece(t_info *info, t_distance *list, t_maps **maps);
 
 void	set_skip(t_maps **maps, t_info *info);
 
-t_distance	*init_list(t_info *info, t_maps **maps, int fd);
+t_distance	*init_list(t_info *info, t_maps **maps);
 
 
 

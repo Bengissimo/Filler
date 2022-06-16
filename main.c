@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 21:02:46 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 22:00:14 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,26 +265,19 @@ int main(void)
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
-		{
-			write(fd, "debug gnl\n", 10);
 			return (1);
-		}
 		if (info.player_nb == 0)
 			get_player_nb(&info, line);
 		if (info.map_row == 0 && info.map_col == 0)
 			get_map_size(&info, line);
 		if (ft_strstr(line, "0123456789"))
 		{
-			write(fd, "debug1\n", 7);
 			if (maps == NULL && info.map_row > 0 && info.map_col > 0)
-			{
 				maps = init_maps(maps, info.map_row, info.map_col, fd);
-				write(fd, "debug2\n", 7);
-			}
-			write(fd, "debug3\n", 7);
 			parse_map(&info, maps, fd);
-			print_map(&info, maps, fd);
-			write(fd, "\n", 1);
+			
+			//print_map(&info, maps, fd);
+			//write(fd, "\n", 1);
 			
 			//write(fd, "dist before: ", 13);
 			//ft_putnbr_fd(maps[8][2].dist, fd);
@@ -302,8 +295,8 @@ int main(void)
 			//print_dist_map(&info, maps, fd);
 			//write(fd, "-----\n", 6);
 			if (!list)
-				list = init_list(&info, maps, fd);
-			parse_distance_list(list, &info, maps, fd);
+				list = init_list(&info, maps);
+			parse_distance_list(list, &info, maps);
 			//print_dist_list(list, fd, &info, maps);
 			//write(fd, "-----\n", 6);
 			//write(fd, "dist before: ", 13);
@@ -318,7 +311,7 @@ int main(void)
 		{
 			get_piece_size(&info, line);
 			parse_piece(&info);
-			put_piece(&info, list ,maps, fd);
+			put_piece(&info, list ,maps);
 		}
 	}
 	free_distance_list(list);

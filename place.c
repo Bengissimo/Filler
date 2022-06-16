@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 21:49:17 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 22:01:24 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,19 @@ static unsigned int	find_list_size(t_info *info, t_maps **maps)
 	return (size);
 }
 
-t_distance	*init_list(t_info *info, t_maps **maps, int fd)
+t_distance	*init_list(t_info *info, t_maps **maps)
 {
 	unsigned int	size;
 	unsigned int	i;
 	t_distance *list;
 
 	size = find_list_size(info, maps);
-	write(fd, "initlist\n", 9);
+	//write(fd, "initlist\n", 9);
 	//ft_putnbr_fd(size, fd);
 	//write(fd, "\n", 1);
 	list = (t_distance *)malloc(sizeof(t_distance) * size);
 	if (!list)
-	{
-		write(fd, "listnull\n", 9);
 		return (NULL);
-	}
 	i = 0;
 	while (i < size)
 	{
@@ -61,7 +58,7 @@ t_distance	*init_list(t_info *info, t_maps **maps, int fd)
 }
 
 
-void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps, int fd)
+void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps)
 {
 	int				row;
 	int				col;
@@ -86,8 +83,6 @@ void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps, int fd)
 		}
 		row++;
 	}
-	ft_putnbr_fd(i, fd);
-	write(fd, "\n", 1);
 }
 
 void	sort_distance_list(t_distance *list, t_info *info, t_maps **maps)
@@ -176,7 +171,7 @@ static int	is_placeable(t_info *info, t_coord coord, t_maps **maps)
 	return (found);
 }
 
-void	put_piece(t_info *info, t_distance *list, t_maps **maps, int fd)
+void	put_piece(t_info *info, t_distance *list, t_maps **maps)
 {
 	unsigned int	i;
 	unsigned int	size;
@@ -195,18 +190,18 @@ void	put_piece(t_info *info, t_distance *list, t_maps **maps, int fd)
 		{
 			//write(fd, "test3\n", 6);
 			ft_putnbr(list[i].coord.y);
-			ft_putnbr_fd(list[i].coord.y ,fd);
+			//ft_putnbr_fd(list[i].coord.y ,fd);
 			write(1, " ", 1);
-			write(fd, " ", 1);
+			//write(fd, " ", 1);
 			ft_putnbr(list[i].coord.x);
-			ft_putnbr_fd(list[i].coord.x ,fd);
-			write(fd, "\n", 1);
+			//ft_putnbr_fd(list[i].coord.x ,fd);
+			//write(fd, "\n", 1);
 			write(1, "\n", 1);
 			return ;
 		}
 		i++;
 	}
-	write(fd, "0 0\n", 4);
+	//write(fd, "0 0\n", 4);
 	write(1, "0 0\n", 4);
 }
 
