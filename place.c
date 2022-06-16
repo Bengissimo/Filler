@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 14:40:14 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:53:34 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,13 @@ t_distance	*init_list(t_distance *list, t_info *info, t_maps **maps)
 }
 
 
-t_distance *parse_distance_list(t_info *info, t_maps **maps)
+void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps)
 {
 	int				row;
 	int				col;
 	unsigned int	i;
-	unsigned int	size;
-	t_distance		*list;
+	//buraya list  size eklemeyi dusun
 
-	size = find_list_size(info, maps);
-	list = (t_distance *)malloc(sizeof(*list) * size);
-	i = 0;
-	while (i < size)
-	{
-		list[i].dist = size;
-		i++;
-	}
 	row = 0;
 	i = 0;
 	while (row < info->map_row)
@@ -88,7 +79,6 @@ t_distance *parse_distance_list(t_info *info, t_maps **maps)
 		}
 		row++;
 	}
-	return (list);
 }
 
 void	sort_distance_list(t_distance *list, t_info *info, t_maps **maps)
@@ -176,8 +166,6 @@ static int	is_placeable(t_info *info, t_coord coord, t_maps **maps)
 		{
 			//write(fd, "debug2\n", 7);
 			if (maps[row][col].skip == TRUE)
-				return (FALSE);
-			else if (maps[coord.y + row][coord.x + col].pos == -2 && info->piece[row][col] == '*')
 				return (FALSE);
 			else if (maps[coord.y + row][coord.x + col].pos == -1 && info->piece[row][col] == '*')
 			{

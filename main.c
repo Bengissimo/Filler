@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 14:44:08 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:50:18 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,7 +299,9 @@ int main(void)
 			write(fd, "-----\n", 6);
 			if (!list)
 				list = init_list(list, &info, maps);
-			list = parse_distance_list(&info, maps);
+			parse_distance_list(list, &info, maps);
+			print_dist_list(list, fd, &info, maps);
+			write(fd, "-----\n", 6);
 			//write(fd, "dist before: ", 13);
 			//print_dist_list(list, fd);
 			sort_distance_list(list, &info, maps);
