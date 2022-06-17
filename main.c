@@ -6,15 +6,13 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/17 13:36:02 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/17 16:00:25 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 #include <fcntl.h>
 #include <stdio.h> //DELETE LATER
-
-
 
 void	init_filler(t_info *info)
 {
@@ -24,6 +22,7 @@ void	init_filler(t_info *info)
 	info->map_col = 0;
 	info->player_nb = 0;
 	info->dist_size = 0;
+	info->is_new = FALSE;
 }
 
 void	get_player_nb(t_info *info, char *line)
@@ -278,9 +277,12 @@ int main(void)
 		{
 			if (maps == NULL && info.map_row > 0 && info.map_col > 0)
 				maps = init_maps(maps, info.map_row, info.map_col);
-			parse_map(&info, maps, fd);
 			
-			print_map(&info, maps, fd);
+			parse_map(&info, maps);
+			if (info.is_new == FALSE)
+				continue ;
+			
+			//print_map(&info, maps, fd);
 
 			
 			//write(fd, "dist before: ", 13);
@@ -290,9 +292,9 @@ int main(void)
 			//ft_putnbr_fd(maps[8][2].pos, fd);
 			//write(fd, "\n", 1);
 			set_skip(maps, &info);
-			print_skip_map(&info, maps, fd);
+			//print_skip_map(&info, maps, fd);
 			set_dist(&info, maps);
-			print_dist_map(&info, maps, fd);
+			//print_dist_map(&info, maps, fd);
 
 			//write(fd, "-----\n", 6);
 			if (!list)

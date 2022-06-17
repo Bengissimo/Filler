@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:08:28 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/17 13:41:42 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/17 15:49:26 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@ static unsigned int	ft_abs(int nb)
 	if (nb < 0)
 		nb = -nb;
 	return (nb);
+}
+
+static unsigned int ft_max(unsigned int nb1, unsigned int nb2)
+{
+	if (nb1 > nb2)
+		return (nb1);
+	return (nb2);
 }
 
 t_maps	**init_maps(t_maps **maps, int row_size, int col_size)
@@ -47,7 +54,7 @@ t_maps	**init_maps(t_maps **maps, int row_size, int col_size)
 	return (maps);
 }
 
-void	parse_map(t_info *info, t_maps **maps, int fd)
+void	parse_map(t_info *info, t_maps **maps)
 {
 	int		row;
 	int		col;
@@ -55,7 +62,7 @@ void	parse_map(t_info *info, t_maps **maps, int fd)
 	char	*start;
 
 	row = 0;
-	write(fd, "tes3\n", 5);
+	info->is_new = FALSE;
 	while (row < info->map_row)
 	{
 		get_next_line(0, &line);
@@ -63,11 +70,13 @@ void	parse_map(t_info *info, t_maps **maps, int fd)
 		col = 0;
 		while (col < info->map_col)
 		{
-			//write(fd, "tes3\n", 5);
 			/*if (start[col] != info->foe || start[col] != info->me || start[col] != '.')
 				return ;*/
 			if (start[col] == info->foe && maps[row][col].pos == 0)
+			{
 				maps[row][col].pos = -2;
+				info->is_new = TRUE;
+			}
 			else if (start[col] == info->me && maps[row][col].pos == 0)
 				maps[row][col].pos = -1;
 			col++;
@@ -94,7 +103,7 @@ int	min_distance(t_info *info, t_maps **maps, t_coord coord)
 		{
 			if (maps[row][col].pos == -2)
 			{
-				dist = ft_abs(coord.x - col) + ft_abs(coord.y - row);
+				dist = ft_max(ft_abs(coord.x - col), ft_abs(coord.y - row));
 				if (dist < min_dist)
 					min_dist = dist;
 			}
