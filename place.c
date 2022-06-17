@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 22:01:24 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/17 09:00:02 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_distance	*init_list(t_info *info, t_maps **maps)
 }
 
 
-void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps)
+void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps, int fd)
 {
 	int				row;
 	int				col;
@@ -83,6 +83,8 @@ void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps)
 		}
 		row++;
 	}
+	ft_putnbr_fd(i, fd);
+	write(fd, "\n\n", 2);
 }
 
 void	sort_distance_list(t_distance *list, t_info *info, t_maps **maps)
@@ -91,9 +93,13 @@ void	sort_distance_list(t_distance *list, t_info *info, t_maps **maps)
 	unsigned int	j;
 	t_distance		temp;
 	unsigned int	size;
+	int swapped;
 	
+	swapped = FALSE;
 	i = 0;
 	size = find_list_size(info, maps);
+	if (size == 0)
+		return ;
 	while (i < size - 1)
 	{
 		j = 0;
@@ -104,12 +110,21 @@ void	sort_distance_list(t_distance *list, t_info *info, t_maps **maps)
 				temp = list[j];
 				list[j] = list[j + 1];
 				list[j + 1] = temp;
+				swapped = TRUE;
 			}
 			j++;
 		}
+		if (!swapped)
+			break;
 		i++;
 	}	
 }
+
+/*void	merge_sort_dist_list(t_distance *list, t_info *info, t_maps **maps)
+{
+	int first;
+	int last;
+}*/
 
 void	free_distance_list(t_distance *list)
 {

@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 22:00:14 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/17 08:45:03 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,7 @@ void print_map(t_info *info, t_maps **maps, int fd)
 		}
 		write(fd, "\n", 1);
 	}
+	write(fd, "---\n", 4);
 }
 
 void print_dist_map(t_info *info, t_maps **maps, int fd)
@@ -232,6 +233,7 @@ void print_dist_map(t_info *info, t_maps **maps, int fd)
 		}
 		write(fd, "\n", 1);
 	}
+	write(fd, "---\n", 4);
 }
 
 void print_skip_map(t_info *info, t_maps **maps, int fd)
@@ -248,6 +250,7 @@ void print_skip_map(t_info *info, t_maps **maps, int fd)
 		}
 		write(fd, "\n", 1);
 	}
+	write(fd, "---\n", 4);
 }
 
 int main(void)
@@ -276,8 +279,8 @@ int main(void)
 				maps = init_maps(maps, info.map_row, info.map_col, fd);
 			parse_map(&info, maps, fd);
 			
-			//print_map(&info, maps, fd);
-			//write(fd, "\n", 1);
+			print_map(&info, maps, fd);
+
 			
 			//write(fd, "dist before: ", 13);
 			//ft_putnbr_fd(maps[8][2].dist, fd);
@@ -286,17 +289,14 @@ int main(void)
 			//ft_putnbr_fd(maps[8][2].pos, fd);
 			//write(fd, "\n", 1);
 			set_skip(maps, &info);
+			print_skip_map(&info, maps, fd);
 			set_dist(&info, maps);
-			//write(fd, "dist before: ", 13);
-			//parse_map(&info);
-			
-			//calculate_relative_dist(&info);
-			//write(fd, "\n\n", 2);
-			//print_dist_map(&info, maps, fd);
+			print_dist_map(&info, maps, fd);
+
 			//write(fd, "-----\n", 6);
 			if (!list)
 				list = init_list(&info, maps);
-			parse_distance_list(list, &info, maps);
+			parse_distance_list(list, &info, maps, fd);
 			//print_dist_list(list, fd, &info, maps);
 			//write(fd, "-----\n", 6);
 			//write(fd, "dist before: ", 13);
