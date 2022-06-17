@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:08:28 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/16 20:24:34 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/17 13:41:42 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ static unsigned int	ft_abs(int nb)
 	return (nb);
 }
 
-t_maps	**init_maps(t_maps **maps, int row_size, int col_size, int fd)
+t_maps	**init_maps(t_maps **maps, int row_size, int col_size)
 {
 	int		i;
 	int		j;
 	//write(fd, "test\n", 5);
-	fd =0;
+
 	maps = (t_maps **)malloc(sizeof(t_maps *) * row_size);
 	if (!maps)
 		return NULL;
@@ -54,7 +54,6 @@ void	parse_map(t_info *info, t_maps **maps, int fd)
 	char	*line;
 	char	*start;
 
-	fd = 0;
 	row = 0;
 	write(fd, "tes3\n", 5);
 	while (row < info->map_row)

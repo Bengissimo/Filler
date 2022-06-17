@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/17 08:45:03 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/17 13:36:02 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	init_filler(t_info *info)
 	info->map_row = 0;
 	info->map_col = 0;
 	info->player_nb = 0;
+	info->dist_size = 0;
 }
 
 void	get_player_nb(t_info *info, char *line)
@@ -209,7 +210,7 @@ void print_map(t_info *info, t_maps **maps, int fd)
 		for (int j = 0; j < info->map_col; j++)
 		{
 			ft_putnbr_fd(maps[i][j].pos, fd);
-			if (maps[i][j].pos >= 0 && maps[i][j].pos <= 9)
+			if (maps[i][j].pos <= 9)
 				write(fd, "   ", 3);
 			else
 				write(fd, "  ", 2);
@@ -226,7 +227,7 @@ void print_dist_map(t_info *info, t_maps **maps, int fd)
 		for (int j = 0; j < info->map_col; j++)
 		{
 			ft_putnbr_fd(maps[i][j].dist, fd);
-			if (maps[i][j].dist >= 0 && maps[i][j].dist <= 9)
+			if (maps[i][j].dist <= 9)
 				write(fd, "   ", 3);
 			else
 				write(fd, "  ", 2);
@@ -243,7 +244,7 @@ void print_skip_map(t_info *info, t_maps **maps, int fd)
 		for (int j = 0; j < info->map_col; j++)
 		{
 			ft_putnbr_fd(maps[i][j].skip, fd);
-			if (maps[i][j].dist >= 0 && maps[i][j].dist <= 9)
+			if (maps[i][j].dist <= 9)
 				write(fd, "   ", 3);
 			else
 				write(fd, "  ", 2);
@@ -276,7 +277,7 @@ int main(void)
 		if (ft_strstr(line, "0123456789"))
 		{
 			if (maps == NULL && info.map_row > 0 && info.map_col > 0)
-				maps = init_maps(maps, info.map_row, info.map_col, fd);
+				maps = init_maps(maps, info.map_row, info.map_col);
 			parse_map(&info, maps, fd);
 			
 			print_map(&info, maps, fd);
@@ -295,13 +296,13 @@ int main(void)
 
 			//write(fd, "-----\n", 6);
 			if (!list)
-				list = init_list(&info, maps);
-			parse_distance_list(list, &info, maps, fd);
+				list = init_list(&info);
+			parse_distance_list(list, &info, maps);
 			//print_dist_list(list, fd, &info, maps);
 			//write(fd, "-----\n", 6);
 			//write(fd, "dist before: ", 13);
 			//print_dist_list(list, fd);
-			sort_distance_list(list, &info, maps);
+			sort_distance_list(list, &info);
 			//write(fd, "dist before: ", 13);
 			//write(fd, "sorted: \n", 9);
 			//print_dist_list(list, fd, &info, maps);

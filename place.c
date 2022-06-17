@@ -6,42 +6,20 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/17 09:00:02 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/17 13:36:15 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 #include <stdio.h> //DELETE
 
-static unsigned int	find_list_size(t_info *info, t_maps **maps)
-{
-	int	row;
-	int	col;
-	unsigned int	size;
-
-	size = 0;
-	row = 0;
-	while (row < info->map_row)
-	{
-		col = 0;
-		while (col < info->map_col)
-		{
-			if (maps[row][col].dist > 0)
-				size++;
-			col++;
-		}
-		row++;
-	}
-	return (size);
-}
-
-t_distance	*init_list(t_info *info, t_maps **maps)
+t_distance	*init_list(t_info *info)
 {
 	unsigned int	size;
 	unsigned int	i;
 	t_distance *list;
 
-	size = find_list_size(info, maps);
+	size = info->map_col * info->map_row;
 	//write(fd, "initlist\n", 9);
 	//ft_putnbr_fd(size, fd);
 	//write(fd, "\n", 1);
@@ -58,7 +36,7 @@ t_distance	*init_list(t_info *info, t_maps **maps)
 }
 
 
-void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps, int fd)
+void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps)
 {
 	int				row;
 	int				col;
@@ -83,11 +61,10 @@ void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps, int fd)
 		}
 		row++;
 	}
-	ft_putnbr_fd(i, fd);
-	write(fd, "\n\n", 2);
+	info->dist_size = i;
 }
 
-void	sort_distance_list(t_distance *list, t_info *info, t_maps **maps)
+void	sort_distance_list(t_distance *list, t_info *info)
 {
 	unsigned int	i;
 	unsigned int	j;
@@ -97,7 +74,7 @@ void	sort_distance_list(t_distance *list, t_info *info, t_maps **maps)
 	
 	swapped = FALSE;
 	i = 0;
-	size = find_list_size(info, maps);
+	size = info->dist_size;
 	if (size == 0)
 		return ;
 	while (i < size - 1)
@@ -132,14 +109,12 @@ void	free_distance_list(t_distance *list)
 	list = NULL;
 }
 
-void print_dist_list(t_distance *list, int fd, t_info *info, t_maps **maps)
+void print_dist_list(t_distance *list, int fd, t_info *info)
 {
 	unsigned int i;
-	unsigned int	size;
-	size = find_list_size(info, maps);
 
 	i = 0;
-	while (i < size)
+	while (i < info->dist_size)
 	{
 		write(fd, "x: ", 3);
 		ft_putnbr_fd(list[i].coord.x, fd);
@@ -191,7 +166,7 @@ void	put_piece(t_info *info, t_distance *list, t_maps **maps)
 	unsigned int	i;
 	unsigned int	size;
 
-	size = find_list_size(info, maps);
+	size = info->dist_size;
 
 	//write(fd, "test\n", 5);
 	i = 0;
