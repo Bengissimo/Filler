@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/18 11:25:44 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/18 11:30:15 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,104 +65,6 @@ void	get_map_size(t_info *info, char *line)
 		//write(fd, "\n", 1);
 	}
 }
-
-/*void	parse_map(t_info *info)
-{
-	int		row;
-	int		col;
-	char	*line;
-	char	*start;
-	info->map = (int **)malloc(sizeof(int *) * info->map_row);
-	row = 0;
-	while (row < info->map_row)
-	{
-		get_next_line(0, &line);
-		start = ft_strchr(line, ' ') + 1;
-		info->map[row] = (int *)malloc(sizeof(int) * info->map_col);
-		col = 0;
-		while (col < info->map_col)
-		{
-			if (start[col] == info->foe)
-				info->map[row][col] = -2;
-			else if (start[col] == info->me)
-				info->map[row][col] = -1;
-			else
-				info->map[row][col] = 0;
-			col++;
-		}
-		row++;
-	}
-}
-int	min_distance(t_info *info, t_coord coord)
-{
-	int				row;
-	int				col;
-	unsigned int	dist;
-	unsigned int	min_dist;
-	min_dist = info->map_col + info->map_row;
-	row = 0;
-	while (row < info->map_row)
-	{
-		col = 0;
-		while (col < info->map_col)
-		{
-			if (info->map[row][col] == -2)
-			{
-				dist = ft_abs(coord.x - col) + ft_abs(coord.y - row);
-				if (dist < min_dist)
-					min_dist = dist;
-			}
-			col++;
-		}
-		row++;
-	}
-	return (min_dist);
-}
-int	check_if_nearby_free(t_info *info, t_coord coord)
-{
-	int i;
-	int j;
-	i = -1;
-	while (i < 2)
-	{
-		j = -1;
-		while (j < 2)
-		{
-			if (coord.x + j > 0 && coord.x + j < info->map_col &&
-			coord.y + i > 0 && coord.y + i < info->map_row)
-			{
-				if (info->map[coord.y + i][coord.x + j] == 0)
-					return (TRUE);
-			}
-			j++;
-		}
-		i++;
-	}
-	return (FALSE);
-}
-void calculate_relative_dist(t_info *info)
-{
-	t_coord	coord;
-	info->distance_map = (int **)malloc(sizeof(int *) * info->map_row);
-	coord.y = 0;
-	while (coord.y < info->map_row)
-	{
-		coord.x = 0;
-		info->distance_map[coord.y] = (int *)malloc(sizeof(int) * info->map_col);
-		while (coord.x < info->map_col)
-		{
-			if (info->map[coord.y][coord.x] == 0)
-				info->distance_map[coord.y][coord.x] = min_distance(info, coord);
-			else if (info->map[coord.y][coord.x] == -1)
-			{
-				if (check_if_nearby_free(info, coord))
-					info->distance_map[coord.y][coord.x] = min_distance(info, coord);
-			}
-			coord.x++;
-		}
-		coord.y++;
-	}
-}*/
 
 void get_piece_size(t_info *info, char *line)
 {
