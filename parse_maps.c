@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:18:38 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/18 11:18:47 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/18 11:22:33 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,4 +175,8 @@ void set_dist(t_info *info, t_maps **maps)
 		}
 		coord.y++;
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> optimize
