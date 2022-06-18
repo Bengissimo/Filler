@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/18 11:30:15 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/18 11:38:27 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	init_filler(t_info *info)
 	info->player_nb = 0;
 	info->dist_size = 0;
 	info->is_new = FALSE;
+	info->move_count = 0;
 }
 
 void	get_player_nb(t_info *info, char *line)
@@ -137,7 +138,7 @@ void print_skip_map(t_info *info, t_maps **maps, int fd)
 	{
 		for (int j = 0; j < info->map_col; j++)
 		{
-			ft_putnbr_fd(maps[i][j].skip, fd);
+			ft_putnbr_fd(maps[i][j].move, fd);
 			if (maps[i][j].dist <= 9)
 				write(fd, "   ", 3);
 			else
@@ -159,7 +160,7 @@ int main(void)
 	list = NULL;
 	maps = NULL;
 	init_filler(&info);
-	fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
+	fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -178,6 +179,8 @@ int main(void)
 				continue ;
 			
 			//print_map(&info, maps, fd);
+	
+			print_skip_map(&info, maps, fd);
 
 			
 			//write(fd, "dist before: ", 13);
@@ -189,7 +192,7 @@ int main(void)
 			set_skip(maps, &info);
 			//print_skip_map(&info, maps, fd);
 			set_dist(&info, maps);
-			//print_dist_map(&info, maps, fd);
+			print_dist_map(&info, maps, fd);
 
 			//write(fd, "-----\n", 6);
 			if (!list)
@@ -211,6 +214,7 @@ int main(void)
 			parse_piece(&info);
 			put_piece(&info, list ,maps);
 		}
+		info.move_count++;
 	}
 	free_distance_list(list);
 	return (0);

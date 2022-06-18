@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/18 11:22:28 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/18 11:33:28 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct		s_info
 	int		piece_col;
 	char	**piece;
 	unsigned int	dist_size;
+	unsigned int	move_count;
 	int		is_new;
 }					t_info;
 
@@ -51,6 +52,7 @@ typedef struct		s_maps
 	int				pos;
 	unsigned int	dist;
 	int				skip;
+	unsigned int	move;
 }					t_maps;
 
 void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps);

@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:18:38 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/18 11:24:09 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/18 11:35:16 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ t_maps	**init_maps(t_maps **maps, int row_size, int col_size)
 			maps[i][j].pos = 0;
 			maps[i][j].dist = 0;
 			maps[i][j].skip = FALSE;
+			maps[i][j].move = 0;
 			j++;
 		}
 		i++;
@@ -76,6 +77,7 @@ void	parse_map(t_info *info, t_maps **maps)
 			{
 				maps[row][col].pos = -2;
 				info->is_new = TRUE;
+				maps[row][col].move = info->move_count;
 			}
 			else if (start[col] == info->me && maps[row][col].pos == 0)
 				maps[row][col].pos = -1;
