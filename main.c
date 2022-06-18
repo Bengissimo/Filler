@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/18 11:22:30 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/18 11:25:44 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,8 +196,6 @@ void parse_piece(t_info *info)
 
 
 void print_map(t_info *info, t_maps **maps, int fd)
-<<<<<<< HEAD
-=======
 {
 	for (int i = 0; i < info->map_row; i++)
 	{
@@ -215,43 +213,12 @@ void print_map(t_info *info, t_maps **maps, int fd)
 }
 
 void print_dist_map(t_info *info, t_maps **maps, int fd)
->>>>>>> optimize
 {
 	for (int i = 0; i < info->map_row; i++)
 	{
 		for (int j = 0; j < info->map_col; j++)
 		{
-<<<<<<< HEAD
-			ft_putnbr_fd(maps[i][j].pos, fd);
-			if (maps[i][j].pos <= 9)
-=======
 			ft_putnbr_fd(maps[i][j].dist, fd);
-			if (maps[i][j].dist <= 9)
->>>>>>> optimize
-				write(fd, "   ", 3);
-			else
-				write(fd, "  ", 2);
-		}
-		write(fd, "\n", 1);
-	}
-	write(fd, "---\n", 4);
-}
-
-<<<<<<< HEAD
-void print_dist_map(t_info *info, t_maps **maps, int fd)
-=======
-void print_skip_map(t_info *info, t_maps **maps, int fd)
->>>>>>> optimize
-{
-	for (int i = 0; i < info->map_row; i++)
-	{
-		for (int j = 0; j < info->map_col; j++)
-		{
-<<<<<<< HEAD
-			ft_putnbr_fd(maps[i][j].dist, fd);
-=======
-			ft_putnbr_fd(maps[i][j].skip, fd);
->>>>>>> optimize
 			if (maps[i][j].dist <= 9)
 				write(fd, "   ", 3);
 			else
@@ -260,7 +227,6 @@ void print_skip_map(t_info *info, t_maps **maps, int fd)
 		write(fd, "\n", 1);
 	}
 	write(fd, "---\n", 4);
-<<<<<<< HEAD
 }
 
 void print_skip_map(t_info *info, t_maps **maps, int fd)
@@ -278,8 +244,6 @@ void print_skip_map(t_info *info, t_maps **maps, int fd)
 		write(fd, "\n", 1);
 	}
 	write(fd, "---\n", 4);
-=======
->>>>>>> optimize
 }
 
 int main(void)
@@ -325,21 +289,12 @@ int main(void)
 			set_dist(&info, maps);
 			//print_dist_map(&info, maps, fd);
 
-<<<<<<< HEAD
 			//write(fd, "-----\n", 6);
 			if (!list)
 				list = init_list(&info);
 			parse_distance_list(list, &info, maps);
 			//print_dist_list(list, fd, &info, maps);
 			//write(fd, "-----\n", 6);
-=======
-			//write(fd, "-----\n", 6);
-			if (!list)
-				list = init_list(&info);
-			parse_distance_list(list, &info, maps);
-			//print_dist_list(list, fd, &info, maps);
-			//write(fd, "-----\n", 6);
->>>>>>> optimize
 			//write(fd, "dist before: ", 13);
 			//print_dist_list(list, fd);
 			sort_distance_list(list, &info);
