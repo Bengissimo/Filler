@@ -6,15 +6,20 @@
 #    By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 17:18:57 by bkandemi          #+#    #+#              #
-#    Updated: 2022/06/08 14:52:22 by bkandemi         ###   ########.fr        #
+#    Updated: 2022/06/18 11:20:33 by bkandemi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = bkandemi.filler
+
 C_FILES = main.c\
-		place.c
+		place.c\
+		parse_maps.c
+
 O_FILES = $(C_FILES:.c=.o)
+
 CC = gcc
+
 FLAGS = -Wall -Wextra -Werror
 
 all : $(NAME)
@@ -33,4 +38,3 @@ fclean: clean
 	@make -C libft/ clean
 
 re:	fclean all
-	

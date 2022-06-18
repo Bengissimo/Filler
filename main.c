@@ -6,20 +6,13 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/15 16:15:24 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/18 11:19:11 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 #include <fcntl.h>
 #include <stdio.h> //DELETE LATER
-
-unsigned int	ft_abs(int nb)
-{
-	if (nb < 0)
-		nb = -nb;
-	return (nb);
-}
 
 void	init_filler(t_info *info)
 {
@@ -28,6 +21,8 @@ void	init_filler(t_info *info)
 	info->map_row = 0;
 	info->map_col = 0;
 	info->player_nb = 0;
+	info->dist_size = 0;
+	info->is_new = FALSE;
 }
 
 void	get_player_nb(t_info *info, char *line)
@@ -71,13 +66,12 @@ void	get_map_size(t_info *info, char *line)
 	}
 }
 
-void	parse_map(t_info *info)
+/*void	parse_map(t_info *info)
 {
 	int		row;
 	int		col;
 	char	*line;
 	char	*start;
-
 	info->map = (int **)malloc(sizeof(int *) * info->map_row);
 	row = 0;
 	while (row < info->map_row)
@@ -99,14 +93,12 @@ void	parse_map(t_info *info)
 		row++;
 	}
 }
-
 int	min_distance(t_info *info, t_coord coord)
 {
 	int				row;
 	int				col;
 	unsigned int	dist;
 	unsigned int	min_dist;
-
 	min_dist = info->map_col + info->map_row;
 	row = 0;
 	while (row < info->map_row)
@@ -126,12 +118,10 @@ int	min_distance(t_info *info, t_coord coord)
 	}
 	return (min_dist);
 }
-
 int	check_if_nearby_free(t_info *info, t_coord coord)
 {
 	int i;
 	int j;
-
 	i = -1;
 	while (i < 2)
 	{
@@ -150,11 +140,9 @@ int	check_if_nearby_free(t_info *info, t_coord coord)
 	}
 	return (FALSE);
 }
-
 void calculate_relative_dist(t_info *info)
 {
 	t_coord	coord;
-
 	info->distance_map = (int **)malloc(sizeof(int *) * info->map_row);
 	coord.y = 0;
 	while (coord.y < info->map_row)
@@ -174,7 +162,7 @@ void calculate_relative_dist(t_info *info)
 		}
 		coord.y++;
 	}
-}
+}*/
 
 void get_piece_size(t_info *info, char *line)
 {
@@ -207,48 +195,69 @@ void parse_piece(t_info *info)
 }
 
 
-void print_map(t_info *info, int fd)
+void print_map(t_info *info, t_maps **maps, int fd)
 {
 	for (int i = 0; i < info->map_row; i++)
 	{
 		for (int j = 0; j < info->map_col; j++)
 		{
-			ft_putnbr_fd(info->map[i][j], fd);
-			if (info->map[i][j] >= 0 && info->map[i][j] <= 9)
+			ft_putnbr_fd(maps[i][j].pos, fd);
+			if (maps[i][j].pos <= 9)
 				write(fd, "   ", 3);
 			else
 				write(fd, "  ", 2);
 		}
 		write(fd, "\n", 1);
 	}
+	write(fd, "---\n", 4);
 }
 
-void print_dist_map(t_info *info, int fd)
+void print_dist_map(t_info *info, t_maps **maps, int fd)
 {
 	for (int i = 0; i < info->map_row; i++)
 	{
 		for (int j = 0; j < info->map_col; j++)
 		{
-			ft_putnbr_fd(info->distance_map[i][j], fd);
-			if (info->distance_map[i][j] >= 0 && info->distance_map[i][j] <= 9)
+			ft_putnbr_fd(maps[i][j].dist, fd);
+			if (maps[i][j].dist <= 9)
 				write(fd, "   ", 3);
 			else
 				write(fd, "  ", 2);
 		}
 		write(fd, "\n", 1);
 	}
+	write(fd, "---\n", 4);
+}
+
+void print_skip_map(t_info *info, t_maps **maps, int fd)
+{
+	for (int i = 0; i < info->map_row; i++)
+	{
+		for (int j = 0; j < info->map_col; j++)
+		{
+			ft_putnbr_fd(maps[i][j].skip, fd);
+			if (maps[i][j].dist <= 9)
+				write(fd, "   ", 3);
+			else
+				write(fd, "  ", 2);
+		}
+		write(fd, "\n", 1);
+	}
+	write(fd, "---\n", 4);
 }
 
 int main(void)
 {
 	t_info info;
 	t_distance *list;
+	t_maps **maps;
 	char	*line;
 	int fd;
 	
 	list = NULL;
+	maps = NULL;
 	init_filler(&info);
-	fd = open("/Users/bkandemi/bkandemi_workspace/filler/output.txt", O_WRONLY | O_APPEND);
+	fd = open("/Users/bengisu/Desktop/HIVE_III/Filler/output.txt", O_WRONLY | O_APPEND);
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
@@ -259,23 +268,46 @@ int main(void)
 			get_map_size(&info, line);
 		if (ft_strstr(line, "0123456789"))
 		{
-			parse_map(&info);
-			print_map(&info, fd);
-			calculate_relative_dist(&info);
-			write(fd, "\n\n", 2);
-			print_dist_map(&info, fd);
-			write(fd, "-----\n", 6);
-			list = parse_distance_list(&info);
+			if (maps == NULL && info.map_row > 0 && info.map_col > 0)
+				maps = init_maps(maps, info.map_row, info.map_col);
+			
+			parse_map(&info, maps);
+			if (info.is_new == FALSE)
+				continue ;
+			
+			//print_map(&info, maps, fd);
+
+			
+			//write(fd, "dist before: ", 13);
+			//ft_putnbr_fd(maps[8][2].dist, fd);
+			//write(fd, "\n", 1);
+			//write(fd, "pos: ", 5);
+			//ft_putnbr_fd(maps[8][2].pos, fd);
+			//write(fd, "\n", 1);
+			set_skip(maps, &info);
+			//print_skip_map(&info, maps, fd);
+			set_dist(&info, maps);
+			//print_dist_map(&info, maps, fd);
+
+			//write(fd, "-----\n", 6);
+			if (!list)
+				list = init_list(&info);
+			parse_distance_list(list, &info, maps);
+			//print_dist_list(list, fd, &info, maps);
+			//write(fd, "-----\n", 6);
+			//write(fd, "dist before: ", 13);
 			//print_dist_list(list, fd);
-			sort_distance_list(list);
+			sort_distance_list(list, &info);
+			//write(fd, "dist before: ", 13);
 			//write(fd, "sorted: \n", 9);
-			//print_dist_list(list, fd);
+			//print_dist_list(list, fd, &info, maps);
+			//write(fd, "-----\n", 6);
 		}
 		if (ft_strstr(line, "Piece"))
 		{
 			get_piece_size(&info, line);
 			parse_piece(&info);
-			put_piece(&info, list);
+			put_piece(&info, list ,maps);
 		}
 	}
 	free_distance_list(list);
