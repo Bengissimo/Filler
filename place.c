@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/18 11:22:35 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/18 11:52:17 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_distance	*init_list(t_info *info)
 	while (i < size)
 	{
 		list[i].dist = info->map_col + info->map_row; //this should be the max value, to make sorting easier
+		list[i].move = 0;
 		i++;
 	}
 	return (list);
@@ -53,6 +54,7 @@ void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps)
 			if (maps[row][col].dist > 0)
 			{
 				list[i].dist = maps[row][col].dist;
+				list[i].move = maps[row][col].move;
 				list[i].coord.x = col;
 				list[i].coord.y = row;
 				i++;
@@ -83,6 +85,13 @@ void	sort_distance_list(t_distance *list, t_info *info)
 		while (j < size - i - 1)
 		{
 			if (list[j].dist > list[j + 1].dist)
+			{
+				temp = list[j];
+				list[j] = list[j + 1];
+				list[j + 1] = temp;
+				swapped = TRUE;
+			}
+			else if (list[j].dist == list[j + 1].dist && list[j].move < list[j + 1].move)
 			{
 				temp = list[j];
 				list[j] = list[j + 1];
