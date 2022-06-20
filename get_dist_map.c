@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_maps.c                                       :+:      :+:    :+:   */
+/*   get_dist_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/18 11:18:38 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 14:49:53 by bkandemi         ###   ########.fr       */
+/*   Created: 2022/06/20 15:01:49 by bkandemi          #+#    #+#             */
+/*   Updated: 2022/06/20 15:03:33 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,38 +26,7 @@ static unsigned int ft_max(unsigned int nb1, unsigned int nb2)
 	return (nb2);
 }
 
-t_maps	**init_maps(t_maps **maps, int row_size, int col_size)
-{
-	int		i;
-	int		j;
-	//write(fd, "test\n", 5);
-
-	maps = (t_maps **)malloc(sizeof(t_maps *) * row_size);
-	if (!maps)
-		return NULL;
-	i = 0;
-	while (i < row_size)
-	{
-		maps[i] = (t_maps *)malloc(sizeof(t_maps) * col_size);
-		if (!maps[i])
-			return NULL;
-		j = 0;
-		while (j < col_size)
-		{
-			maps[i][j].pos = 0;
-			maps[i][j].dist = 0;
-			maps[i][j].skip = FALSE;
-			maps[i][j].move = 0;
-			j++;
-		}
-		i++;
-	}
-	return (maps);
-}
-
-
-
-int	min_distance(t_info *info, t_maps **maps, t_coord coord)
+static int	min_distance(t_info *info, t_maps **maps, t_coord coord)
 {
 	int				row;
 	int				col;
@@ -84,33 +53,7 @@ int	min_distance(t_info *info, t_maps **maps, t_coord coord)
 	return (min_dist);
 }
 
-int	check_if_nearby_free(t_info *info, t_maps **maps, t_coord coord)
-{
-	int i;
-	int j;
-
-	i = -1;
-	while (i < 2)
-	{
-		j = -1;
-		while (j < 2)
-		{
-			if (coord.x + j > 0 && coord.x + j < info->map_col &&
-			coord.y + i > 0 && coord.y + i < info->map_row)
-			{
-				if (maps[coord.y + i][coord.x + j].pos == 0)
-					return (TRUE);
-			}
-			j++;
-		}
-		i++;
-	}
-	return (FALSE);
-}
-
-
-
-void set_dist(t_info *info, t_maps **maps)
+void	get_dist_map(t_info *info, t_maps **maps)
 {
 	t_coord	coord;
 

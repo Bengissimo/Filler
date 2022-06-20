@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 14:50:41 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 15:06:30 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,7 @@ void print_dist_list(t_distance *list, int fd, t_info *info); //del
 //void	put_piece(t_info *info, t_distance *list);
 void	free_distance_list(t_distance *list);
 
-t_maps	**init_maps(t_maps **maps, int row_size, int col_size);
-int	min_distance(t_info *info, t_maps **maps, t_coord coord);
-int	check_if_nearby_free(t_info *info, t_maps **maps, t_coord coord);
-void set_dist(t_info *info, t_maps **maps);
+
 void	put_piece(t_info *info, t_distance *list, t_maps **maps);
 
 
@@ -77,9 +74,12 @@ t_distance	*init_list(t_info *info);
 void	get_player_nb(t_info *info, char *line, char *name);
 int		get_map_size(t_info *info, char *line);
 
-/*get_maps.c*/
+/* get maps */
+t_maps	**init_maps(t_maps **maps, int row_size, int col_size);
 int		get_pos_map(t_info *info, t_maps **maps);
 void	get_skip_map(t_info *info, t_maps **maps);
+void	get_dist_map(t_info *info, t_maps **maps);
+
 
 
 

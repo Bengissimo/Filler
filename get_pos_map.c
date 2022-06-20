@@ -1,16 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_maps.c                                         :+:      :+:    :+:   */
+/*   get_pos_map.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:49:46 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 14:50:16 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 15:02:49 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
+
+t_maps	**init_maps(t_maps **maps, int row_size, int col_size)
+{
+	int		i;
+	int		j;
+	//write(fd, "test\n", 5);
+
+	maps = (t_maps **)malloc(sizeof(t_maps *) * row_size);
+	if (!maps)
+		return NULL;
+	i = 0;
+	while (i < row_size)
+	{
+		maps[i] = (t_maps *)malloc(sizeof(t_maps) * col_size);
+		if (!maps[i])
+			return NULL;
+		j = 0;
+		while (j < col_size)
+		{
+			maps[i][j].pos = 0;
+			maps[i][j].dist = 0;
+			maps[i][j].skip = FALSE;
+			maps[i][j].move = 0;
+			j++;
+		}
+		i++;
+	}
+	return (maps);
+}
 
 int	get_pos_map(t_info *info, t_maps **maps)
 {
@@ -47,20 +76,5 @@ int	get_pos_map(t_info *info, t_maps **maps)
 	return (TRUE);
 }
 
-void	get_skip_map(t_info *info, t_maps **maps)
-{
-	t_coord coord;
 
-	coord.y = 0;
-	while(coord.y < info->map_row)
-	{
-		coord.x = 0;
-		while (coord.x < info->map_col)
-		{
-			if (maps[coord.y][coord.x].skip == FALSE && (maps[coord.y][coord.x].pos == -2 || !check_if_nearby_free(info, maps, coord)))
-				maps[coord.y][coord.x].skip = TRUE;
-			coord.x++;
-		}
-		coord.y++;
-	}	
-}
+

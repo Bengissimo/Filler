@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 14:15:03 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 14:55:00 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,8 @@ int main(int ac, char **av)
 				return (EXIT_ERROR);
 			if (info.is_new == FALSE)
 				continue ;
-			set_skip(maps, &info);
-			set_dist(&info, maps);
+			get_skip_map(&info, maps);
+			get_dist_map(&info, maps);
 			if (!list)
 				list = init_list(&info);
 			parse_distance_list(list, &info, maps);
