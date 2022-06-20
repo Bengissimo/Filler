@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 15:34:58 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 16:02:41 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,35 +25,6 @@ void	init_filler(t_info *info)
 	info->is_new = FALSE;
 	info->move_count = 0;
 }
-
-void get_piece_size(t_info *info, char *line)
-{
-	info->piece_row = ft_atoi(ft_strchr(line, ' ') + 1);
-	info->piece_col = ft_atoi(ft_strrchr(line, ' ') + 1);
-	/*ft_putnbr_fd(info->piece_row, fd);
-	write(fd, "\n", 1);
-	ft_putnbr_fd(info->piece_col, fd);
-	write(fd, "\n", 1);*/
-}
-
-void parse_piece(t_info *info)
-{
-	int		i;
-	char	*line;
-
-	info->piece = (char **)malloc(sizeof(char *) * info->piece_row);
-	if (!info->piece)
-		return ;
-	i = 0;
-	while (i < info->piece_row)
-	{
-		get_next_line(0, &line);
-		info->piece[i] = (char *)malloc(sizeof(char) * (info->piece_col + 1));
-		ft_strcpy(info->piece[i], line);
-		i++;
-	}
-}
-
 
 
 
@@ -104,7 +75,7 @@ int main(int ac, char **av)
 		if (ft_strstr(line, "Piece"))
 		{
 			get_piece_size(&info, line);
-			parse_piece(&info);
+			get_piece(&info);
 			put_piece(&info, list ,maps);
 		}
 		info.move_count++;

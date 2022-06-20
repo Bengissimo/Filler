@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:41:20 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 15:20:38 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 16:02:48 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,3 +54,26 @@ int	get_map_size(t_info *info, char *line)
 	return (TRUE);
 }
 
+void get_piece_size(t_info *info, char *line)
+{
+	info->piece_row = ft_atoi(ft_strchr(line, ' ') + 1);
+	info->piece_col = ft_atoi(ft_strrchr(line, ' ') + 1);
+}
+
+void get_piece(t_info *info)
+{
+	int		i;
+	char	*line;
+
+	info->piece = (char **)malloc(sizeof(char *) * info->piece_row);
+	if (!info->piece)
+		return ;
+	i = 0;
+	while (i < info->piece_row)
+	{
+		get_next_line(0, &line);
+		info->piece[i] = (char *)malloc(sizeof(char) * (info->piece_col + 1));
+		ft_strcpy(info->piece[i], line);
+		i++;
+	}
+}
