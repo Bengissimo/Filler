@@ -6,7 +6,7 @@
 #    By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 17:18:57 by bkandemi          #+#    #+#              #
-#    Updated: 2022/06/20 10:41:29 by bkandemi         ###   ########.fr        #
+#    Updated: 2022/06/20 14:51:22 by bkandemi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ C_FILES = main.c\
 		place.c\
 		parse_maps.c\
 		list.c\
-		get.c
+		get_info.c\
+		get_maps.c
 
 O_FILES = $(C_FILES:.c=.o)
 

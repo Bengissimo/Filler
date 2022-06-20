@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 13:30:10 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 14:50:41 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,17 @@ int	check_if_nearby_free(t_info *info, t_maps **maps, t_coord coord);
 void set_dist(t_info *info, t_maps **maps);
 void	put_piece(t_info *info, t_distance *list, t_maps **maps);
 
-void	set_skip(t_maps **maps, t_info *info);
 
 t_distance	*init_list(t_info *info);
 
-/* get.c */
+/* get_info.c */
 void	get_player_nb(t_info *info, char *line, char *name);
 int		get_map_size(t_info *info, char *line);
+
+/*get_maps.c*/
 int		get_pos_map(t_info *info, t_maps **maps);
+void	get_skip_map(t_info *info, t_maps **maps);
+
 
 
 
