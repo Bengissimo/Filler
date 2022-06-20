@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 11:48:10 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 14:15:03 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,14 +133,14 @@ int main(int ac, char **av)
 			if (!(get_map_size(&info, line)))
 				return (EXIT_ERROR);
 		}	
-		if (ft_strstr(line, "0123456789"))
+		if (ft_strstr(line, "    0"))
 		{
-			if (info.player_nb == 0)
+			if (!info.player_nb || !info.map_col || !info.map_row)
 				return(EXIT_ERROR);
-			if (maps == NULL && info.map_row > 0 && info.map_col > 0)
+			if (!maps)
 				maps = init_maps(maps, info.map_row, info.map_col);
-			
-			parse_map(&info, maps);
+			if (!get_pos_map(&info, maps))
+				return (EXIT_ERROR);
 			if (info.is_new == FALSE)
 				continue ;
 			set_skip(maps, &info);

@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 11:45:26 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 13:30:10 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void print_dist_list(t_distance *list, int fd, t_info *info); //del
 void	free_distance_list(t_distance *list);
 
 t_maps	**init_maps(t_maps **maps, int row_size, int col_size);
-void	parse_map(t_info *info, t_maps **maps);
 int	min_distance(t_info *info, t_maps **maps, t_coord coord);
 int	check_if_nearby_free(t_info *info, t_maps **maps, t_coord coord);
 void set_dist(t_info *info, t_maps **maps);
@@ -77,7 +76,10 @@ t_distance	*init_list(t_info *info);
 
 /* get.c */
 void	get_player_nb(t_info *info, char *line, char *name);
-int	get_map_size(t_info *info, char *line);
+int		get_map_size(t_info *info, char *line);
+int		get_pos_map(t_info *info, t_maps **maps);
+
+
 
 
 

@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:18:38 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 10:13:57 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 13:29:25 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,39 +55,7 @@ t_maps	**init_maps(t_maps **maps, int row_size, int col_size)
 	return (maps);
 }
 
-void	parse_map(t_info *info, t_maps **maps)
-{
-	int		row;
-	int		col;
-	char	*line;
-	char	*start;
 
-	row = 0;
-	info->is_new = FALSE;
-	while (row < info->map_row)
-	{
-		get_next_line(0, &line);
-		start = ft_strchr(line, ' ') + 1;
-		col = 0;
-		while (col < info->map_col)
-		{
-			/*if (start[col] != info->foe || start[col] != info->me || start[col] != '.')
-				return ;*/
-			if (start[col] == info->foe && maps[row][col].pos == 0)
-			{
-				maps[row][col].pos = -2;
-				info->is_new = TRUE;
-				maps[row][col].move = info->move_count;
-			}
-			else if (start[col] == info->me && maps[row][col].pos == 0)
-				maps[row][col].pos = -1;
-			col++;
-		}
-		row++;
-	}
-	
-	//return (TRUE);
-}
 
 int	min_distance(t_info *info, t_maps **maps, t_coord coord)
 {
