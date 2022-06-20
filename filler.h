@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 15:06:30 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 15:24:53 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ typedef struct	s_coord
 	int			y;
 }				t_coord;
 
-typedef	struct		s_distance
+typedef	struct		s_dist
 {
 	t_coord			coord;
 	unsigned int	dist;
 	unsigned int	move;
-}					t_distance;
+}					t_dist;
 
 typedef struct		s_info
 {
@@ -58,17 +58,17 @@ typedef struct		s_maps
 	unsigned int	move;
 }					t_maps;
 
-void	parse_distance_list(t_distance *list, t_info *info, t_maps **maps);
-void	sort_distance_list(t_distance *list, t_info *info);
-void print_dist_list(t_distance *list, int fd, t_info *info); //del
-//void	put_piece(t_info *info, t_distance *list);
-void	free_distance_list(t_distance *list);
+void	get_dist_list(t_dist *list, t_info *info, t_maps **maps);
+void	sort_dist_list(t_dist *list, t_info *info);
+void print_dist_list(t_dist *list, int fd, t_info *info); //del
+
+void	free_distance_list(t_dist *list);
 
 
-void	put_piece(t_info *info, t_distance *list, t_maps **maps);
+void	put_piece(t_info *info, t_dist *list, t_maps **maps);
 
 
-t_distance	*init_list(t_info *info);
+t_dist	*init_list(t_info *info);
 
 /* get_info.c */
 void	get_player_nb(t_info *info, char *line, char *name);

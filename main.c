@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 14:55:00 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 15:34:58 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,62 +55,13 @@ void parse_piece(t_info *info)
 }
 
 
-void print_map(t_info *info, t_maps **maps, int fd)
-{
-	for (int i = 0; i < info->map_row; i++)
-	{
-		for (int j = 0; j < info->map_col; j++)
-		{
-			ft_putnbr_fd(maps[i][j].pos, fd);
-			if (maps[i][j].pos <= 9)
-				write(fd, "   ", 3);
-			else
-				write(fd, "  ", 2);
-		}
-		write(fd, "\n", 1);
-	}
-	write(fd, "---\n", 4);
-}
 
-void print_dist_map(t_info *info, t_maps **maps, int fd)
-{
-	for (int i = 0; i < info->map_row; i++)
-	{
-		for (int j = 0; j < info->map_col; j++)
-		{
-			ft_putnbr_fd(maps[i][j].dist, fd);
-			if (maps[i][j].dist <= 9)
-				write(fd, "   ", 3);
-			else
-				write(fd, "  ", 2);
-		}
-		write(fd, "\n", 1);
-	}
-	write(fd, "---\n", 4);
-}
-
-void print_skip_map(t_info *info, t_maps **maps, int fd)
-{
-	for (int i = 0; i < info->map_row; i++)
-	{
-		for (int j = 0; j < info->map_col; j++)
-		{
-			ft_putnbr_fd(maps[i][j].move, fd); //!!! prints MOVE
-			if (maps[i][j].dist <= 9)
-				write(fd, "   ", 3);
-			else
-				write(fd, "  ", 2);
-		}
-		write(fd, "\n", 1);
-	}
-	write(fd, "---\n", 4);
-}
 
 int main(int ac, char **av)
 {
 	char		*line;
 	t_info		info;
-	t_distance	*list;
+	t_dist	*list;
 	t_maps		**maps;
 	
 	//int fd;
@@ -147,8 +98,8 @@ int main(int ac, char **av)
 			get_dist_map(&info, maps);
 			if (!list)
 				list = init_list(&info);
-			parse_distance_list(list, &info, maps);
-			sort_distance_list(list, &info);
+			get_dist_list(list, &info, maps);
+			sort_dist_list(list, &info);
 		}
 		if (ft_strstr(line, "Piece"))
 		{
