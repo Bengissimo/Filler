@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/18 12:17:44 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 10:14:33 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ int main(void)
 	while(TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
-			return (1);
+			return (EXIT_ERROR);
 		if (info.player_nb == 0)
 			get_player_nb(&info, line);
 		if (info.map_row == 0 && info.map_col == 0)
@@ -217,5 +217,5 @@ int main(void)
 		info.move_count++;
 	}
 	free_distance_list(list);
-	return (0);
+	return (EXIT_SUCCESS);
 }

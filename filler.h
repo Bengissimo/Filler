@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/18 11:43:44 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 10:13:11 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <unistd.h>
 # include "libft/libft.h"
 
+# define EXIT_SUCCESS 0
+# define EXIT_ERROR 1
 # define TRUE 1
 # define FALSE 0
 
