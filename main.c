@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 10:42:07 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 11:48:10 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,6 @@ void	init_filler(t_info *info)
 	info->dist_size = 0;
 	info->is_new = FALSE;
 	info->move_count = 0;
-}
-
-void	get_map_size(t_info *info, char *line)
-{
-	char	*map_size;
-	//write(fd, "debug\n", 6);
-	if ((map_size = ft_strstr(line, "Plateau")))
-	{
-		//write(fd, map_size, ft_strlen(map_size));
-		//write(fd, "\n", 1);
-		info->map_row = ft_atoi(ft_strchr(line, ' ') + 1);
-		info->map_col = ft_atoi(ft_strrchr(line, ' ') + 1);
-		//ft_putnbr_fd(info->map_row, fd);
-		//write(fd, "\n", 1);
-		//ft_putnbr_fd(info->map_col, fd);
-		//write(fd, "\n", 1);
-	}
 }
 
 void get_piece_size(t_info *info, char *line)
@@ -123,7 +106,7 @@ void print_skip_map(t_info *info, t_maps **maps, int fd)
 	write(fd, "---\n", 4);
 }
 
-int main(void)
+int main(int ac, char **av)
 {
 	char		*line;
 	t_info		info;
@@ -131,7 +114,8 @@ int main(void)
 	t_maps		**maps;
 	
 	//int fd;
-	
+	if (ac != 1)
+		return (EXIT_ERROR);
 	list = NULL;
 	maps = NULL;
 	init_filler(&info);
@@ -140,15 +124,19 @@ int main(void)
 	{
 		if (get_next_line(0, &line) != 1)
 			return (EXIT_ERROR);
-		if (info.player_nb == 0)
+		if (ft_strstr(line, "$$$ exec p"))
 		{
-			if (!get_player_nb(&info, line))
-				return (EXIT_ERROR);
+			get_player_nb(&info, line, av[0]);
 		}
-		if (info.map_row == 0 && info.map_col == 0)
-			get_map_size(&info, line);
+		if (ft_strstr(line, "Plateau"))
+		{
+			if (!(get_map_size(&info, line)))
+				return (EXIT_ERROR);
+		}	
 		if (ft_strstr(line, "0123456789"))
 		{
+			if (info.player_nb == 0)
+				return(EXIT_ERROR);
 			if (maps == NULL && info.map_row > 0 && info.map_col > 0)
 				maps = init_maps(maps, info.map_row, info.map_col);
 			
