@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 14:13:47 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 16:00:14 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 11:21:10 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_dist	*init_list(t_info *info)
 {
 	unsigned int	size;
 	unsigned int	i;
-	t_dist *list;
+	t_dist			*list;
 
 	size = info->map_col * info->map_row;
 	list = (t_dist *)malloc(sizeof(t_dist) * size);
@@ -76,7 +76,7 @@ void	sort_dist_list(t_dist *list, t_info *info)
 	unsigned int	j;
 	unsigned int	size;
 	int				has_swapped;
-	
+
 	has_swapped = FALSE;
 	i = 0;
 	size = info->dist_size;
@@ -89,12 +89,13 @@ void	sort_dist_list(t_dist *list, t_info *info)
 		{
 			if (list[j].dist > list[j + 1].dist)
 				has_swapped = swap(list + j, list + j + 1);
-			else if (list[j].dist == list[j + 1].dist && list[j].move < list[j + 1].move)
+			else if (list[j].dist == list[j + 1].dist
+				&& list[j].move < list[j + 1].move)
 				has_swapped = swap(list + j, list + j + 1);
 			j++;
 		}
 		if (!has_swapped)
-			break;
+			break ;
 		i++;
 	}	
 }

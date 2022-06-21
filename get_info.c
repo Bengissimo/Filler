@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:41:20 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 10:10:14 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 11:05:12 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	get_map_size(t_info *info, char *line)
 {
 	char	*row;
 	char	*col;
-	
+
 	row = ft_strchr(line, ' ') + 1;
 	col = ft_strrchr(line, ' ') + 1;
 	if (!row || !col)

@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 10:47:52 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 11:15:07 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	init_filler(t_info *info)
 	info->move_count = 0;
 }
 
-int get_info(char *line, t_info *info, char *name)
+int	get_info(char *line, t_info *info, char *name)
 {
 	if (ft_strstr(line, "$$$ exec p"))
 		get_player_nb(info, line, name);
@@ -38,12 +38,12 @@ int get_info(char *line, t_info *info, char *name)
 	return (EXIT_SUCCESS);
 }
 
-int get_maps(char *line, t_info *info, t_maps ***maps, t_dist **list)
+int	get_maps(char *line, t_info *info, t_maps ***maps, t_dist **list)
 {
 	if (ft_strstr(line, "    0"))
 	{
 		if (!(info->player_nb) || !(info->map_col) || !(info->map_row))
-			return(EXIT_ERROR);
+			return (EXIT_ERROR);
 		if (!(*maps))
 			*maps = init_maps(info->map_row, info->map_col);
 		if (!get_pos_map(info, *maps))
@@ -61,7 +61,7 @@ int get_maps(char *line, t_info *info, t_maps ***maps, t_dist **list)
 	return (EXIT_SUCCESS);
 }
 
-int place(char *line, t_info *info, t_maps **maps, t_dist *list)
+int	place(char *line, t_info *info, t_maps **maps, t_dist *list)
 {
 	if (ft_strstr(line, "Piece"))
 	{
@@ -69,12 +69,12 @@ int place(char *line, t_info *info, t_maps **maps, t_dist *list)
 			return (EXIT_ERROR);
 		if (!get_piece_shape(info))
 			return (EXIT_ERROR);
-		put_piece(info, list ,maps);
+		put_piece(info, list, maps);
 	}
 	return (EXIT_SUCCESS);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	char		*line;
 	t_info		info;
@@ -87,7 +87,7 @@ int main(int ac, char **av)
 	maps = NULL;
 	init_filler(&info);
 	info.player_name = av[0];
-	while(TRUE)
+	while (TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
 			return (EXIT_ERROR);

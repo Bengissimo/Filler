@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:49:46 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 10:11:24 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 11:05:34 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_maps	**init_maps(int row_size, int col_size)
 {
 	int		i;
 	int		j;
-	t_maps **maps;
+	t_maps	**maps;
 
 	maps = (t_maps **)malloc(sizeof(t_maps *) * row_size);
 	if (!maps)

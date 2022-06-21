@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 09:57:08 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 11:18:49 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static int	is_placeable(t_info *info, t_coord coord, t_maps **maps)
 	int	found;
 
 	found = FALSE;
-	if (coord.y + info->piece_row > info->map_row || coord.x + info->piece_col > info->map_col)
+	if (coord.y + info->piece_row > info->map_row
+		|| coord.x + info->piece_col > info->map_col)
 		return (FALSE);
 	row = 0;
 	while (row < info->piece_row)
@@ -27,10 +28,11 @@ static int	is_placeable(t_info *info, t_coord coord, t_maps **maps)
 		col = 0;
 		while (col < info->piece_col)
 		{
-			
-			if (maps[coord.y + row][coord.x + col].pos == -2 && info->piece[row][col] == '*')
+			if (maps[coord.y + row][coord.x + col].pos == -2
+			&& info->piece[row][col] == '*')
 				return (FALSE);
-			if (maps[coord.y + row][coord.x + col].pos == -1 && info->piece[row][col] == '*')
+			if (maps[coord.y + row][coord.x + col].pos == -1
+			&& info->piece[row][col] == '*')
 			{
 				if (found)
 					return (FALSE);
@@ -49,11 +51,9 @@ void	put_piece(t_info *info, t_dist *list, t_maps **maps)
 	unsigned int	size;
 
 	size = info->dist_size;
-
 	i = 0;
 	while (i < size)
 	{
-		
 		if (is_placeable(info, list[i].coord, maps))
 		{
 			ft_putnbr(list[i].coord.y);

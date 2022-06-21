@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:01:49 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 15:03:33 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 11:04:59 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static unsigned int	ft_abs(int nb)
 	return (nb);
 }
 
-static unsigned int ft_max(unsigned int nb1, unsigned int nb2)
+static unsigned int	ft_max(unsigned int nb1, unsigned int nb2)
 {
 	if (nb1 > nb2)
 		return (nb1);
@@ -63,7 +63,6 @@ void	get_dist_map(t_info *info, t_maps **maps)
 		coord.x = 0;
 		while (coord.x < info->map_col)
 		{
-			
 			if (maps[coord.y][coord.x].skip == TRUE)
 				maps[coord.y][coord.x].dist = 0;
 			else
