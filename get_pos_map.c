@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:49:46 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 15:50:57 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 22:19:19 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,32 +41,27 @@ t_maps	**init_maps(int row_size, int col_size)
 	return (maps);
 }
 
-/*static void set_values(char *start, t_info *info, t_maps ***maps, t_coord co)
+static int	verify_line(char *line, int row, char **start)
 {
-	if (start[co.x] == info->foe && maps[co.y][co.x]->pos == 0)
-	{
-		maps[co.y][co.x]->pos = -2;
-		info->is_new = TRUE;
-		maps[co.y][co.x]->move = info->move_count;
-	}
-	else if (start[co.x] == info->me && maps[co.y][co.x]->pos == 0)
-		maps[co.y][co.x]->pos = -1;
-}*/
+	get_next_line(0, &line);
+	if (ft_atoi(line) != row)
+		return (FALSE);
+	*start = ft_strchr(line, ' ') + 1;
+	if (!(*start))
+		return (FALSE);
+	return (TRUE);
+}
 
 int	get_pos_map(t_info *info, char *line, t_maps **maps)
 {
-	t_coord co;
+	t_coord	co;
 	char	*start;
 
 	co.y = 0;
 	info->is_new = FALSE;
 	while (co.y < info->map_row)
 	{
-		get_next_line(0, &line);
-		if (ft_atoi(line) != co.y)
-			return (FALSE);
-		start = ft_strchr(line, ' ') + 1;
-		if (!start)
+		if (!verify_line(line, co.y, &start))
 			return (FALSE);
 		co.x = 0;
 		while (co.x < info->map_col)

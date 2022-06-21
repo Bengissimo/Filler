@@ -6,41 +6,45 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 11:18:49 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 22:48:33 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-static int	is_placeable(t_info *info, t_coord coord, t_maps **maps)
+static int	is_within_border(t_info *info, t_coord co)
 {
-	int	row;
-	int	col;
-	int	found;
+	if (co.y + info->piece_row > info->map_row
+		|| co.x + info->piece_col > info->map_col)
+		return (FALSE);
+	return (TRUE);
+}
+
+static int	is_placeable(t_info *info, t_coord co, t_maps **maps)
+{
+	t_coord	coord;
+	int		found;
 
 	found = FALSE;
-	if (coord.y + info->piece_row > info->map_row
-		|| coord.x + info->piece_col > info->map_col)
+	if (!is_within_border(info, co))
 		return (FALSE);
-	row = 0;
-	while (row < info->piece_row)
+	coord.y = -1;
+	while (++coord.y < info->piece_row)
 	{
-		col = 0;
-		while (col < info->piece_col)
+		coord.x = -1;
+		while (++coord.x < info->piece_col)
 		{
-			if (maps[coord.y + row][coord.x + col].pos == -2
-			&& info->piece[row][col] == '*')
+			if (maps[co.y + coord.y][co.x + coord.x].pos == -2
+				&& info->piece[coord.y][coord.x] == '*')
 				return (FALSE);
-			if (maps[coord.y + row][coord.x + col].pos == -1
-			&& info->piece[row][col] == '*')
+			if (maps[co.y + coord.y][co.x + coord.x].pos == -1
+				&& info->piece[coord.y][coord.x] == '*')
 			{
 				if (found)
 					return (FALSE);
 				found = TRUE;
 			}
-			col++;
 		}
-		row++;
 	}	
 	return (found);
 }

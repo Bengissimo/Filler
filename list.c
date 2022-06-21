@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 14:13:47 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 11:21:10 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 22:24:31 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,9 @@ void	sort_dist_list(t_dist *list, t_info *info)
 		j = 0;
 		while (j < size - i - 1)
 		{
-			if (list[j].dist > list[j + 1].dist)
-				has_swapped = swap(list + j, list + j + 1);
-			else if (list[j].dist == list[j + 1].dist
-				&& list[j].move < list[j + 1].move)
+			if (list[j].dist > list[j + 1].dist
+				|| (list[j].dist == list[j + 1].dist
+					&& list[j].move < list[j + 1].move))
 				has_swapped = swap(list + j, list + j + 1);
 			j++;
 		}
