@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 11:15:07 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 15:47:08 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	get_maps(char *line, t_info *info, t_maps ***maps, t_dist **list)
 			return (EXIT_ERROR);
 		if (!(*maps))
 			*maps = init_maps(info->map_row, info->map_col);
-		if (!get_pos_map(info, *maps))
+		if (!get_pos_map(info, line, *maps))
 			return (EXIT_ERROR);
 		if (info->is_new == TRUE)
 		{

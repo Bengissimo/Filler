@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 10:13:38 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 15:47:03 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,20 @@
 # define TRUE 1
 # define FALSE 0
 
-typedef struct	s_coord
+typedef struct s_coord
 {
 	int			x;
 	int			y;
 }				t_coord;
 
-typedef	struct		s_dist
+typedef struct s_dist
 {
 	t_coord			coord;
 	unsigned int	dist;
 	unsigned int	move;
 }					t_dist;
 
-typedef struct		s_info
+typedef struct s_info
 {
 	int				player_nb;
 	char			*player_name;
@@ -51,7 +51,7 @@ typedef struct		s_info
 	int				is_new;
 }					t_info;
 
-typedef struct		s_maps
+typedef struct s_maps
 {
 	int				pos;
 	unsigned int	dist;
@@ -61,13 +61,9 @@ typedef struct		s_maps
 
 void	get_dist_list(t_dist *list, t_info *info, t_maps **maps);
 void	sort_dist_list(t_dist *list, t_info *info);
-void print_dist_list(t_dist *list, int fd, t_info *info); //del
-
 void	free_distance_list(t_dist *list);
 
-
 void	put_piece(t_info *info, t_dist *list, t_maps **maps);
-
 
 t_dist	*init_list(t_info *info);
 
@@ -77,11 +73,10 @@ int		get_map_size(t_info *info, char *line);
 int		get_piece_size(t_info *info, char *line);
 int		get_piece_shape(t_info *info);
 
-
 /* get maps */
 t_maps	**init_maps(int row_size, int col_size);
-int		get_pos_map(t_info *info, t_maps **maps);
+int		get_pos_map(t_info *info, char *line, t_maps **maps);
 void	get_skip_map(t_info *info, t_maps **maps);
 void	get_dist_map(t_info *info, t_maps **maps);
 
-# endif
+#endif

@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:00:02 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 11:10:15 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 11:41:49 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,12 @@ void	get_skip_map(t_info *info, t_maps **maps)
 		coord.x = 0;
 		while (coord.x < info->map_col)
 		{
-			if (maps[coord.y][coord.x].skip == FALSE
-			&& (maps[coord.y][coord.x].pos == -2 || !is_nearby_free(info, maps, coord)))
-				maps[coord.y][coord.x].skip = TRUE;
+			if (maps[coord.y][coord.x].skip == FALSE)
+			{
+				if (maps[coord.y][coord.x].pos == -2
+					|| !is_nearby_free(info, maps, coord))
+					maps[coord.y][coord.x].skip = TRUE;
+			}
 			coord.x++;
 		}
 		coord.y++;

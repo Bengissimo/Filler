@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:49:46 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 11:05:34 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 15:50:57 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,37 +41,47 @@ t_maps	**init_maps(int row_size, int col_size)
 	return (maps);
 }
 
-int	get_pos_map(t_info *info, t_maps **maps)
+/*static void set_values(char *start, t_info *info, t_maps ***maps, t_coord co)
 {
-	int		row;
-	int		col;
-	char	*line;
+	if (start[co.x] == info->foe && maps[co.y][co.x]->pos == 0)
+	{
+		maps[co.y][co.x]->pos = -2;
+		info->is_new = TRUE;
+		maps[co.y][co.x]->move = info->move_count;
+	}
+	else if (start[co.x] == info->me && maps[co.y][co.x]->pos == 0)
+		maps[co.y][co.x]->pos = -1;
+}*/
+
+int	get_pos_map(t_info *info, char *line, t_maps **maps)
+{
+	t_coord co;
 	char	*start;
 
-	row = 0;
+	co.y = 0;
 	info->is_new = FALSE;
-	while (row < info->map_row)
+	while (co.y < info->map_row)
 	{
 		get_next_line(0, &line);
-		if (ft_atoi(line) != row)
+		if (ft_atoi(line) != co.y)
 			return (FALSE);
 		start = ft_strchr(line, ' ') + 1;
 		if (!start)
 			return (FALSE);
-		col = 0;
-		while (col < info->map_col)
+		co.x = 0;
+		while (co.x < info->map_col)
 		{
-			if (start[col] == info->foe && maps[row][col].pos == 0)
+			if (start[co.x] == info->foe && maps[co.y][co.x].pos == 0)
 			{
-				maps[row][col].pos = -2;
+				maps[co.y][co.x].pos = -2;
 				info->is_new = TRUE;
-				maps[row][col].move = info->move_count;
+				maps[co.y][co.x].move = info->move_count;
 			}
-			else if (start[col] == info->me && maps[row][col].pos == 0)
-				maps[row][col].pos = -1;
-			col++;
+			else if (start[co.x] == info->me && maps[co.y][co.x].pos == 0)
+				maps[co.y][co.x].pos = -1;
+			co.x++;
 		}
-		row++;
+		co.y++;
 	}
 	return (TRUE);
 }
