@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   place.c                                            :+:      :+:    :+:   */
+/*   put_piece.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 15:25:19 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 09:57:08 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int	is_placeable(t_info *info, t_coord coord, t_maps **maps)
 {
-	int row;
-	int col;
-	int found;
+	int	row;
+	int	col;
+	int	found;
 
 	found = FALSE;
 	if (coord.y + info->piece_row > info->map_row || coord.x + info->piece_col > info->map_col)
@@ -25,7 +25,6 @@ static int	is_placeable(t_info *info, t_coord coord, t_maps **maps)
 	while (row < info->piece_row)
 	{
 		col = 0;
-		
 		while (col < info->piece_col)
 		{
 			
@@ -67,4 +66,3 @@ void	put_piece(t_info *info, t_dist *list, t_maps **maps)
 	}
 	write(1, "0 0\n", 4);
 }
-

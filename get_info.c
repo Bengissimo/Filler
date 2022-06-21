@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:41:20 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 19:43:44 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 10:10:14 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,26 +54,39 @@ int	get_map_size(t_info *info, char *line)
 	return (TRUE);
 }
 
-void get_piece_size(t_info *info, char *line)
+int	get_piece_size(t_info *info, char *line)
 {
+	char	*row;
+	char	*col;
+
+	row = ft_strchr(line, ' ') + 1;
+	col = ft_strrchr(line, ' ') + 1;
+	if (!row || !col)
+		return (FALSE);
 	info->piece_row = ft_atoi(ft_strchr(line, ' ') + 1);
 	info->piece_col = ft_atoi(ft_strrchr(line, ' ') + 1);
+	if (info->piece_row <= 0 || info->piece_col <= 0)
+		return (FALSE);
+	return (TRUE);
 }
 
-void get_piece(t_info *info)
+int	get_piece_shape(t_info *info)
 {
 	int		i;
 	char	*line;
 
 	info->piece = (char **)malloc(sizeof(char *) * info->piece_row);
 	if (!info->piece)
-		return ;
+		return (FALSE);
 	i = 0;
 	while (i < info->piece_row)
 	{
 		get_next_line(0, &line);
 		info->piece[i] = (char *)malloc(sizeof(char) * (info->piece_col + 1));
+		if (!info->piece[i])
+			return (FALSE); //free array eklemek gerek buraya
 		ft_strcpy(info->piece[i], line);
 		i++;
 	}
+	return (TRUE);
 }

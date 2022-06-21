@@ -6,14 +6,14 @@
 #    By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 17:18:57 by bkandemi          #+#    #+#              #
-#    Updated: 2022/06/20 15:04:29 by bkandemi         ###   ########.fr        #
+#    Updated: 2022/06/21 09:54:17 by bkandemi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = bkandemi.filler
 
 C_FILES = main.c\
-		place.c\
+		put_piece.c\
 		list.c\
 		get_info.c\
 		get_pos_map.c\

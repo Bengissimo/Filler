@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 21:19:10 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/21 10:13:38 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ t_dist	*init_list(t_info *info);
 /* get_info.c */
 void	get_player_nb(t_info *info, char *line, char *name);
 int		get_map_size(t_info *info, char *line);
-void	get_piece_size(t_info *info, char *line);
-void	get_piece(t_info *info);
+int		get_piece_size(t_info *info, char *line);
+int		get_piece_shape(t_info *info);
 
 
 /* get maps */
