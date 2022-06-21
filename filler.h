@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 16:04:14 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 21:19:10 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,18 @@ typedef	struct		s_dist
 
 typedef struct		s_info
 {
-	int		player_nb;
-	char	me;
-	char	foe;
-	int		map_row;
-	int		map_col;
-	int		piece_row;
-	int		piece_col;
-	char	**piece;
+	int				player_nb;
+	char			*player_name;
+	char			me;
+	char			foe;
+	int				map_row;
+	int				map_col;
+	int				piece_row;
+	int				piece_col;
+	char			**piece;
 	unsigned int	dist_size;
 	unsigned int	move_count;
-	int		is_new;
+	int				is_new;
 }					t_info;
 
 typedef struct		s_maps
@@ -78,19 +79,9 @@ void	get_piece(t_info *info);
 
 
 /* get maps */
-t_maps	**init_maps(t_maps **maps, int row_size, int col_size);
+t_maps	**init_maps(int row_size, int col_size);
 int		get_pos_map(t_info *info, t_maps **maps);
 void	get_skip_map(t_info *info, t_maps **maps);
 void	get_dist_map(t_info *info, t_maps **maps);
-
-
-
-
-
-
-
-
-
-
 
 # endif

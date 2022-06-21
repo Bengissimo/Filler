@@ -6,17 +6,17 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:49:46 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 15:02:49 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/20 21:17:35 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-t_maps	**init_maps(t_maps **maps, int row_size, int col_size)
+t_maps	**init_maps(int row_size, int col_size)
 {
 	int		i;
 	int		j;
-	//write(fd, "test\n", 5);
+	t_maps **maps;
 
 	maps = (t_maps **)malloc(sizeof(t_maps *) * row_size);
 	if (!maps)
