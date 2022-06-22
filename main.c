@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 15:47:08 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/22 22:44:29 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ int	get_maps(char *line, t_info *info, t_maps ***maps, t_dist **list)
 		if (!(*maps))
 			*maps = init_maps(info->map_row, info->map_col);
 		if (!get_pos_map(info, line, *maps))
+		{
+			free_maps(*maps, info->map_col);
 			return (EXIT_ERROR);
+		}
 		if (info->is_new == TRUE)
 		{
 			get_skip_map(info, *maps);
@@ -74,6 +77,8 @@ int	place(char *line, t_info *info, t_maps **maps, t_dist *list)
 	return (EXIT_SUCCESS);
 }
 
+//cleanup and exit fonksiyonu yaz ve return error kisminda onu cagir 
+
 int	main(int ac, char **av)
 {
 	char		*line;
@@ -98,7 +103,8 @@ int	main(int ac, char **av)
 		if (place(line, &info, maps, list) != EXIT_SUCCESS)
 			return (EXIT_ERROR);
 		info.move_count++;
+		free(line);
 	}
-	//clean up
+	clean_up(&info, maps, list, line);
 	return (EXIT_SUCCESS);
 }

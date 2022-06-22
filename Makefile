@@ -6,7 +6,7 @@
 #    By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 17:18:57 by bkandemi          #+#    #+#              #
-#    Updated: 2022/06/21 09:54:17 by bkandemi         ###   ########.fr        #
+#    Updated: 2022/06/22 22:10:26 by bkandemi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,13 +19,14 @@ C_FILES = main.c\
 		get_pos_map.c\
 		get_skip_map.c\
 		get_dist_map.c\
+		clean_up.c
 		
 
 O_FILES = $(C_FILES:.c=.o)
 
-CC = gcc
+CC = /usr/local/opt/llvm/bin/clang -fsanitize=leak
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -g -Wall -Wextra -Werror
 
 all : $(NAME)
 
