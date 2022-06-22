@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:49:46 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/22 22:23:16 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/22 22:54:59 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,22 @@ t_maps	**init_maps(int row_size, int col_size)
 
 static int	verify_line(char *line, int row, char **start)
 {
-	if (line != NULL)
-		free(line);
 	get_next_line(0, &line);
 	if (ft_atoi(line) != row)
 	{
-		free(line);
+		if (line)
+			free(line);
 		return (FALSE);
 	}
 	*start = ft_strchr(line, ' ') + 1;
 	if (!(*start))
 	{
-		free(line);
+		if (line)
+			free(line);
 		return (FALSE);
 	}
-	free(line);
+	if (line)
+		free(line);
 	return (TRUE);
 }
 
