@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/22 23:00:47 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/23 15:15:17 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ int	get_maps(char *line, t_info *info, t_maps ***maps, t_dist **list)
 		if (!(*maps))
 			*maps = init_maps(info->map_row, info->map_col);
 		if (!get_pos_map(info, line, *maps))
-		{
-			free_maps(*maps, info->map_col);
-			return (EXIT_ERROR);
-		}
+			return (EXIT_ERROR); //!!!
 		if (info->is_new == TRUE)
 		{
 			get_skip_map(info, *maps);
@@ -73,6 +70,10 @@ int	place(char *line, t_info *info, t_maps **maps, t_dist *list)
 		if (!get_piece_shape(info))
 			return (EXIT_ERROR);
 		put_piece(info, list, maps);
+		{
+			//free_piece(info->piece); bu direk bozuyor 
+			return (EXIT_SUCCESS);
+		}
 	}
 	return (EXIT_SUCCESS);
 }
@@ -103,8 +104,10 @@ int	main(int ac, char **av)
 		if (place(line, &info, maps, list) != EXIT_SUCCESS)
 			return (EXIT_ERROR);
 		info.move_count++;
-		free(line);
+		ft_strdel(&line);
+		//free_piece(info.piece);  bozuyor
 	}
-	clean_up(&info, maps, list, line);
-	return (EXIT_SUCCESS);
+	//system("leaks bkandemi.filler > leaks.txt");
+	system("leaks bkandemi.filler > /Users/bkandemi/bkandemi_workspace/filler/leaks.txt");
+	return (clean_up(&info, maps, list, line, EXIT_SUCCESS));
 }

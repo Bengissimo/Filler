@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 22:48:33 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/23 14:53:27 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ static int	is_placeable(t_info *info, t_coord co, t_maps **maps)
 
 	found = FALSE;
 	if (!is_within_border(info, co))
+	{
+		//ft_free_array(info->piece, info->piece_col);
 		return (FALSE);
+	}
 	coord.y = -1;
 	while (++coord.y < info->piece_row)
 	{
@@ -36,16 +39,21 @@ static int	is_placeable(t_info *info, t_coord co, t_maps **maps)
 		{
 			if (maps[co.y + coord.y][co.x + coord.x].pos == -2
 				&& info->piece[coord.y][coord.x] == '*')
-				return (FALSE);
+				{
+					//ft_free_array(info->piece, info->piece_col);
+					return (FALSE);
+				}
 			if (maps[co.y + coord.y][co.x + coord.x].pos == -1
 				&& info->piece[coord.y][coord.x] == '*')
 			{
 				if (found)
+				{
 					return (FALSE);
+				}
 				found = TRUE;
 			}
 		}
-	}	
+	}
 	return (found);
 }
 
