@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/23 15:15:17 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/23 22:42:43 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,9 @@ int	place(char *line, t_info *info, t_maps **maps, t_dist *list)
 		if (!get_piece_shape(info))
 			return (EXIT_ERROR);
 		put_piece(info, list, maps);
-		{
-			//free_piece(info->piece); bu direk bozuyor 
-			return (EXIT_SUCCESS);
-		}
+		free_piece(&(info->piece), info->piece_row);
 	}
+	//free_piece(&info->piece, info->piece_row);
 	return (EXIT_SUCCESS);
 }
 
@@ -103,11 +101,12 @@ int	main(int ac, char **av)
 			return (EXIT_ERROR);
 		if (place(line, &info, maps, list) != EXIT_SUCCESS)
 			return (EXIT_ERROR);
+		free_maps(&maps, info.map_row);
 		info.move_count++;
 		ft_strdel(&line);
-		//free_piece(info.piece);  bozuyor
+		
 	}
 	//system("leaks bkandemi.filler > leaks.txt");
-	system("leaks bkandemi.filler > /Users/bkandemi/bkandemi_workspace/filler/leaks.txt");
+	//fscanf(stdin, "c");
 	return (clean_up(&info, maps, list, line, EXIT_SUCCESS));
 }

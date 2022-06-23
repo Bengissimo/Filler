@@ -6,7 +6,7 @@
 #    By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 17:18:57 by bkandemi          #+#    #+#              #
-#    Updated: 2022/06/23 14:16:57 by bkandemi         ###   ########.fr        #
+#    Updated: 2022/06/23 17:35:38 by bkandemi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,9 @@ O_FILES = $(C_FILES:.c=.o)
 
 CC = gcc
 
-#CC_DEBUG = /usr/local/opt/llvm/bin/clang -fsanitize=leak
+CC_DEBUG = /usr/local/opt/llvm/bin/clang -fsanitize=leak
 
-CC_DEBUG = gcc -g -fsanitize=address
+#CC_DEBUG = gcc -g -fsanitize=address
 
 FLAGS = -g -Wall -Wextra -Werror
 

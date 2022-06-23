@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/23 15:01:35 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/23 21:34:10 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ int		get_pos_map(t_info *info, char *line, t_maps **maps);
 void	get_skip_map(t_info *info, t_maps **maps);
 void	get_dist_map(t_info *info, t_maps **maps);
 
-void free_maps(t_maps **maps, int index);
+void free_maps(t_maps ***maps, int index);
 void free_list(t_dist **list);
-void	free_piece(char **array);
+void	free_piece(char ***array, int size);
 
 
 int clean_up(t_info *info, t_maps **maps, t_dist *list, char *line, int ret);

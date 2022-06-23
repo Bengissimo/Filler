@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:41:20 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/23 15:12:43 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/23 21:20:17 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	get_piece_shape(t_info *info)
 		info->piece[i] = (char *)malloc(sizeof(char) * (info->piece_col + 1));
 		if (!info->piece[i])
 		{
-			free_piece(info->piece);
+			free_piece(&(info->piece), i);
 			return (FALSE);
 		}
 		ft_strcpy(info->piece[i], line);

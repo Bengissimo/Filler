@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/23 14:53:27 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/23 21:04:10 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,12 @@ void	put_piece(t_info *info, t_dist *list, t_maps **maps)
 			write(1, " ", 1);
 			ft_putnbr(list[i].coord.x);
 			write(1, "\n", 1);
+			//
 			return ;
 		}
+		
 		i++;
 	}
+	//
 	write(1, "0 0\n", 4);
 }
