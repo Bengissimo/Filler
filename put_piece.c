@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/24 23:05:04 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/24 23:30:15 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@ static int	is_placeable(t_info *info, t_coord co, t_maps **maps)
 
 	found = FALSE;
 	if (!is_within_border(info, co))
-	{
-		//ft_free_array(info->piece, info->piece_col);
 		return (FALSE);
-	}
 	coord.y = -1;
 	while (++coord.y < info->piece_row)
 	{
@@ -39,17 +36,12 @@ static int	is_placeable(t_info *info, t_coord co, t_maps **maps)
 		{
 			if (maps[co.y + coord.y][co.x + coord.x].pos == -2
 				&& info->piece[coord.y][coord.x] == '*')
-				{
-					//ft_free_array(info->piece, info->piece_col);
-					return (FALSE);
-				}
+				return (FALSE);
 			if (maps[co.y + coord.y][co.x + coord.x].pos == -1
 				&& info->piece[coord.y][coord.x] == '*')
 			{
 				if (found)
-				{
 					return (FALSE);
-				}
 				found = TRUE;
 			}
 		}
@@ -72,14 +64,12 @@ int	put_piece(t_info *info, t_dist *list, t_maps **maps)
 			write(1, " ", 1);
 			ft_putnbr(list[i].coord.x);
 			write(1, "\n", 1);
-			free_piece(&(info->piece), info->piece_row);
+			free_piece(info->piece, info->piece_row);
 			return (TRUE);
 		}
-		
 		i++;
 	}
-	//
 	write(1, "0 0\n", 4);
-	free_piece(&(info->piece), info->piece_row);
+	free_piece(info->piece, info->piece_row);
 	return (FALSE);
 }

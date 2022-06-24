@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/24 23:11:05 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/24 23:28:59 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	place(char *line, t_info *info, t_maps **maps, t_dist *list)
 		if (!put_piece(info, list, maps))
 			return (EXIT_ERROR);
 	}
-	//free_piece(&info->piece, info->piece_row);
 	return (EXIT_SUCCESS);
 }
 
