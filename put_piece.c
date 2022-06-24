@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/23 21:04:10 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/24 23:05:04 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	is_placeable(t_info *info, t_coord co, t_maps **maps)
 	return (found);
 }
 
-void	put_piece(t_info *info, t_dist *list, t_maps **maps)
+int	put_piece(t_info *info, t_dist *list, t_maps **maps)
 {
 	unsigned int	i;
 	unsigned int	size;
@@ -72,12 +72,14 @@ void	put_piece(t_info *info, t_dist *list, t_maps **maps)
 			write(1, " ", 1);
 			ft_putnbr(list[i].coord.x);
 			write(1, "\n", 1);
-			//
-			return ;
+			free_piece(&(info->piece), info->piece_row);
+			return (TRUE);
 		}
 		
 		i++;
 	}
 	//
 	write(1, "0 0\n", 4);
+	free_piece(&(info->piece), info->piece_row);
+	return (FALSE);
 }

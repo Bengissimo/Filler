@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/23 21:34:10 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/24 23:16:00 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	get_dist_list(t_dist *list, t_info *info, t_maps **maps);
 void	sort_dist_list(t_dist *list, t_info *info);
 void	free_distance_list(t_dist *list);
 
-void	put_piece(t_info *info, t_dist *list, t_maps **maps);
+int	put_piece(t_info *info, t_dist *list, t_maps **maps);
 
 t_dist	*init_list(t_info *info);
 
