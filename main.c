@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/25 10:39:09 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/25 10:53:44 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,6 @@ int	place(char *line, t_filler *filler)
 	}
 	return (EXIT_SUCCESS);
 }
-
-//cleanup and exit fonksiyonu yaz ve return error kisminda onu cagir 
 
 int	main(int ac, char **av)
 {

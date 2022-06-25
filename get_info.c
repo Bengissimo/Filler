@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_filler.c                                         :+:      :+:    :+:   */
+/*   get_info.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/20 10:41:20 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/24 23:30:21 by bkandemi         ###   ########.fr       */
+/*   Created: 2022/06/25 10:42:39 by bkandemi          #+#    #+#             */
+/*   Updated: 2022/06/25 10:43:27 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,25 +70,25 @@ int	get_piece_size(t_filler *filler, char *line)
 	return (TRUE);
 }
 
-int	get_piece_shape(t_filler *filler)
+int	get_piece_shape(t_filler *fill)
 {
 	int		i;
 	char	*line;
 
-	filler->piece = (char **)malloc(sizeof(char *) * filler->piece_row);
-	if (!filler->piece)
+	fill->piece = (char **)malloc(sizeof(char *) * fill->piece_row);
+	if (!fill->piece)
 		return (FALSE);
 	i = 0;
-	while (i < filler->piece_row)
+	while (i < fill->piece_row)
 	{
 		get_next_line(0, &line);
-		filler->piece[i] = (char *)malloc(sizeof(char) * (filler->piece_col + 1));
-		if (!filler->piece[i])
+		fill->piece[i] = (char *)malloc(sizeof(char) * (fill->piece_col + 1));
+		if (!fill->piece[i])
 		{
-			free_piece(filler->piece, i);
+			free_piece(fill->piece, i);
 			return (FALSE);
 		}
-		ft_strcpy(filler->piece[i], line);
+		ft_strcpy(fill->piece[i], line);
 		ft_strdel(&line);
 		i++;
 	}
