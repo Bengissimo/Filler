@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_info.c                                         :+:      :+:    :+:   */
+/*   get_filler.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,33 +12,33 @@
 
 #include "filler.h"
 
-void	get_player_nb(t_info *info, char *line, char *name)
+void	get_player_nb(t_filler *filler, char *line, char *name)
 {
-	char	*player_info;
+	char	*player_filler;
 
-	if (info->player_nb != 0)
+	if (filler->player_nb != 0)
 		return ;
 	if (!ft_strstr(line, name))
 		return ;
-	player_info = ft_strchr(line, 'p');
-	if (!player_info)
+	player_filler = ft_strchr(line, 'p');
+	if (!player_filler)
 		return ;
-	info->player_nb = ft_atoi(player_info + 1);
-	if (!info->player_nb)
+	filler->player_nb = ft_atoi(player_filler + 1);
+	if (!filler->player_nb)
 		return ;
-	if (info->player_nb == 1)
+	if (filler->player_nb == 1)
 	{
-		info->me = 'O';
-		info->foe = 'X';
+		filler->me = 'O';
+		filler->foe = 'X';
 	}
-	else if (info->player_nb == 2)
+	else if (filler->player_nb == 2)
 	{
-		info->me = 'X';
-		info->foe = 'O';
+		filler->me = 'X';
+		filler->foe = 'O';
 	}
 }
 
-int	get_map_size(t_info *info, char *line)
+int	get_map_size(t_filler *filler, char *line)
 {
 	char	*row;
 	char	*col;
@@ -47,14 +47,14 @@ int	get_map_size(t_info *info, char *line)
 	col = ft_strrchr(line, ' ') + 1;
 	if (!row || !col)
 		return (FALSE);
-	info->map_row = ft_atoi(row);
-	info->map_col = ft_atoi(col);
-	if (info->map_row <= 0 || info->map_col <= 0)
+	filler->map_row = ft_atoi(row);
+	filler->map_col = ft_atoi(col);
+	if (filler->map_row <= 0 || filler->map_col <= 0)
 		return (FALSE);
 	return (TRUE);
 }
 
-int	get_piece_size(t_info *info, char *line)
+int	get_piece_size(t_filler *filler, char *line)
 {
 	char	*row;
 	char	*col;
@@ -63,32 +63,32 @@ int	get_piece_size(t_info *info, char *line)
 	col = ft_strrchr(line, ' ') + 1;
 	if (!row || !col)
 		return (FALSE);
-	info->piece_row = ft_atoi(ft_strchr(line, ' ') + 1);
-	info->piece_col = ft_atoi(ft_strrchr(line, ' ') + 1);
-	if (info->piece_row <= 0 || info->piece_col <= 0)
+	filler->piece_row = ft_atoi(ft_strchr(line, ' ') + 1);
+	filler->piece_col = ft_atoi(ft_strrchr(line, ' ') + 1);
+	if (filler->piece_row <= 0 || filler->piece_col <= 0)
 		return (FALSE);
 	return (TRUE);
 }
 
-int	get_piece_shape(t_info *info)
+int	get_piece_shape(t_filler *filler)
 {
 	int		i;
 	char	*line;
 
-	info->piece = (char **)malloc(sizeof(char *) * info->piece_row);
-	if (!info->piece)
+	filler->piece = (char **)malloc(sizeof(char *) * filler->piece_row);
+	if (!filler->piece)
 		return (FALSE);
 	i = 0;
-	while (i < info->piece_row)
+	while (i < filler->piece_row)
 	{
 		get_next_line(0, &line);
-		info->piece[i] = (char *)malloc(sizeof(char) * (info->piece_col + 1));
-		if (!info->piece[i])
+		filler->piece[i] = (char *)malloc(sizeof(char) * (filler->piece_col + 1));
+		if (!filler->piece[i])
 		{
-			free_piece(info->piece, i);
+			free_piece(filler->piece, i);
 			return (FALSE);
 		}
-		ft_strcpy(info->piece[i], line);
+		ft_strcpy(filler->piece[i], line);
 		ft_strdel(&line);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:49:46 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/24 23:31:45 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/25 09:51:08 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,27 +65,27 @@ static int	verify_line(char *line, int row, char **start)
 	return (TRUE);
 }
 
-int	get_pos_map(t_info *info, char *line, t_maps **maps)
+int	get_pos_map(t_filler *filler, char *line, t_maps **maps)
 {
 	t_coord	co;
 	char	*start;
 
 	co.y = 0;
-	info->is_new = FALSE;
-	while (co.y < info->map_row)
+	filler->is_new = FALSE;
+	while (co.y < filler->map_row)
 	{
 		if (!verify_line(line, co.y, &start))
 			return (FALSE);
 		co.x = 0;
-		while (co.x < info->map_col)
+		while (co.x < filler->map_col)
 		{
-			if (start[co.x] == info->foe && maps[co.y][co.x].pos == 0)
+			if (start[co.x] == filler->foe && maps[co.y][co.x].pos == 0)
 			{
 				maps[co.y][co.x].pos = -2;
-				info->is_new = TRUE;
-				maps[co.y][co.x].move = info->move_count;
+				filler->is_new = TRUE;
+				maps[co.y][co.x].move = filler->move_count;
 			}
-			else if (start[co.x] == info->me && maps[co.y][co.x].pos == 0)
+			else if (start[co.x] == filler->me && maps[co.y][co.x].pos == 0)
 				maps[co.y][co.x].pos = -1;
 			co.x++;
 		}

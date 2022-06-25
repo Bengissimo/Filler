@@ -6,33 +6,33 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 14:13:47 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/21 22:24:31 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/25 09:51:28 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-t_dist	*init_list(t_info *info)
+t_dist	*init_list(t_filler *filler)
 {
 	unsigned int	size;
 	unsigned int	i;
 	t_dist			*list;
 
-	size = info->map_col * info->map_row;
+	size = filler->map_col * filler->map_row;
 	list = (t_dist *)malloc(sizeof(t_dist) * size);
 	if (!list)
 		return (NULL);
 	i = 0;
 	while (i < size)
 	{
-		list[i].dist = info->map_col + info->map_row;
+		list[i].dist = filler->map_col + filler->map_row;
 		list[i].move = 0;
 		i++;
 	}
 	return (list);
 }
 
-void	get_dist_list(t_dist *list, t_info *info, t_maps **maps)
+void	get_dist_list(t_dist *list, t_filler *filler, t_maps **maps)
 {
 	int				row;
 	int				col;
@@ -40,10 +40,10 @@ void	get_dist_list(t_dist *list, t_info *info, t_maps **maps)
 
 	row = 0;
 	i = 0;
-	while (row < info->map_row)
+	while (row < filler->map_row)
 	{
 		col = 0;
-		while (col < info->map_col)
+		while (col < filler->map_col)
 		{
 			if (maps[row][col].dist > 0)
 			{
@@ -57,7 +57,7 @@ void	get_dist_list(t_dist *list, t_info *info, t_maps **maps)
 		}
 		row++;
 	}
-	info->dist_size = i;
+	filler->dist_size = i;
 }
 
 static int	swap(t_dist *list1, t_dist *list2)
@@ -70,7 +70,7 @@ static int	swap(t_dist *list1, t_dist *list2)
 	return (TRUE);
 }
 
-void	sort_dist_list(t_dist *list, t_info *info)
+void	sort_dist_list(t_dist *list, t_filler *filler)
 {
 	unsigned int	i;
 	unsigned int	j;
@@ -79,7 +79,7 @@ void	sort_dist_list(t_dist *list, t_info *info)
 
 	has_swapped = FALSE;
 	i = 0;
-	size = info->dist_size;
+	size = filler->dist_size;
 	if (!size)
 		return ;
 	while (i < size - 1)

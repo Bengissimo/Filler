@@ -6,18 +6,18 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:18:30 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/20 15:35:35 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/25 09:51:48 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-void print_dist_list(t_dist *list, int fd, t_info *info)
+void print_dist_list(t_dist *list, int fd, t_filler *filler)
 {
 	unsigned int i;
 
 	i = 0;
-	while (i < info->dist_size)
+	while (i < filler->dist_size)
 	{
 		write(fd, "x: ", 3);
 		ft_putnbr_fd(list[i].coord.x, fd);
@@ -32,11 +32,11 @@ void print_dist_list(t_dist *list, int fd, t_info *info)
 	}
 }
 
-void print_map(t_info *info, t_maps **maps, int fd)
+void print_map(t_filler *filler, t_maps **maps, int fd)
 {
-	for (int i = 0; i < info->map_row; i++)
+	for (int i = 0; i < filler->map_row; i++)
 	{
-		for (int j = 0; j < info->map_col; j++)
+		for (int j = 0; j < filler->map_col; j++)
 		{
 			ft_putnbr_fd(maps[i][j].pos, fd);
 			if (maps[i][j].pos <= 9)
@@ -49,11 +49,11 @@ void print_map(t_info *info, t_maps **maps, int fd)
 	write(fd, "---\n", 4);
 }
 
-void print_dist_map(t_info *info, t_maps **maps, int fd)
+void print_dist_map(t_filler *filler, t_maps **maps, int fd)
 {
-	for (int i = 0; i < info->map_row; i++)
+	for (int i = 0; i < filler->map_row; i++)
 	{
-		for (int j = 0; j < info->map_col; j++)
+		for (int j = 0; j < filler->map_col; j++)
 		{
 			ft_putnbr_fd(maps[i][j].dist, fd);
 			if (maps[i][j].dist <= 9)
@@ -66,11 +66,11 @@ void print_dist_map(t_info *info, t_maps **maps, int fd)
 	write(fd, "---\n", 4);
 }
 
-void print_skip_map(t_info *info, t_maps **maps, int fd)
+void print_skip_map(t_filler *filler, t_maps **maps, int fd)
 {
-	for (int i = 0; i < info->map_row; i++)
+	for (int i = 0; i < filler->map_row; i++)
 	{
-		for (int j = 0; j < info->map_col; j++)
+		for (int j = 0; j < filler->map_col; j++)
 		{
 			ft_putnbr_fd(maps[i][j].move, fd); //!!! prints MOVE
 			if (maps[i][j].dist <= 9)

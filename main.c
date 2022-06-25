@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/24 23:28:59 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/25 09:51:40 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,62 +14,62 @@
 #include <fcntl.h>
 #include <stdio.h> //DELETE LATER
 
-void	init_filler(t_info *info)
+void	init_filler(t_filler *filler)
 {
-	info->piece_row = 0;
-	info->piece_col = 0;
-	info->map_row = 0;
-	info->map_col = 0;
-	info->player_nb = 0;
-	info->dist_size = 0;
-	info->is_new = FALSE;
-	info->move_count = 0;
+	filler->piece_row = 0;
+	filler->piece_col = 0;
+	filler->map_row = 0;
+	filler->map_col = 0;
+	filler->player_nb = 0;
+	filler->dist_size = 0;
+	filler->is_new = FALSE;
+	filler->move_count = 0;
 }
 
-int	get_info(char *line, t_info *info, char *name)
+int	get_filler(char *line, t_filler *filler, char *name)
 {
 	if (ft_strstr(line, "$$$ exec p"))
-		get_player_nb(info, line, name);
+		get_player_nb(filler, line, name);
 	if (ft_strstr(line, "Plateau"))
 	{
-		if (!(get_map_size(info, line)))
+		if (!(get_map_size(filler, line)))
 			return (EXIT_ERROR);
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	get_maps(char *line, t_info *info, t_maps ***maps, t_dist **list)
+int	get_maps(char *line, t_filler *filler, t_maps ***maps, t_dist **list)
 {
 	if (ft_strstr(line, "    0"))
 	{
-		if (!(info->player_nb) || !(info->map_col) || !(info->map_row))
+		if (!(filler->player_nb) || !(filler->map_col) || !(filler->map_row))
 			return (EXIT_ERROR);
 		if (!(*maps))
-			*maps = init_maps(info->map_row, info->map_col);
-		if (!get_pos_map(info, line, *maps))
+			*maps = init_maps(filler->map_row, filler->map_col);
+		if (!get_pos_map(filler, line, *maps))
 			return (EXIT_ERROR); //!!!
-		if (info->is_new == TRUE)
+		if (filler->is_new == TRUE)
 		{
-			get_skip_map(info, *maps);
-			get_dist_map(info, *maps);
+			get_skip_map(filler, *maps);
+			get_dist_map(filler, *maps);
 			if (!(*list))
-				*list = init_list(info);
-			get_dist_list(*list, info, *maps);
-			sort_dist_list(*list, info);
+				*list = init_list(filler);
+			get_dist_list(*list, filler, *maps);
+			sort_dist_list(*list, filler);
 		}
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	place(char *line, t_info *info, t_maps **maps, t_dist *list)
+int	place(char *line, t_filler *filler, t_maps **maps, t_dist *list)
 {
 	if (ft_strstr(line, "Piece"))
 	{
-		if (!get_piece_size(info, line))
+		if (!get_piece_size(filler, line))
 			return (EXIT_ERROR);
-		if (!get_piece_shape(info))
+		if (!get_piece_shape(filler))
 			return (EXIT_ERROR);
-		if (!put_piece(info, list, maps))
+		if (!put_piece(filler, list, maps))
 			return (EXIT_ERROR);
 	}
 	return (EXIT_SUCCESS);
@@ -80,7 +80,7 @@ int	place(char *line, t_info *info, t_maps **maps, t_dist *list)
 int	main(int ac, char **av)
 {
 	char		*line;
-	t_info		info;
+	t_filler		filler;
 	t_dist		*list;
 	t_maps		**maps;
 
@@ -88,21 +88,21 @@ int	main(int ac, char **av)
 		return (EXIT_ERROR);
 	list = NULL;
 	maps = NULL;
-	init_filler(&info);
-	info.player_name = av[0];
+	init_filler(&filler);
+	filler.player_name = av[0];
 	while (TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
 			return (EXIT_ERROR);
-		if (get_info(line, &info, av[0]) != EXIT_SUCCESS)
+		if (get_filler(line, &filler, av[0]) != EXIT_SUCCESS)
 			return (EXIT_ERROR);
-		if (get_maps(line, &info, &maps, &list) != EXIT_SUCCESS)
+		if (get_maps(line, &filler, &maps, &list) != EXIT_SUCCESS)
 			return (EXIT_ERROR);
-		if (place(line, &info, maps, list) != EXIT_SUCCESS)
+		if (place(line, &filler, maps, list) != EXIT_SUCCESS)
 			break ;
-		info.move_count++;
+		filler.move_count++;
 		ft_strdel(&line);
 	}
 	system("leaks bkandemi.filler > leaks.txt");
-	return (clean_up(&info, maps, list, line, EXIT_SUCCESS));
+	return (clean_up(&filler, maps, list, line, EXIT_SUCCESS));
 }

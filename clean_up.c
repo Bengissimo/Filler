@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 19:49:00 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/24 23:31:31 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/25 09:50:45 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ void	free_piece(char **array, int size)
 	free(array);
 }
 
-int	clean_up(t_info *info, t_maps **maps, t_dist *list, char *line, int ret)
+int	clean_up(t_filler *filler, t_maps **maps, t_dist *list, char *line, int ret)
 {
 	free_list(&list);
-	free_maps(maps, info->map_row);
+	free_maps(maps, filler->map_row);
 	ft_strdel(&line);
 	return (ret);
 }
