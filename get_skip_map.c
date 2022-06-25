@@ -6,13 +6,13 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:00:02 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/25 09:51:17 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/25 10:23:23 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-static int	is_nearby_free(t_filler *filler, t_maps **maps, t_coord coord)
+static int	is_nearby_free(t_filler *filler, t_coord coord)
 {
 	int	i;
 	int	j;
@@ -26,7 +26,7 @@ static int	is_nearby_free(t_filler *filler, t_maps **maps, t_coord coord)
 			if (coord.x + j > 0 && coord.x + j < filler->map_col
 				&& coord.y + i > 0 && coord.y + i < filler->map_row)
 			{
-				if (maps[coord.y + i][coord.x + j].pos == 0)
+				if (filler->maps[coord.y + i][coord.x + j].pos == 0)
 					return (TRUE);
 			}
 			j++;
@@ -36,7 +36,7 @@ static int	is_nearby_free(t_filler *filler, t_maps **maps, t_coord coord)
 	return (FALSE);
 }
 
-void	get_skip_map(t_filler *filler, t_maps **maps)
+void	get_skip_map(t_filler *filler)
 {
 	t_coord	coord;
 
@@ -46,11 +46,11 @@ void	get_skip_map(t_filler *filler, t_maps **maps)
 		coord.x = 0;
 		while (coord.x < filler->map_col)
 		{
-			if (maps[coord.y][coord.x].skip == FALSE)
+			if (filler->maps[coord.y][coord.x].skip == FALSE)
 			{
-				if (maps[coord.y][coord.x].pos == -2
-					|| !is_nearby_free(filler, maps, coord))
-					maps[coord.y][coord.x].skip = TRUE;
+				if (filler->maps[coord.y][coord.x].pos == -2
+					|| !is_nearby_free(filler, coord))
+					filler->maps[coord.y][coord.x].skip = TRUE;
 			}
 			coord.x++;
 		}

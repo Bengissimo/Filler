@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/25 09:50:36 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/25 10:32:32 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ typedef struct s_dist
 	unsigned int	move;
 }					t_dist;
 
+typedef struct s_maps
+{
+	int				pos;
+	unsigned int	dist;
+	int				skip;
+	unsigned int	move;
+}					t_maps;
+
 typedef struct s_filler
 {
 	int				player_nb;
@@ -49,21 +57,16 @@ typedef struct s_filler
 	unsigned int	dist_size;
 	unsigned int	move_count;
 	int				is_new;
+	t_maps			**maps;
+	t_dist			*list;
 }					t_filler;
 
-typedef struct s_maps
-{
-	int				pos;
-	unsigned int	dist;
-	int				skip;
-	unsigned int	move;
-}					t_maps;
 
-void	get_dist_list(t_dist *list, t_filler *filler, t_maps **maps);
-void	sort_dist_list(t_dist *list, t_filler *filler);
-void	free_distance_list(t_dist *list);
+void	get_dist_list(t_filler *filler);
+void	sort_dist_list(t_filler *filler);
+void	free_distance_list(t_filler *filler);
 
-int	put_piece(t_filler *filler, t_dist *list, t_maps **maps);
+int	put_piece(t_filler *filler);
 
 t_dist	*init_list(t_filler *filler);
 
@@ -75,16 +78,19 @@ int		get_piece_shape(t_filler *filler);
 
 /* get maps */
 t_maps	**init_maps(int row_size, int col_size);
-int		get_pos_map(t_filler *filler, char *line, t_maps **maps);
+int	get_pos_map(t_filler *filler, char *line);
 
-void	get_skip_map(t_filler *filler, t_maps **maps);
-void	get_dist_map(t_filler *filler, t_maps **maps);
+
+void	get_skip_map(t_filler *filler);
+void	get_dist_map(t_filler *filler);
 
 void	free_maps(t_maps **maps, int index);
+
+
 void free_list(t_dist **list);
 void	free_piece(char **array, int size);
 
 
-int clean_up(t_filler *filler, t_maps **maps, t_dist *list, char *line, int ret);
+int clean_up(t_filler *filler, char *line, int ret);
 
 #endif

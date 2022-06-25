@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:01:49 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/25 09:50:57 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/25 10:21:46 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static unsigned int	ft_max(unsigned int nb1, unsigned int nb2)
 	return (nb2);
 }
 
-static int	min_distance(t_filler *filler, t_maps **maps, t_coord coord)
+static int	min_distance(t_filler *filler, t_coord coord)
 {
 	int				row;
 	int				col;
@@ -40,7 +40,7 @@ static int	min_distance(t_filler *filler, t_maps **maps, t_coord coord)
 		col = 0;
 		while (col < filler->map_col)
 		{
-			if (maps[row][col].pos == -2)
+			if (filler->maps[row][col].pos == -2)
 			{
 				dist = ft_max(ft_abs(coord.x - col), ft_abs(coord.y - row));
 				if (dist < min_dist)
@@ -53,7 +53,7 @@ static int	min_distance(t_filler *filler, t_maps **maps, t_coord coord)
 	return (min_dist);
 }
 
-void	get_dist_map(t_filler *filler, t_maps **maps)
+void	get_dist_map(t_filler *filler)
 {
 	t_coord	coord;
 
@@ -63,10 +63,10 @@ void	get_dist_map(t_filler *filler, t_maps **maps)
 		coord.x = 0;
 		while (coord.x < filler->map_col)
 		{
-			if (maps[coord.y][coord.x].skip == TRUE)
-				maps[coord.y][coord.x].dist = 0;
+			if (filler->maps[coord.y][coord.x].skip == TRUE)
+				filler->maps[coord.y][coord.x].dist = 0;
 			else
-				maps[coord.y][coord.x].dist = min_distance(filler, maps, coord);
+				filler->maps[coord.y][coord.x].dist = min_distance(filler, coord);
 			coord.x++;
 		}
 		coord.y++;

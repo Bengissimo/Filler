@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 14:13:47 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/25 09:51:28 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/25 10:25:41 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_dist	*init_list(t_filler *filler)
 	return (list);
 }
 
-void	get_dist_list(t_dist *list, t_filler *filler, t_maps **maps)
+void	get_dist_list(t_filler *filler)
 {
 	int				row;
 	int				col;
@@ -45,12 +45,12 @@ void	get_dist_list(t_dist *list, t_filler *filler, t_maps **maps)
 		col = 0;
 		while (col < filler->map_col)
 		{
-			if (maps[row][col].dist > 0)
+			if (filler->maps[row][col].dist > 0)
 			{
-				list[i].dist = maps[row][col].dist;
-				list[i].move = maps[row][col].move;
-				list[i].coord.x = col;
-				list[i].coord.y = row;
+				filler->list[i].dist = filler->maps[row][col].dist;
+				filler->list[i].move = filler->maps[row][col].move;
+				filler->list[i].coord.x = col;
+				filler->list[i].coord.y = row;
 				i++;
 			}
 			col++;
@@ -70,7 +70,7 @@ static int	swap(t_dist *list1, t_dist *list2)
 	return (TRUE);
 }
 
-void	sort_dist_list(t_dist *list, t_filler *filler)
+void	sort_dist_list(t_filler *filler)
 {
 	unsigned int	i;
 	unsigned int	j;
@@ -87,10 +87,10 @@ void	sort_dist_list(t_dist *list, t_filler *filler)
 		j = 0;
 		while (j < size - i - 1)
 		{
-			if (list[j].dist > list[j + 1].dist
-				|| (list[j].dist == list[j + 1].dist
-					&& list[j].move < list[j + 1].move))
-				has_swapped = swap(list + j, list + j + 1);
+			if (filler->list[j].dist > filler->list[j + 1].dist
+				|| (filler->list[j].dist == filler->list[j + 1].dist
+					&& filler->list[j].move < filler->list[j + 1].move))
+				has_swapped = swap(filler->list + j, filler->list + j + 1);
 			j++;
 		}
 		if (!has_swapped)

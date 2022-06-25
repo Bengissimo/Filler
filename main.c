@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/25 09:51:40 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/25 10:39:09 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	init_filler(t_filler *filler)
 	filler->dist_size = 0;
 	filler->is_new = FALSE;
 	filler->move_count = 0;
+	filler->maps = NULL;
+	filler->list = NULL;
 }
 
 int	get_filler(char *line, t_filler *filler, char *name)
@@ -38,30 +40,30 @@ int	get_filler(char *line, t_filler *filler, char *name)
 	return (EXIT_SUCCESS);
 }
 
-int	get_maps(char *line, t_filler *filler, t_maps ***maps, t_dist **list)
+int	get_maps(char *line, t_filler *filler)
 {
 	if (ft_strstr(line, "    0"))
 	{
 		if (!(filler->player_nb) || !(filler->map_col) || !(filler->map_row))
 			return (EXIT_ERROR);
-		if (!(*maps))
-			*maps = init_maps(filler->map_row, filler->map_col);
-		if (!get_pos_map(filler, line, *maps))
+		if (!(filler->maps))
+			filler->maps = init_maps(filler->map_row, filler->map_col);
+		if (!get_pos_map(filler, line))
 			return (EXIT_ERROR); //!!!
 		if (filler->is_new == TRUE)
 		{
-			get_skip_map(filler, *maps);
-			get_dist_map(filler, *maps);
-			if (!(*list))
-				*list = init_list(filler);
-			get_dist_list(*list, filler, *maps);
-			sort_dist_list(*list, filler);
+			get_skip_map(filler);
+			get_dist_map(filler);
+			if (!(filler->list))
+				filler->list = init_list(filler);
+			get_dist_list( filler);
+			sort_dist_list(filler);
 		}
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	place(char *line, t_filler *filler, t_maps **maps, t_dist *list)
+int	place(char *line, t_filler *filler)
 {
 	if (ft_strstr(line, "Piece"))
 	{
@@ -69,7 +71,7 @@ int	place(char *line, t_filler *filler, t_maps **maps, t_dist *list)
 			return (EXIT_ERROR);
 		if (!get_piece_shape(filler))
 			return (EXIT_ERROR);
-		if (!put_piece(filler, list, maps))
+		if (!put_piece(filler))
 			return (EXIT_ERROR);
 	}
 	return (EXIT_SUCCESS);
@@ -80,14 +82,10 @@ int	place(char *line, t_filler *filler, t_maps **maps, t_dist *list)
 int	main(int ac, char **av)
 {
 	char		*line;
-	t_filler		filler;
-	t_dist		*list;
-	t_maps		**maps;
+	t_filler	filler;
 
 	if (ac != 1)
 		return (EXIT_ERROR);
-	list = NULL;
-	maps = NULL;
 	init_filler(&filler);
 	filler.player_name = av[0];
 	while (TRUE)
@@ -96,13 +94,13 @@ int	main(int ac, char **av)
 			return (EXIT_ERROR);
 		if (get_filler(line, &filler, av[0]) != EXIT_SUCCESS)
 			return (EXIT_ERROR);
-		if (get_maps(line, &filler, &maps, &list) != EXIT_SUCCESS)
+		if (get_maps(line, &filler) != EXIT_SUCCESS)
 			return (EXIT_ERROR);
-		if (place(line, &filler, maps, list) != EXIT_SUCCESS)
+		if (place(line, &filler) != EXIT_SUCCESS)
 			break ;
 		filler.move_count++;
 		ft_strdel(&line);
 	}
 	system("leaks bkandemi.filler > leaks.txt");
-	return (clean_up(&filler, maps, list, line, EXIT_SUCCESS));
+	return (clean_up(&filler, line, EXIT_SUCCESS));
 }
