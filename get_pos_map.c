@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:49:46 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/25 10:48:16 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/26 11:39:08 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,24 @@ t_maps	**init_maps(int row_size, int col_size)
 	maps = (t_maps **)malloc(sizeof(t_maps *) * row_size);
 	if (!maps)
 		return (NULL);
-	i = -1;
-	while (i++ < row_size)
+	i = 0;
+	while (i < row_size)
 	{
 		maps[i] = (t_maps *)malloc(sizeof(t_maps) * col_size);
-		if (!maps[i])
+		if (!(maps[i]))
 		{
 			free_maps(maps, i);
 			return (NULL);
 		}
-		j = -1;
-		while (j++ < col_size)
+		j = 0;
+		while (j < col_size)
 		{
 			maps[i][j].pos = 0;
 			maps[i][j].skip = FALSE;
 			maps[i][j].move = 0;
+			j++;
 		}
+		i++;
 	}
 	return (maps);
 }

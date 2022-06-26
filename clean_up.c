@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 19:49:00 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/25 10:38:52 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/26 11:38:49 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	free_list(t_dist **list)
 	if (list && *list)
 	{
 		free(*list);
-		*list = NULL; //do I have to ???
+		*list = NULL;
 	}
 }
 

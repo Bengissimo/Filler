@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/25 10:53:44 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/25 21:30:52 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	init_filler(t_filler *filler)
 	filler->list = NULL;
 }
 
-int	get_filler(char *line, t_filler *filler, char *name)
+int	get_info(char *line, t_filler *filler, char *name)
 {
 	if (ft_strstr(line, "$$$ exec p"))
 		get_player_nb(filler, line, name);
@@ -49,7 +49,7 @@ int	get_maps(char *line, t_filler *filler)
 		if (!(filler->maps))
 			filler->maps = init_maps(filler->map_row, filler->map_col);
 		if (!get_pos_map(filler, line))
-			return (EXIT_ERROR); //!!!
+			return (EXIT_ERROR);
 		if (filler->is_new == TRUE)
 		{
 			get_skip_map(filler);
@@ -89,16 +89,16 @@ int	main(int ac, char **av)
 	while (TRUE)
 	{
 		if (get_next_line(0, &line) != 1)
-			return (EXIT_ERROR);
-		if (get_filler(line, &filler, av[0]) != EXIT_SUCCESS)
-			return (EXIT_ERROR);
+			return (clean_up(&filler, line, EXIT_ERROR));
+		if (get_info(line, &filler, av[0]) != EXIT_SUCCESS)
+			return (clean_up(&filler, line, EXIT_ERROR));
 		if (get_maps(line, &filler) != EXIT_SUCCESS)
-			return (EXIT_ERROR);
+			return (clean_up(&filler, line, EXIT_ERROR));
 		if (place(line, &filler) != EXIT_SUCCESS)
 			break ;
 		filler.move_count++;
 		ft_strdel(&line);
 	}
-	system("leaks bkandemi.filler > leaks.txt");
+	//system("leaks bkandemi.filler > leaks.txt");
 	return (clean_up(&filler, line, EXIT_SUCCESS));
 }
