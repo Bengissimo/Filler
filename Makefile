@@ -6,19 +6,20 @@
 #    By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/24 17:18:57 by bkandemi          #+#    #+#              #
-#    Updated: 2022/06/26 14:41:17 by bkandemi         ###   ########.fr        #
+#    Updated: 2022/06/26 15:38:33 by bkandemi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = bkandemi.filler
 
 C_FILES = main.c\
-		put_piece.c\
-		list.c\
 		get_info.c\
+		init_maps.c\
 		get_pos_map.c\
 		get_skip_map.c\
 		get_dist_map.c\
+		set_dist_list.c\
+		place.c\
 		clean_up.c
 		
 

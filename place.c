@@ -1,16 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   put_piece.c                                        :+:      :+:    :+:   */
+/*   place.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/06 14:53:33 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/25 10:26:48 by bkandemi         ###   ########.fr       */
+/*   Created: 2022/06/26 15:32:49 by bkandemi          #+#    #+#             */
+/*   Updated: 2022/06/26 15:33:37 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
+
+int	get_piece_size(t_filler *filler, char *line)
+{
+	char	*row;
+	char	*col;
+
+	row = ft_strchr(line, ' ') + 1;
+	col = ft_strrchr(line, ' ') + 1;
+	if (!row || !col)
+		return (FALSE);
+	filler->piece_row = ft_atoi(ft_strchr(line, ' ') + 1);
+	filler->piece_col = ft_atoi(ft_strrchr(line, ' ') + 1);
+	if (filler->piece_row <= 0 || filler->piece_col <= 0)
+		return (FALSE);
+	return (TRUE);
+}
+
+int	get_piece_shape(t_filler *fill)
+{
+	int		i;
+	char	*line;
+
+	fill->piece = (char **)malloc(sizeof(char *) * fill->piece_row);
+	if (!fill->piece)
+		return (FALSE);
+	i = 0;
+	while (i < fill->piece_row)
+	{
+		get_next_line(0, &line);
+		fill->piece[i] = (char *)malloc(sizeof(char) * (fill->piece_col + 1));
+		if (!fill->piece[i])
+		{
+			free_piece(fill->piece, i);
+			return (FALSE);
+		}
+		ft_strcpy(fill->piece[i], line);
+		ft_strdel(&line);
+		i++;
+	}
+	return (TRUE);
+}
 
 static int	is_within_border(t_filler *filler, t_coord co)
 {

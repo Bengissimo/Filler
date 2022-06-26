@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/26 14:42:19 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/26 15:17:38 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	get_info(char *line, t_filler *filler, char *name)
 	return (EXIT_SUCCESS);
 }
 
-int	get_maps(char *line, t_filler *filler)
+int	set_game(char *line, t_filler *filler)
 {
 	if (ft_strstr(line, "    0"))
 	{
@@ -53,10 +53,7 @@ int	get_maps(char *line, t_filler *filler)
 		{
 			get_skip_map(filler);
 			get_dist_map(filler);
-			if (!(filler->list))
-				filler->list = init_list(filler);
-			get_dist_list(filler);
-			sort_dist_list(filler);
+			set_dist_list(filler);
 		}
 	}
 	return (EXIT_SUCCESS);
@@ -91,13 +88,12 @@ int	main(int ac, char **av)
 			return (clean_up(&filler, line, EXIT_ERROR));
 		if (get_info(line, &filler, av[0]) != EXIT_SUCCESS)
 			return (clean_up(&filler, line, EXIT_ERROR));
-		if (get_maps(line, &filler) != EXIT_SUCCESS)
+		if (set_game(line, &filler) != EXIT_SUCCESS)
 			return (clean_up(&filler, line, EXIT_ERROR));
 		if (place(line, &filler) != EXIT_SUCCESS)
 			break ;
 		filler.move_count++;
 		ft_strdel(&line);
 	}
-	system("leaks bkandemi.filler > leaks.txt");
 	return (clean_up(&filler, line, EXIT_SUCCESS));
 }

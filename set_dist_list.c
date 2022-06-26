@@ -6,13 +6,13 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 14:13:47 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/25 10:25:41 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/26 15:31:16 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-t_dist	*init_list(t_filler *filler)
+static t_dist	*init_list(t_filler *filler)
 {
 	unsigned int	size;
 	unsigned int	i;
@@ -32,7 +32,7 @@ t_dist	*init_list(t_filler *filler)
 	return (list);
 }
 
-void	get_dist_list(t_filler *filler)
+static void	get_dist_list(t_filler *filler)
 {
 	int				row;
 	int				col;
@@ -70,7 +70,7 @@ static int	swap(t_dist *list1, t_dist *list2)
 	return (TRUE);
 }
 
-void	sort_dist_list(t_filler *filler)
+static void	sort_dist_list(t_filler *filler)
 {
 	unsigned int	i;
 	unsigned int	j;
@@ -97,4 +97,12 @@ void	sort_dist_list(t_filler *filler)
 			break ;
 		i++;
 	}	
+}
+
+void	set_dist_list(t_filler *filler)
+{
+	if (!(filler->list))
+		filler->list = init_list(filler);
+	get_dist_list(filler);
+	sort_dist_list(filler);
 }
