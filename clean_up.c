@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 19:49:00 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/26 11:38:49 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/26 14:24:21 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_maps(t_maps **maps, int index)
 {
-	int i;
+	int	i;
 
 	if (!maps)
 		return ;

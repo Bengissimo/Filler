@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:12:51 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/26 11:39:17 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/26 14:50:24 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,10 @@ typedef struct s_filler
 	t_dist			*list;
 }					t_filler;
 
-
 void	get_dist_list(t_filler *filler);
 void	sort_dist_list(t_filler *filler);
 void	free_distance_list(t_filler *filler);
-
-int	put_piece(t_filler *filler);
-
+int		put_piece(t_filler *filler);
 t_dist	*init_list(t_filler *filler);
 
 /* get_filler.c */
@@ -75,22 +72,14 @@ void	get_player_nb(t_filler *filler, char *line, char *name);
 int		get_map_size(t_filler *filler, char *line);
 int		get_piece_size(t_filler *filler, char *line);
 int		get_piece_shape(t_filler *filler);
-
 /* get maps */
 t_maps	**init_maps(int row_size, int col_size);
-int	get_pos_map(t_filler *filler, char *line);
-
-
+int		get_pos_map(t_filler *filler, char *line);
 void	get_skip_map(t_filler *filler);
 void	get_dist_map(t_filler *filler);
-
 void	free_maps(t_maps **maps, int index);
-
-
-void free_list(t_dist **list);
+void	free_list(t_dist **list);
 void	free_piece(char **array, int size);
-
-
-int clean_up(t_filler *filler, char *line, int ret);
+int		clean_up(t_filler *filler, char *line, int ret);
 
 #endif

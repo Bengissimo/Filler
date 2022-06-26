@@ -6,11 +6,18 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:49:46 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/26 11:39:08 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/26 14:49:34 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
+
+static void	set_maps_values(t_maps ***maps, int i, int j)
+{
+	(*maps)[i][j].pos = 0;
+	(*maps)[i][j].skip = FALSE;
+	(*maps)[i][j].move = 0;
+}
 
 t_maps	**init_maps(int row_size, int col_size)
 {
@@ -33,9 +40,7 @@ t_maps	**init_maps(int row_size, int col_size)
 		j = 0;
 		while (j < col_size)
 		{
-			maps[i][j].pos = 0;
-			maps[i][j].skip = FALSE;
-			maps[i][j].move = 0;
+			set_maps_values(&maps, i, j);
 			j++;
 		}
 		i++;
@@ -48,19 +53,16 @@ static int	verify_line(char *line, int row, char **start)
 	get_next_line(0, &line);
 	if (ft_atoi(line) != row)
 	{
-		if (line)
-			free(line);
+		ft_strdel(&line);
 		return (FALSE);
 	}
 	*start = ft_strchr(line, ' ') + 1;
 	if (!(*start))
 	{
-		if (line)
-			free(line);
+		ft_strdel(&line);
 		return (FALSE);
 	}
-	if (line)
-		free(line);
+	ft_strdel(&line);
 	return (TRUE);
 }
 

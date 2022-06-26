@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 15:01:49 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/25 10:21:46 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/26 14:25:55 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,20 @@ static int	min_distance(t_filler *filler, t_coord coord)
 	return (min_dist);
 }
 
-void	get_dist_map(t_filler *filler)
+void	get_dist_map(t_filler *fill)
 {
 	t_coord	coord;
 
 	coord.y = 0;
-	while (coord.y < filler->map_row)
+	while (coord.y < fill->map_row)
 	{
 		coord.x = 0;
-		while (coord.x < filler->map_col)
+		while (coord.x < fill->map_col)
 		{
-			if (filler->maps[coord.y][coord.x].skip == TRUE)
-				filler->maps[coord.y][coord.x].dist = 0;
+			if (fill->maps[coord.y][coord.x].skip == TRUE)
+				fill->maps[coord.y][coord.x].dist = 0;
 			else
-				filler->maps[coord.y][coord.x].dist = min_distance(filler, coord);
+				fill->maps[coord.y][coord.x].dist = min_distance(fill, coord);
 			coord.x++;
 		}
 		coord.y++;
