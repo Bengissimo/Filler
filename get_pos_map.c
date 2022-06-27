@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 14:49:46 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/26 15:29:33 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/27 14:03:07 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	verify_line(char *line, int row, char **start)
 		ft_strdel(&line);
 		return (FALSE);
 	}
-	ft_strdel(&line);
+	//ft_strdel(&line);
 	return (TRUE);
 }
 
@@ -56,5 +56,6 @@ int	get_pos_map(t_filler *fill, char *line)
 		}
 		co.y++;
 	}
+	//ft_strdel(&line);
 	return (TRUE);
 }
