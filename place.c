@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/26 15:32:49 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/26 15:33:37 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/27 12:13:56 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	get_piece_shape(t_filler *fill)
 	while (i < fill->piece_row)
 	{
 		get_next_line(0, &line);
+		if ((int)ft_strlen(line) != fill->piece_col)
+			return (FALSE);
 		fill->piece[i] = (char *)malloc(sizeof(char) * (fill->piece_col + 1));
 		if (!fill->piece[i])
 		{
