@@ -6,7 +6,7 @@
 /*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:11:57 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/06/26 15:17:38 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/06/27 10:56:00 by bkandemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	get_info(char *line, t_filler *filler, char *name)
 		get_player_nb(filler, line, name);
 	if (ft_strstr(line, "Plateau"))
 	{
-		if (!(get_map_size(filler, line)))
+		if (!get_map_size(filler, line))
 			return (EXIT_ERROR);
 	}
 	return (EXIT_SUCCESS);
