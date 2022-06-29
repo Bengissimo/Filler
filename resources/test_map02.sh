@@ -2,114 +2,59 @@
 
 echo "" > results_map_02
 
-echo "---map02--- player1: bkandemi"
-
-echo "CHAMPELY"
-
-echo "bkandemi(O) against champely(X) map02" >> results_map_02
+echo "bkandemi(O) against (X) map02" >> results_map_02
 for i in {1..5}; do
-   ./filler_vm -p1 ../bkandemi.filler -v -f maps/map02 -p2 players/champely.filler > game_trace_map_02.txt
-   grep "fin" game_trace_map_02.txt | tail -2 >>results_map_02
-   echo "" >> results_map_02
+	./filler_vm -p1 ../bkandemi.filler -v -f maps/map02 -p2 players/champely.filler >> champely_trace_map_02_$i.txt &
+	./filler_vm -p1 ../bkandemi.filler -v -f maps/map02 -p2 players/abanlin.filler >> abanlin_trace_map_02_$i.txt &
+	./filler_vm -p1 ../bkandemi.filler -v -f maps/map02 -p2 players/hcao.filler >> hcao_trace_map_02_$i.txt &
+	./filler_vm -p1 ../bkandemi.filler -v -f maps/map02 -p2 players/grati.filler >> grati_trace_map_02_$i.txt &
+	./filler_vm -p1 ../bkandemi.filler -v -f maps/map02 -p2 players/carli.filler >> carli_trace_map_02_$i.txt &
+	./filler_vm -p1 ../bkandemi.filler -v -f maps/map02 -p2 players/superjeannot.filler >> sj_trace_map_02_$i.txt &
 done
 
-echo "ABANLIN"
+wait 
 
-echo "bkandemi(O) against abanlin(X) map02" >>results_map_02
+printf " ###### bkandemi(O) against champely (X) map02  ######  \n\n" >> results_map_02
 for i in {1..5}; do
-   ./filler_vm -p1 ../bkandemi.filler -v -f maps/map02 -p2 players/abanlin.filler > game_trace_map_02.txt
-   grep "fin" game_trace_map_02.txt | tail -2 >>results_map_02
-   echo "" >>results_map_02
+	echo "champely_$i" >> results_map_02
+	grep "fin" champely_trace_map_02_$i.txt | tail -2  >> results_map_02
+	printf "\n\n" >> results_map_02
 done
 
-echo "HCAO"
-
-echo "bkandemi(O) against hcao(X) map02" >>results_map_02
+printf "  ######  bkandemi(O) against abanlin (X) map02 ###### \n\n" >> results_map_02
 for i in {1..5}; do
-   ./filler_vm -p1 ../bkandemi.filler -v -f maps/map02 -p2 players/hcao.filler > game_trace_map_02.txt
-   grep "fin" game_trace_map_02.txt | tail -2 >>results_map_02
-   echo "" >>results_map_02
+	echo "abanlin_$i" >> results_map_02
+	grep "fin" abanlin_trace_map_02_$i.txt | tail -2 >> results_map_02
+	printf "\n\n" >> results_map_02
 done
 
-echo "GRATI"
-
-echo "bkandemi(O) against grati(X) map02" >>results_map_02
+printf " ###### bkandemi(O) against hcao (X) map02 ###### \n\n" >> results_map_02
 for i in {1..5}; do
-   ./filler_vm -p1 ../bkandemi.filler -v -f maps/map02 -p2 players/grati.filler > game_trace_map_02.txt
-   grep "fin" game_trace_map_02.txt | tail -2 >>results_map_02
-   echo "" >>results_map_02
+	echo "hcao_$i" >> results_map_02
+	grep "fin" hcao_trace_map_02_$i.txt | tail -2 >> results_map_02
+	printf "\n\n" >> results_map_02
 done
 
-echo "CARLI"
-
-echo "bkandemi(O) against carli(X) map02" >>results_map_02
+printf " ###### bkandemi(O) against grati (X) map02 ###### \n\n" >> results_map_02
 for i in {1..5}; do
-   ./filler_vm -p1 ../bkandemi.filler -v -f maps/map02 -p2 players/carli.filler > game_trace_map_02.txt
-   grep "fin" game_trace_map_02.txt | tail -2 >>results_map_02
-   echo "" >>results_map_02
+	echo "grati_$i" >> results_map_02
+	grep "fin" grati_trace_map_02_$i.txt | tail -2 >> results_map_02
+	printf "\n\n" >> results_map_02
 done
 
-echo "SUPERJEANNOT"
 
-echo "bkandemi(O) against superjeannot(X) map02" >>results_map_02
+printf " ###### bkandemi(O) against carli (X) map02 ###### \n\n" >> results_map_02
 for i in {1..5}; do
-   ./filler_vm -p1 ../bkandemi.filler -v -f maps/map02 -p2 players/superjeannot.filler > game_trace_map_02.txt
-   grep "fin" game_trace_map_02.txt | tail -2 >>results_map_02
-   echo "" >>results_map_02
+	echo "carli_$i" >> results_map_02
+	grep "fin" carli_trace_map_02_$i.txt | tail -2 >> results_map_02
+	printf "\n\n" >> results_map_02
 done
 
-#echo "---map02--- player2: bkandemi"
-#
-#echo "CHAMPELY"
-#
-#echo "champely(O) against bkandemi(X) map02" >> results_map_02
-#for i in {1..5}; do
-#   ./filler_vm -p2 ../bkandemi.filler -v -f maps/map02 -p1 players/champely.filler > game_trace_map_02.txt
-#   grep "fin" game_trace_map_02.txt | tail -2 >>results_map_02
-#   echo "" >> results_map_02
-#done
-#
-#echo "ABANLIN"
-#
-#echo "abanlin(O) against bkandemi(X) map02" >>results_map_02
-#for i in {1..5}; do
-#   ./filler_vm -p2 ../bkandemi.filler -v -f maps/map02 -p1 players/abanlin.filler > game_trace_map_02.txt
-#   grep "fin" game_trace_map_02.txt | tail -2 >>results_map_02
-#   echo "" >>results_map_02
-#done
-#
-#echo "HCAO"
-#
-#echo "hcao(O) against bkandemi(X) map02" >>results_map_02
-#for i in {1..5}; do
-#   ./filler_vm -p2 ../bkandemi.filler -v -f maps/map02 -p1 players/hcao.filler > game_trace_map_02.txt
-#   grep "fin" game_trace_map_02.txt | tail -2 >>results_map_02
-#   echo "" >>results_map_02
-#done
-#
-#echo "GRATI"
-#
-#echo "grati(O) against bkandemi(X) map02" >>results_map_02
-#for i in {1..5}; do
-#   ./filler_vm -p2 ../bkandemi.filler -v -f maps/map02 -p1 players/grati.filler > game_trace_map_02.txt
-#   grep "fin" game_trace_map_02.txt | tail -2 >>results_map_02
-#   echo "" >>results_map_02
-#done
-#
-#echo "CARLI"
-#
-#echo "carli(O) against bkandemi(X) map02" >>results_map_02
-#for i in {1..5}; do
-#   ./filler_vm -p2 ../bkandemi.filler -v -f maps/map02 -p1 players/carli.filler > game_trace_map_02.txt
-#   grep "fin" game_trace_map_02.txt | tail -2 >>results_map_02
-#   echo "" >>results_map_02
-#done
-#
-#echo "SUPERJEANNOT"
-#
-#echo "superjeannot(O) against bkandemi(X) map02" >>results_map_02
-#for i in {1..5}; do
-#   ./filler_vm -p2 ../bkandemi.filler -v -f maps/map02 -p1 players/superjeannot.filler > game_trace_map_02.txt
-#   grep "fin" game_trace_map_02.txt | tail -2 >>results_map_02
-#   echo "" >>results_map_02
-#done
+printf " ###### bkandemi(O) against sj (X) map02 ###### \n\n" >> results_map_02
+for i in {1..5}; do
+	echo "sj_$i" >> results_map_02
+	grep "fin" sj_trace_map_02_$i.txt | tail -2 >> results_map_02
+	printf "\n\n" >> results_map_02
+done
+
+echo "map02 ALL DONE"
