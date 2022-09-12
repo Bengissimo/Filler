@@ -46,6 +46,9 @@ cd resources
 ./filler_vm -p1 ../bkandemi.filler -v -f maps/map01 -p2 players/carli.filler
 ```
 4. Use of test scripts (5 games with each player)
+```
+cd resources
+```
 	- map00
 	```
 	./test_map00.sh
