@@ -24,6 +24,11 @@ I had two strategies to win:
     - This list is sorted using distance information in ascending order and move information in descending order.
     - Start from the first element of the list and try to place the piece; if not possible to place it, go to the next element in the list.
 
+## Sample game
+
+My_player: O vs Opponent: X
+
+![](sample_game.gif)
 
 ## Usage
 
@@ -53,11 +58,3 @@ cd resources
 	```
 	./test_map02.sh
 	```
-
-
-
-
-
-
-
-
