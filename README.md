@@ -4,12 +4,12 @@ The project aims to write a player program to compete against other players for 
 
 ## Rules of the Filler game:
 
-- The game is provided as a Ruby executable.
-- Two players on a board with a known size
+- The game was provided as a Ruby executable (see the resources folder).
+- There are two players on a board with a known size.
 - Players take turns placing a piece.
 - The game provides pieces. The size and shape of the piece are random.
 - The game stops once a piece can no longer be placed.
-- The winning player should place as many pieces as possible
+- The winning player should place as many pieces as possible.
 
 ## Strategy
 
@@ -49,15 +49,15 @@ cd resources
 ```
 cd resources
 ```
-	- map00 (15 x 17)
-	```
-	./test_map00.sh
-	```
-	- map01 (24 x 40)
-	```
-	./test_map01.sh
-	```
-	- map02 (100 x 99)
-	```
-	./test_map02.sh
-	```
+- map00 (15 x 17)
+```
+./test_map00.sh
+```
+- map01 (24 x 40)
+```
+./test_map01.sh
+```
+- map02 (100 x 99)
+```
+./test_map02.sh
+```
