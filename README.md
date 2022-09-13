@@ -49,15 +49,15 @@ cd resources
 ```
 cd resources
 ```
-	- map00
+	- map00 (15 x 17)
 	```
 	./test_map00.sh
 	```
-	- map01
+	- map01 (24 x 40)
 	```
 	./test_map01.sh
 	```
-	- map02
+	- map02 (100 x 99)
 	```
 	./test_map02.sh
 	```
